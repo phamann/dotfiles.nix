@@ -15,7 +15,7 @@ in
     };
   };
   config = mkIf cfg.enable {
-    home.packages = with pkgs;
+    packages = with pkgs;
       [
         bat
         cachix
