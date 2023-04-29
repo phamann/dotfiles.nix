@@ -45,8 +45,8 @@
       };
 
       homeConfigurations = {
-        "x-wing" = hostWithArch "x-wing" "aarch64-darwin";
-        "yoda" = hostWithArch "yoda" "x86_64-linux";
+        "phamann@x-wing" = hostWithArch "x-wing" "aarch64-darwin";
+        "phamann@yoda" = hostWithArch "yoda" "x86_64-linux";
       };
     };
 }
