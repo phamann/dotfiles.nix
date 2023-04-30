@@ -5,6 +5,7 @@
 }: {
   imports = [
     ./zsh
+    ./starship
     /* ./git
     ./nvim
     ./ssh

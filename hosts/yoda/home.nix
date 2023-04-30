@@ -11,6 +11,7 @@
 
     modules = {
         zsh.enable = true;
+        starship.enable = true;
         packages.enable = true;
     };
   };
