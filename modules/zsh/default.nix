@@ -19,6 +19,7 @@ in
       enable = true;
       enableCompletion = true;
       enableAutosuggestions = true;
+      dotDir = ".config/zsh";
       shellAliases = {
         diff = "diff -u";
         tree = "tree --dirsfirst --noreport -ACF";
