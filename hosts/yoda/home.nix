@@ -11,7 +11,7 @@
 
     modules = {
         zsh.enable = true;
-        /* packages.enable = true; */
+        packages.enable = true;
     };
   };
 }
