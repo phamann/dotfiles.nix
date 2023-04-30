@@ -12,7 +12,7 @@
     ./gpg
     ./direnv
 
-    ./home
-    ./packages */
+    ./home */
+    ./packages
   ];
 }
