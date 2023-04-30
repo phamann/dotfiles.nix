@@ -8,8 +8,8 @@
   imports = [
     ../../modules/default.nix
   ];
-  config.modules = {
+  /* config.modules = {
     zsh.enable = true;
     packages.enable = true;
-  };
+  }; */
 }
