@@ -2,7 +2,7 @@
   imports = [
     ../../modules/default.nix
   ];
-  config =
+  config = {
     home.username = "phamann";
     home.homeDirectory =
         "/${if pkgs.stdenv.isDarwin then "Users" else "home"}/phamann";
