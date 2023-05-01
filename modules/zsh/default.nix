@@ -116,7 +116,7 @@ in
         zstyle ':completion:*:messages' format '%d'
         zstyle ':completion:*:warnings' format 'No matches for: %d'
         zstyle ':completion:*:corrections' format '%B%d (errors: %e)%b'
-        zstyle ':completion:*' group-name ''
+        zstyle ':completion:*' group-name ' '
 
         # ignore completion functions (until the _ignored completer)
         zstyle ':completion:*:functions' ignored-patterns '_*'
