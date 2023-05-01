@@ -17,32 +17,39 @@ in
   config = mkIf cfg.enable {
     home.packages = with pkgs;
       [
-        bat
+        # nix
         cachix
-        cargo
-        dig
-        docker
-        docker-compose
+
+        # cli
+        bat
         fd
         fzf
-        gcc
+        htop
+        starship
+        tmux
+        tree
+        ripgrep
+
+        # tools
+        dig
+        jq
+        google-cloud-sdk
+        docker
+        docker-compose
         git-crypt
+
+        # languages and language tooling
+        cargo
+        gcc
         gnumake
         go
         gofumpt
-        google-cloud-sdk
         gopls
-        htop
-        jq
         nodejs
-        ripgrep
         rnix-lsp
         rustfmt
-        starship
         terraform
         tfswitch
-        tmux
-        tree
       ]
       ++ cfg.additional-packages;
   };
