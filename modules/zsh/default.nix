@@ -14,7 +14,6 @@ in
         zsh-history-substring-search
         zsh-syntax-highlighting
       ];
-    };
 
     home.sessionVariables = {
       LANG = "en_US.UTF-8";
