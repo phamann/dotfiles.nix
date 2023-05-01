@@ -194,7 +194,6 @@ in
       '';
 
       plugins = [
-      https://github.com/unixorn/fzf-zsh-plugin
           {
             name = "fzf-zsh-plugin";
             src = pkgs.fetchFromGitHub {
@@ -204,7 +203,7 @@ in
               sha256 = "0z6i9wjjklb4lvr7zjhbphibsyx51psv50gm07mbb0kj9058j6kc";
             };
           }
-        ]
+        ];
     };
   };
 }
