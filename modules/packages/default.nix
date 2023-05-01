@@ -31,7 +31,6 @@ in
         # cli
         bat
         fd
-        fzf
         htop
         starship
         tmux
