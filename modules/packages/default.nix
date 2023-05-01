@@ -20,6 +20,14 @@ in
         # nix
         cachix
 
+        # zsh
+        zsh-vi-mode
+        zsh-fzf-tab
+        zsh-z
+        zsh-autosuggestions
+        zsh-history-substring-search
+        zsh-syntax-highlighting
+
         # cli
         bat
         fd

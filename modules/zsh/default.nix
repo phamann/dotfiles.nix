@@ -5,16 +5,6 @@ in
 {
   options.modules.zsh = { enable = mkEnableOption "zsh"; };
   config = mkIf cfg.enable {
-    home.packages = with pkgs;
-      [
-        zsh-vi-mode
-        zsh-fzf-tab
-        zsh-z
-        zsh-autosuggestions
-        zsh-history-substring-search
-        zsh-syntax-highlighting
-      ];
-
     home.sessionVariables = {
       LANG = "en_US.UTF-8";
       LC_CTYPE = "en_US.UTF-8";
