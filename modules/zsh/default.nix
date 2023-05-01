@@ -46,6 +46,9 @@ in
           "pkill *"
         ];
       };
+      historySubstringSearch = {
+        enable = true;
+      };
       profileExtra = ""; # TODO
       envExtra = ''
         export GPG_TTY=$(tty)
