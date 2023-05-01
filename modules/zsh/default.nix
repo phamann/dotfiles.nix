@@ -192,6 +192,19 @@ in
         source ${pkgs.grc}/etc/grc.zsh
         ${builtins.readFile ./functions.zsh}
       '';
+
+      plugins = [
+      https://github.com/unixorn/fzf-zsh-plugin
+          {
+            name = "fzf-zsh-plugin";
+            src = pkgs.fetchFromGitHub {
+              owner = "unixorn";
+              repo = "fzf-zsh-plugin";
+              rev = "19a22259ee62a2f01541f8ef8d9942529f70c690";
+              sha256 = "0z6i9wjjklb4lvr7zjhbphibsyx51psv50gm07mbb0kj9058j6kc";
+            };
+          }
+        ]
     };
   };
 }
