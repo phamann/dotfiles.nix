@@ -21,7 +21,6 @@ in
         cachix
 
         # zsh
-        zsh-vi-mode
         zsh-fzf-tab
         zsh-z
         zsh-autosuggestions
