@@ -10,10 +10,9 @@ in
   options.modules.nvim = { enable = mkEnableOption "nvim"; };
   config = mkIf cfg.enable {
     home.file."lazy-lock.json".source = ./lazy-lock.json;
-    programs.neovim = {
-      enable = true;
-      vimdiffAlias = true;
-    };
+    home.packages = with pkgs; [
+        neovim
+    ];
     xdg.configFile = {
       nvim = {
       source =
