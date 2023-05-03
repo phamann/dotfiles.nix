@@ -17,6 +17,7 @@
         fzf.enable = true;
         starship.enable = true;
         packages.enable = true;
+        nvim.enable = true;
     };
   };
 }

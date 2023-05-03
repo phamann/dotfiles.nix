@@ -8,9 +8,9 @@
     ./fzf
     ./starship
     ./packages
+    ./nvim
 
     /* ./git
-    ./nvim
     ./ssh
     ./tmux
     ./gpg
