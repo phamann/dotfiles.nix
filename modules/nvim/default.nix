@@ -12,9 +12,6 @@ in
     home.file."lazy-lock.json".source = ./lazy-lock.json;
     programs.neovim = {
       enable = true;
-      extraConfig = ''
-        luafile ${config.xdg.configHome}/nvim/init.lua
-      '';
       vimdiffAlias = true;
     };
     xdg.configFile = {
