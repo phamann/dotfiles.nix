@@ -14,13 +14,13 @@ in
         neovim
     ]; */
     programs.neovim = {
-        enabled = true;
+        enable = true;
     }
     xdg.configFile = {
       nvim = {
       source =
         config.lib.file.mkOutOfStoreSymlink
-          "${config.home.homeDirectory}/.config/nixpkgs/modules/nvim/lua";
+          "${config.home.homeDirectory}/.config/nixpkgs/modules/nvim/config";
         recursive = true;
       };
     };
