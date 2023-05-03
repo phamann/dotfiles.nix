@@ -19,7 +19,9 @@ in
     };
     xdg.configFile = {
       nvim = {
-        source = ./lua;
+      source =
+        config.lib.file.mkOutOfStoreSymlink
+          "${config.home.homeDirectory}/.config/nixpkgs/nvim/lua";
         recursive = true;
       };
     };
