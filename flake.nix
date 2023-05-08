@@ -19,21 +19,22 @@
     , ...
     } @ inputs:
     let
-      overlay-unstable = arch: final: prev: {
+      overlay-unstable = system: final: prev: {
         unstable = import nixpkgs-unstable {
-          inherit arch;
+          inherit system;
           inputs.nixpkgs.config.allowUnfree = true;
         };
       };
-      hostWithArch = host: arch:
+      pkgsForSystem = system: import nixpkgs {
+        overlays = [
+          localOverlay
+        ];
+        inherit system;
+        config.allowUnfree = true;
+      };
+      hostWithsystem = host: system:
         home-manager.lib.homeManagerConfiguration {
-          pkgs = import nixpkgs {
-            overlays = [
-                (overlay-unstable arch)
-            ];
-            inherit arch;
-            config.allowUnfree = true;
-          };
+          pkgs = pkgsForSystem system;
           modules = [
             (./. + "/hosts/${host}/home.nix")
           ];
