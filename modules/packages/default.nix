@@ -37,6 +37,7 @@ in
         ripgrep
 
         # tools
+        _1password
         dig
         jq
         google-cloud-sdk

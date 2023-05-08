@@ -18,6 +18,8 @@
         starship.enable = true;
         packages.enable = true;
         nvim.enable = true;
+        git.enable = true;
+        ssh.enable = true;
     };
   };
 }

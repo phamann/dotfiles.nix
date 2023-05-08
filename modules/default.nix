@@ -9,9 +9,9 @@
     ./starship
     ./packages
     ./nvim
-
-    /* ./git
+    ./git
     ./ssh
+    /*
     ./tmux
     ./gpg
     ./direnv */
