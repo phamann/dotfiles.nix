@@ -19,10 +19,6 @@ in
             insteadOf = "https://github.com/";
           };
         };
-        mergetool = {
-          prompt = false;
-          keepBackup = false;
-        };
         aliases = {
           st = "status";
           co = "checkout";
