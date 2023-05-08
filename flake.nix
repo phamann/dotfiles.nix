@@ -29,12 +29,12 @@
         home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.${arch};
           modules = [
-            (./. + "/hosts/${host}/home.nix")
             {
               nixpkgs.overlays = [
                 (overlay-unstable arch)
               ];
             }
+            (./. + "/hosts/${host}/home.nix")
           ];
         };
     in {
