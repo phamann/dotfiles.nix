@@ -27,7 +27,7 @@
       };
       pkgsForSystem = system: import nixpkgs {
         overlays = [
-          localOverlay
+          (overlay-unstable system)
         ];
         inherit system;
         config.allowUnfree = true;
