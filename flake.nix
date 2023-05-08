@@ -32,7 +32,7 @@
         inherit system;
         config.allowUnfree = true;
       };
-      hostWithsystem = host: system:
+      hostWithSystem = host: system:
         home-manager.lib.homeManagerConfiguration {
           pkgs = pkgsForSystem system;
           modules = [
