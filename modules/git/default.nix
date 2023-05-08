@@ -11,7 +11,7 @@ in
         userName = "Patrick Hamann";
         userEmail = "patrickhamann@gmail.com";
         signing = {
-            signingkey = "CD2E6283475DC528";
+            key = "CD2E6283475DC528";
             signByDefault = true;
         };
         extraConfig = {
