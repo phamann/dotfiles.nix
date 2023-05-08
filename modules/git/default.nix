@@ -14,10 +14,17 @@ in
             signingkey = "CD2E6283475DC528";
             signByDefault = true;
         };
-        url = {
-          "git@github.com:" = {
-            insteadOf = "https://github.com/";
-          };
+        extraConfig = {
+            init = { defaultBranch = "main"; };
+            url = {
+              "git@github.com:" = {
+                insteadOf = "https://github.com/";
+              };
+            };
+            mergetool = {
+              prompt = false;
+              keepBackup = false;
+            };
         };
         aliases = {
           st = "status";
