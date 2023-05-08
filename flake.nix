@@ -27,13 +27,14 @@
       };
       hostWithArch = host: arch:
         home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.${arch};
-          modules = [
-            {
-              nixpkgs.overlays = [
+          pkgs = import nixpkgs {
+            overlays = [
                 (overlay-unstable arch)
-              ];
-            }
+            ];
+            inherit arch;
+            config.allowUnfree = true;
+          };
+          modules = [
             (./. + "/hosts/${host}/home.nix")
           ];
         };
