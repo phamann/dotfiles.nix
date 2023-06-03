@@ -20,6 +20,7 @@
         nvim.enable = true;
         git.enable = true;
         ssh.enable = true;
+        tmux.enable = true;
     };
   };
 }

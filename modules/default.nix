@@ -11,8 +11,8 @@
     ./nvim
     ./git
     ./ssh
-    /*
     ./tmux
+    /*
     ./gpg
     ./direnv */
   ];

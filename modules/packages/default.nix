@@ -32,7 +32,6 @@ in
         fd
         htop
         starship
-        tmux
         tree
         ripgrep
 
