@@ -47,6 +47,8 @@ in
         git-crypt
         pinentry-curses
         fastly
+        kubectl
+        infra
 
         # languages and language tooling
         cargo
