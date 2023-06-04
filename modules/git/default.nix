@@ -33,6 +33,13 @@ in
           br = "branch";
           hist = ''log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short'';
         };
+        ignores = [
+          ".devenv"
+          ".direnv"
+          ".envrc"
+          "flake.lock"
+          "flake.nix"
+        ];
       };
     };
 }
