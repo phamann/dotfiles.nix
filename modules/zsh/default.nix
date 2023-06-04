@@ -190,6 +190,7 @@ in
         setopt nobeep
         setopt prompt_subst
         source ${pkgs.grc}/etc/grc.zsh
+        eval "$(zoxide init zsh)"
         ${builtins.readFile ./functions.zsh}
       '';
     };

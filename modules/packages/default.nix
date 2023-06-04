@@ -34,6 +34,7 @@ in
         starship
         tree
         ripgrep
+        zoxide
 
         # tools
         _1password
