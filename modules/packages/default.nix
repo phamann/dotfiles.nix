@@ -46,6 +46,7 @@ in
         docker-compose
         git-crypt
         pinentry-curses
+        fastly
 
         # languages and language tooling
         cargo
