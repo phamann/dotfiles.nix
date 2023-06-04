@@ -19,7 +19,6 @@ return {
               "gomod",
               "gowork",
               "hcl",
-              "help",
               "html",
               "http",
               "java",
@@ -38,6 +37,7 @@ return {
               "yaml",
               "zig",
               "nix",
+              "xml"
           },
           highlight = {
             enable = true,
