@@ -189,9 +189,16 @@ in
         setopt interactive_comments
         setopt nobeep
         setopt prompt_subst
+
+        # Load functions
+        ${builtins.readFile ./functions.zsh}
+
+        # Load tools
         source ${pkgs.grc}/etc/grc.zsh
         eval "$(zoxide init zsh)"
-        ${builtins.readFile ./functions.zsh}
+        eval $(keychain --eval --quiet ~/.ssh/id_rsa)
+        eval "$(direnv hook zsh)"
+        eval "$(starship init zsh)"
       '';
     };
   };

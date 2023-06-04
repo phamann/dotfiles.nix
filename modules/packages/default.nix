@@ -37,6 +37,7 @@ in
         zoxide
 
         # tools
+        keychain
         _1password
         dig
         jq
