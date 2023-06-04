@@ -2,7 +2,7 @@ return {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
     dependencies = {
-        { "lewis6991/spellsitter.nvim", config = true },
+        -- { "lewis6991/spellsitter.nvim", config = true },
     },
     config = function()
         local treesitter = require("nvim-treesitter.configs")
@@ -37,7 +37,6 @@ return {
               "yaml",
               "zig",
               "nix",
-              "xml"
           },
           highlight = {
             enable = true,
