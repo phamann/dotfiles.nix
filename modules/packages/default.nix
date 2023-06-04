@@ -44,6 +44,7 @@ in
         docker
         docker-compose
         git-crypt
+        pinentry-curses
 
         # languages and language tooling
         cargo
