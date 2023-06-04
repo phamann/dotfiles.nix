@@ -14,7 +14,7 @@ in
     };
 
     services.gpg-agent = {
-      enable = true;
+      enable = pkgs.hostPlatform.isLinux;
       pinentryFlavor = "curses";
       enableSshSupport = true;
     };
