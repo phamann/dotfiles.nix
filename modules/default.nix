@@ -12,8 +12,8 @@
     ./git
     ./ssh
     ./tmux
-    /*
     ./gpg
+    /*
     ./direnv */
   ];
 }

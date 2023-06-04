@@ -21,6 +21,7 @@
         git.enable = true;
         ssh.enable = true;
         tmux.enable = true;
+        gpg.enable = true;
     };
   };
 }
