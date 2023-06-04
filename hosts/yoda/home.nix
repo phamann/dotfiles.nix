@@ -22,6 +22,7 @@
         ssh.enable = true;
         tmux.enable = true;
         gpg.enable = true;
+        direnv.enable = true;
     };
   };
 }
