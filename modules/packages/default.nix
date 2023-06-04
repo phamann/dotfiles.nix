@@ -57,6 +57,7 @@ in
         rustfmt
         terraform
         tfswitch
+        lua
       ]
       ++ cfg.additional-packages;
   };
