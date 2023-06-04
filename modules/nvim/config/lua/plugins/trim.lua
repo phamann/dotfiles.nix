@@ -3,7 +3,7 @@ return {
     opts = {
         -- if you want to ignore markdown file.
         -- you can specify filetypes.
-        disable = {"markdown"},
+        ft_blocklist = {"markdown"},
 
         -- if you want to ignore space of top
         patterns = {
