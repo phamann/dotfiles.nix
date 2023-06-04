@@ -38,7 +38,7 @@ in
         };
         username = {
           show_always = true;
-          style_user = "bold_purple";
+          style_user = "bold purple";
         };
         character = {
           success_symbol = "[±](bold green)";
