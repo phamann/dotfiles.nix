@@ -1,30 +1,14 @@
-{ pkgs
-, lib
-, config
-, ...
-}:
+{ pkgs, lib, config, ... }:
 with lib; let
-  cfg = config.modules.ssh;
+  cfg = config.modules.kitty;
 in
 {
-  options.modules.ssh = { enable = mkEnableOption "ssh"; };
-  config = mkIf cfg.enable {
-    programs.ssh = {
-      enable = true;
-      controlMaster = "no";
-      controlPath = "~/.ssh/master-%r@%n:%p";
-      controlPersist = "30m";
-      forwardAgent = true;
-
-      matchBlocks = {
-        "*" = { };
-
-        "github.com" = {
-          hostname = "ssh.github.com";
-          user = "git";
-          port = 443;
-        };
+  options.modules.kitty = { enable = mkEnableOption "kitty"; };
+  config =
+    mkIf cfg.enable {
+      programs.kitty = {
+        enable = true;
+        extraConfig = builtins.readFile ./kitty.conf;
       };
     };
-  };
 }

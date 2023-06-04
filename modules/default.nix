@@ -6,6 +6,7 @@
   imports = [
     ./zsh
     ./fzf
+    ./kitty
     ./starship
     ./packages
     ./nvim

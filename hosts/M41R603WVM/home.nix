@@ -15,6 +15,7 @@
     modules = {
         zsh.enable = true;
         fzf.enable = true;
+        kitty.enable = true;
         starship.enable = true;
         packages.enable = true;
         nvim.enable = true;
