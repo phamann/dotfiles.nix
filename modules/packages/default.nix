@@ -21,34 +21,34 @@ in
         cachix
 
         # zsh
-        zsh-fzf-tab
-        zsh-z
         zsh-autosuggestions
+        zsh-fzf-tab
         zsh-history-substring-search
         zsh-syntax-highlighting
+        zsh-z
 
         # cli
         bat
         fd
         htop
+        ripgrep
         starship
         tree
-        ripgrep
         zoxide
 
         # tools
-        keychain
         _1password
         dig
-        jq
-        google-cloud-sdk
         docker
         docker-compose
-        git-crypt
-        pinentry-curses
         fastly
-        kubectl
+        git-crypt
+        google-cloud-sdk
         infra
+        jq
+        keychain
+        kubectl
+        pinentry-curses
 
         # languages and language tooling
         cargo
@@ -57,12 +57,13 @@ in
         go
         gofumpt
         gopls
+        java-language-server
+        lua
         nodejs
         rnix-lsp
         rustfmt
         terraform
         tfswitch
-        lua
       ]
       ++ cfg.additional-packages;
   };

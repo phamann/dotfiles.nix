@@ -142,9 +142,7 @@ return {
             on_attach = function(client, bufnr)
                 shared_on_attach(client, bufnr)
             end,
-            cmd = {
-                (vim.loop.os_uname().sysname == "Darwin" and "~/Projects/java-language-server/dist/lang_server_mac.sh" or "/home/patrick/Projects/java-language-server/dist/lang_server_linux.sh")
-            }
+            cmd = {"java-language-server"}
         }
 
         -- Styling
