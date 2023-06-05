@@ -9,7 +9,7 @@ in
       programs.git = {
         enable = true;
         userName = "Patrick Hamann";
-        userEmail = "patrickhamann@gmail.com";
+        userEmail = "patrick@fastly.com";
         signing = {
             key = "CD2E6283475DC528";
             signByDefault = true;
