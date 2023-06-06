@@ -16,6 +16,7 @@ return {
                 ["kitty.conf"] = "kitty",
                 ["*.tfstate.backup"] = "json",
                 ["terraform.rc"] = "hcl",
+                ["Dockerfile.*"] = "dockerfile",
             },
         }
     },
