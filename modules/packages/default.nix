@@ -49,7 +49,6 @@ in
         keychain
         kubectl
         pinentry-curses
-        yq
 
         # languages and language tooling
         cargo
