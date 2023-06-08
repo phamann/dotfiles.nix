@@ -31,7 +31,7 @@ in
           co = "checkout";
           ci = "commit";
           br = "branch";
-          hist = ''log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short'';
+          hist = ''log --graph --pretty=format:'%C(magenta)%h%Creset -%C(red)%d%Creset %s %C(dim green)(%cr) %C(cyan)<%an>%Creset' --abbrev-commit'';
         };
         ignores = [
           ".devenv"
