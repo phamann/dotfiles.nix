@@ -63,6 +63,7 @@ in
         export GOPATH=$HOME/Projects
         export FZF_DEFAULT_OPTS='--height 40% --reverse --border'
         export LSCOLORS=Gxfxcxdxbxegedabagacad
+        export INFRA_SKIP_VERSION_CHECK=true
       '';
       sessionVariables = { }; # TODO
       loginExtra = ""; # TODO
