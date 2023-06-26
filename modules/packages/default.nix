@@ -48,6 +48,7 @@ in
         jq
         keychain
         kubectl
+        kubernetes-helm
         pinentry-curses
 
         # languages and language tooling
