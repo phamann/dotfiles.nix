@@ -42,6 +42,8 @@ in
         bind-key -T copy-mode-vi v send-keys -X begin-selection
         bind-key -T copy-mode-vi y send-keys -X copy-selection
         bind-key -T copy-mode-vi r send-keys -X rectangle-toggle
+        # fixes copy/past in tmux
+        set-option -ag terminal-overrides ",xterm-256color:Ms=\\E]52;c;%p2%s\\7"
 
         bind -T copy-mode-vi y send -X copy-pipe-and-cancel "xclip -sel clip -i"
 
