@@ -24,6 +24,14 @@
         tmux.enable = true;
         gpg.enable = true;
         direnv.enable = true;
+
+        packages.additional-packages = with pkgs; [
+          colima
+          infra
+          kubectl
+          kubernetes-helm
+          fluxcd
+        ];
     };
   };
 }
