@@ -44,11 +44,8 @@ in
         fastly
         git-crypt
         google-cloud-sdk
-        infra
         jq
         keychain
-        kubectl
-        kubernetes-helm
         pinentry-curses
 
         # languages and language tooling
@@ -64,6 +61,8 @@ in
         rnix-lsp
         rustfmt
         terraform
+        terraform-ls
+        tflint
         tfswitch
       ]
       ++ cfg.additional-packages;
