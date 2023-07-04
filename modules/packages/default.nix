@@ -51,6 +51,7 @@ in
 
         # languages and language tooling
         cargo
+        cargo-nextest
         gcc
         gnumake
         go
