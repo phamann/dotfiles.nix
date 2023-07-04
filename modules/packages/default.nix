@@ -47,6 +47,7 @@ in
         jq
         keychain
         pinentry-curses
+        yq-go
 
         # languages and language tooling
         cargo
