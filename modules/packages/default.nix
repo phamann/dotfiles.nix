@@ -66,6 +66,7 @@ in
         terraform-ls
         tflint
         tfswitch
+        viceroy
       ]
       ++ cfg.additional-packages;
   };
