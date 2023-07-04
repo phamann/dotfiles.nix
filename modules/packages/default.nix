@@ -60,6 +60,7 @@ in
         lua
         nodejs
         rnix-lsp
+        rust-analyzer
         rustfmt
         terraform
         terraform-ls
