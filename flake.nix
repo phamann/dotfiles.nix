@@ -5,6 +5,9 @@
     nixpkgs.url = "github:nixos/nixpkgs/release-23.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
 
+    darwin.url = "github:lnl7/nix-darwin/master";
+    darwin.inputs.nixpkgs.follows = "nixpkgs";
+
     home-manager = {
       url = "github:nix-community/home-manager/release-23.05";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -13,6 +16,7 @@
 
   outputs =
     { self
+    , darwin
     , nixpkgs
     , nixpkgs-unstable
     , home-manager
@@ -32,13 +36,22 @@
         inherit system;
         config.allowUnfree = true;
       };
-      hostWithSystem = host: system:
+      hostHomeWithSystem = host: system:
         home-manager.lib.homeManagerConfiguration {
           pkgs = pkgsForSystem system;
           modules = [
             (./. + "/hosts/${host}/home.nix")
           ];
         };
+      darwinHostWithSystem = host: system:
+        darwin.lib.darwinSystem {
+          pkgs = pkgsForSystem system;
+          modules = [
+            (./. + "/hosts/${host}/configuration.nix")
+          ];
+          specialArgs = { inherit inputs; };
+        };
+
     in {
       defaultPackage = {
         x86_64-linux = home-manager.defaultPackage.x86_64-linux;
@@ -47,8 +60,12 @@
       };
 
       homeConfigurations = {
-        "phamann@M41R603WVM" = hostWithSystem "M41R603WVM" "aarch64-darwin";
-        "phamann@yoda" = hostWithSystem "yoda" "x86_64-linux";
+        "phamann@M41R603WVM" = hostHomeWithSystem "M41R603WVM" "aarch64-darwin";
+        "phamann@yoda" = hostHomeWithSystem "yoda" "x86_64-linux";
+      };
+
+      darwinConfigurations = {
+        "M41R603WVM" = darwinHostWithSystem "M41R603WVM" "aarch64-darwin";
       };
     };
 }
