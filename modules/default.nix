@@ -4,16 +4,17 @@
 , ...
 }: {
   imports = [
-    ./zsh
-    ./fzf
-    ./kitty
-    ./starship
-    ./packages
-    ./nvim
-    ./git
-    ./ssh
-    ./tmux
-    ./gpg
     ./direnv
+    ./fzf
+    ./git
+    ./gpg
+    ./gui
+    ./kitty
+    ./nvim
+    ./packages
+    ./ssh
+    ./starship
+    ./tmux
+    ./zsh
   ];
 }

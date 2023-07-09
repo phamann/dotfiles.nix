@@ -24,6 +24,7 @@
         tmux.enable = true;
         gpg.enable = true;
         direnv.enable = true;
+        gui.enable = true;
 
         packages.additional-packages = with pkgs; [
           colima
