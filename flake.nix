@@ -47,6 +47,9 @@
           modules = [
             (./. + "/hosts/${host}/home.nix")
           ];
+          extraSpecialArgs = {
+            inherit inputs system;
+          };
         };
       darwinHostWithSystem = host: system:
         darwin.lib.darwinSystem {

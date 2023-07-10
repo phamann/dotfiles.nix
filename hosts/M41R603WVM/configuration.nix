@@ -1,6 +1,10 @@
 { pkgs, lib, inputs, ... }:
 {
 
+  # Even though we manage the ZSH config via home-manager, this is still required
+  # at a system level, otherwise nix-darwin binaries won't get properly linked.
+  programs.zsh.enable = true;
+
   # Auto upgrade nix package and the daemon service.
   services.nix-daemon.enable = true;
   nix.package = pkgs.nix;

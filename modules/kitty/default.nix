@@ -10,5 +10,12 @@ in
         enable = true;
         extraConfig = builtins.readFile ./kitty.conf;
       };
+      xdg.configFile = {
+        "kitty/kitty.app.icns" = {
+          source =
+            config.lib.file.mkOutOfStoreSymlink
+              "${config.home.homeDirectory}/.config/nixpkgs/modules/kitty/kitty.app.icns";
+        };
+      };
     };
 }

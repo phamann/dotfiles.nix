@@ -4,11 +4,11 @@
 , ...
 }:
 with lib; let
-  cfg = config.modules.packages;
+  cfg = config.modules.gui;
 in
 {
-  options.modules.packages = {
-    enable = mkEnableOption "packages";
+  options.modules.gui = {
+    enable = mkEnableOption "gui";
     additional-packages = mkOption {
       type = types.listOf types.package;
       default = [ ];
@@ -17,6 +17,10 @@ in
   config = mkIf cfg.enable {
     home.packages = with pkgs;
       [
+        _1password-gui
+        obsidian
+        slack
+        spotify
         zoom-us
       ]
       ++ cfg.additional-packages;
