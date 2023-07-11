@@ -68,12 +68,12 @@
       };
 
       homeConfigurations = {
-        "phamann@M41R603WVM" = hostHomeWithSystem "M41R603WVM" "aarch64-darwin";
+        "phamann@x-wing" = hostHomeWithSystem "x-wing" "aarch64-darwin";
         "phamann@yoda" = hostHomeWithSystem "yoda" "x86_64-linux";
       };
 
       darwinConfigurations = {
-        "M41R603WVM" = darwinHostWithSystem "M41R603WVM" "aarch64-darwin";
+        "x-wing" = darwinHostWithSystem "x-wing" "aarch64-darwin";
       };
     };
 }

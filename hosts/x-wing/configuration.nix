@@ -1,6 +1,8 @@
 { pkgs, lib, inputs, ... }:
 {
 
+  networking.hostName = "x-wing";
+
   # Even though we manage the ZSH config via home-manager, this is still required
   # at a system level, otherwise nix-darwin binaries won't get properly linked.
   programs.zsh.enable = true;
@@ -52,4 +54,9 @@
       ShowStatusBar = true;
     };
   };
+
+  # Avoid having to restart the for certain seetings to apply post nix activation.
+  system.activationScripts.postUserActivation.text = ''
+    /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
+  '';
 }
