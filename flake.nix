@@ -51,11 +51,26 @@
             inherit inputs system;
           };
         };
-      darwinHostWithSystem = host: system:
+      darwinHostWithSystem = host: system: user:
         darwin.lib.darwinSystem {
           pkgs = pkgsForSystem system;
           modules = [
             (./. + "/hosts/${host}/configuration.nix")
+            {
+              users.users."${user}" = {
+                createHome = false;
+                home = "/Users/${user}";
+              };
+            }
+            home-manager.darwinModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users."${user}" = import (./. + "/hosts/${host}/home.nix");
+              home-manager.extraSpecialArgs = {
+                inherit inputs system;
+              };
+            }
           ];
           specialArgs = { inherit inputs; };
         };
@@ -68,12 +83,12 @@
       };
 
       homeConfigurations = {
-        "phamann@x-wing" = hostHomeWithSystem "x-wing" "aarch64-darwin";
+        # "phamann@x-wing" = hostHomeWithSystem "x-wing" "aarch64-darwin";
         "phamann@yoda" = hostHomeWithSystem "yoda" "x86_64-linux";
       };
 
       darwinConfigurations = {
-        "x-wing" = darwinHostWithSystem "x-wing" "aarch64-darwin";
+        "x-wing" = darwinHostWithSystem "x-wing" "aarch64-darwin" "phamann";
       };
     };
 }

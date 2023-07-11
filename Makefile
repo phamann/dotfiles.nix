@@ -9,4 +9,3 @@ yoda:
 .PHONY: x-wing
 x-wing:
 	darwin-rebuild switch --flake ~/.config/nixpkgs #phamann@x-wing
-	home-manager switch --flake ~/.config/nixpkgs #phamann@x-wing
