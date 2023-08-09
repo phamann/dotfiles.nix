@@ -17,11 +17,8 @@ in
   config = mkIf cfg.enable {
     home.packages = with pkgs;
       [
-        _1password-gui
         obsidian
-        slack
-        spotify
-        zoom-us
+        # signal-desktop
       ]
       ++ cfg.additional-packages;
   };

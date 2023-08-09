@@ -55,6 +55,32 @@
     };
   };
 
+  homebrew.enable = true;
+  homebrew.onActivation.autoUpdate = false;
+  homebrew.onActivation.cleanup = "zap";
+  homebrew.onActivation.upgrade = true;
+  homebrew.taps = [
+   "homebrew/cask"
+   "homebrew/cask-versions"
+   "homebrew/cask-fonts"
+  ];
+  homebrew.casks = [
+    "1password"
+    "alfred"
+    "bartender"
+    "cron"
+    "divvy"
+    "dropbox"
+    "firefox"
+    "firefox-developer-edition"
+    "obsidian"
+    "signal"
+    "slack"
+    "sonos"
+    "spotify"
+    "zoom"
+  ];
+
   # Avoid having to restart the for certain seetings to apply post nix activation.
   system.activationScripts.postUserActivation.text = ''
     /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
