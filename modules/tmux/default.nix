@@ -38,18 +38,17 @@ in
         set-option -ga terminal-overrides ',xterm-256color:Tc'
 
         # copy paste
-        bind P paste-buffer
-        bind-key -T copy-mode-vi v send-keys -X begin-selection
-        bind-key -T copy-mode-vi y send-keys -X copy-selection
-        bind-key -T copy-mode-vi r send-keys -X rectangle-toggle
-        # fixes copy/past in tmux
-        set-option -ag terminal-overrides ",xterm-256color:Ms=\\E]52;c;%p2%s\\7"
+        set -s set-clipboard external
+        set -as terminal-features ',screen-256color:clipboard'
 
-        bind -T copy-mode-vi y send -X copy-pipe-and-cancel "xclip -sel clip -i"
+        # bind P paste-buffer
+        # bind-key -T copy-mode-vi v send-keys -X begin-selection
+        # bind-key -T copy-mode-vi y send-keys -X copy-selection
+        # bind-key -T copy-mode-vi r send-keys -X rectangle-toggle
+        # bind -T copy-mode-vi y send -X copy-pipe-and-cancel "xclip -sel clip -i" */
 
         # Undercurl
         # https://github.com/folke/lsp-colors.nvim#making-undercurls-work-properly-in-tmux
-        set -g default-terminal "screen-256color"
         set -as terminal-overrides ',*:Smulx=\E[4::%p1%dm'  # undercurl support
         set -as terminal-overrides ',*:Setulc=\E[58::2::%p1%{65536}%/%d::%p1%{256}%/%{255}%&%d::%p1%{255}%&%d%;m'  # underscore colours - needs tmux-3.0
 
