@@ -17,6 +17,8 @@
       url = "github:reckenrode/mkAlias";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    rust-overlay.url = "github:oxalica/rust-overlay";
   };
 
   outputs =
@@ -25,6 +27,7 @@
     , nixpkgs
     , nixpkgs-unstable
     , home-manager
+    , rust-overlay
     , ...
     } @ inputs:
     let
@@ -37,6 +40,7 @@
       pkgsForSystem = system: import nixpkgs {
         overlays = [
           (overlay-unstable system)
+          rust-overlay.overlays.default
         ];
         inherit system;
         config.allowUnfree = true;

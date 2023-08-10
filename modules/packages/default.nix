@@ -50,8 +50,8 @@ in
         yq-go
 
         # languages and language tooling
-        cargo
-        cargo-nextest
+        # cargo
+        # cargo-nextest
         gcc
         gnumake
         go
@@ -62,12 +62,17 @@ in
         nodejs
         rnix-lsp
         rust-analyzer
-        rustfmt
+        # rustfmt
         terraform
         terraform-ls
         tflint
         tfswitch
         viceroy
+
+        (rust-bin.stable.latest.default.override {
+          extensions = [ "rust-src" ];
+          targets = ["wasm32-wasi"];
+        })
       ]
       ++ cfg.additional-packages;
   };
