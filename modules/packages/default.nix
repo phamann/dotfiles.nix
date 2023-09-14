@@ -50,8 +50,7 @@ in
         yq-go
 
         # languages and language tooling
-        # cargo
-        # cargo-nextest
+        cargo-nextest
         gcc
         gnumake
         go
@@ -62,7 +61,6 @@ in
         nodejs
         rnix-lsp
         rust-analyzer
-        # rustfmt
         terraform
         terraform-ls
         tflint
