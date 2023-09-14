@@ -13,6 +13,7 @@ return {
               "c",
               "cmake",
               "css",
+              "cue",
               "dockerfile",
               "glimmer",
               "go",
