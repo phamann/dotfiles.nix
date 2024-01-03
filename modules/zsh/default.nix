@@ -64,6 +64,7 @@ in
         export FZF_DEFAULT_OPTS='--height 40% --reverse --border'
         export LSCOLORS=Gxfxcxdxbxegedabagacad
         export INFRA_SKIP_VERSION_CHECK=true
+        export PATH=$PATH:$HOME/.cargo/bin
       '';
       sessionVariables = { }; # TODO
       loginExtra = ""; # TODO

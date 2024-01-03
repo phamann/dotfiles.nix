@@ -65,7 +65,6 @@ in
         terraform-ls
         tflint
         tfswitch
-        viceroy
 
         (rust-bin.stable.latest.default.override {
           extensions = [ "rust-src" ];
