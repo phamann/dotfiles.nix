@@ -45,9 +45,81 @@ return {
         "simrat39/rust-tools.nvim",
     },
     config = function()
-        local lspcfg = require("lspconfig")
+        local lspconfig = require("lspconfig")
+        local configs = require("lspconfig.configs")
+        local util = require("lspconfig.util")
+        local map = vim.api.nvim_set_keymap
+        local option = vim.api.nvim_set_option
 
-        lspcfg.gopls.setup({
+        -- Enable completion triggered by <c-x><c-o>
+        option("omnifunc", "v:lua.vim.lsp.omnifunc")
+
+        -- Mappings.
+        local opts = {noremap = true, silent = true}
+
+        -- See `:help vim.lsp.*` for documentation on any of the below functions
+        map("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
+        map("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
+        map("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
+        map("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
+        map("n", "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
+        map("n", "<leader>D", "<cmd>lua vim.lsp.buf.type_definition()<CR>",
+            opts)
+        map("n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
+        map("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
+        map("n", "[d", "<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>", opts)
+        map("n", "]d", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>", opts)
+
+        vim.diagnostic.config({
+            virtual_text = false,
+            signs = true,
+            underline = true,
+            update_in_insert = false,
+            severity_sort = false
+        })
+
+        -- https://github.com/hrsh7th/nvim-cmp/issues/1208#issuecomment-1281501620
+        local function get_forced_lsp_capabilities()
+            local capabilities = vim.lsp.protocol.make_client_capabilities()
+            capabilities.textDocument.completion.completionItem
+                .snippetSupport = true
+            capabilities.textDocument.completion.completionItem
+                .resolveSupport = {
+                properties = {
+                    "documentation", "detail", "additionalTextEdits"
+                }
+            }
+            return capabilities
+        end
+
+        local function my_lsp_on_attach(client, bufnr)
+            local capabilities =
+                require("cmp_nvim_lsp").default_capabilities(vim.lsp
+                                                                 .protocol
+                                                                 .make_client_capabilities())
+        end
+
+        util.default_config = vim.tbl_extend("force", util.default_config, {
+            autostart = true,
+            on_attach = my_lsp_on_attach,
+            capabilities = get_forced_lsp_capabilities()
+        })
+
+        -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
+        local servers = {
+            "rust_analyzer", "bashls", "dockerls", "terraformls", "tflint",
+            "nixd", "tsserver"
+        }
+
+        -- NOTE: Call setup last
+        -- https://github.com/hrsh7th/nvim-cmp/issues/1208#issuecomment-1281501620
+        for _, lsp in ipairs(servers) do
+            lspconfig[lsp].setup {on_attach = on_attach}
+            -- lspconfig[lsp].setup(coq.lsp_ensure_capabilities())
+            -- lspconfig[lsp].setup {capabilities = capabilities}
+        end
+
+        lspconfig.gopls.setup({
           on_attach = function(client, bufnr)
             shared_on_attach(client, bufnr)
 
@@ -74,8 +146,6 @@ return {
             },
           },
         })
-
-        lspcfg.solargraph.setup({})
 
         require("rust-tools").setup({
           -- rust-tools options
@@ -128,22 +198,29 @@ return {
 
         -- NOTE: When using :LspInstallInfo to install available LSPs, we need to still
         -- add calls to their setup here in our Vim configuration.
-
-        lspcfg.quick_lint_js.setup{}
-        lspcfg.terraformls.setup({
+        lspconfig.terraformls.setup({
           filetypes = { "terraform", "terraform-vars", "hcl" },
           on_attach = function(client, bufnr)
             shared_on_attach(client, bufnr)
           end,
         })
-        lspcfg.tflint.setup{}
-        lspcfg.tsserver.setup{}
-        lspcfg.java_language_server.setup{
+        lspconfig.java_language_server.setup{
             on_attach = function(client, bufnr)
                 shared_on_attach(client, bufnr)
             end,
             cmd = {"java-language-server"}
         }
+
+        if not configs.regols then
+          configs.regols = {
+            default_config = {
+              cmd = {'regols'};
+              filetypes = { 'rego' };
+              root_dir = util.root_pattern(".git");
+            }
+          }
+        end
+        lspconfig.regols.setup{}
 
         -- Styling
         -- https://github.com/folke/dot/blob/6e89c6cf2ad92a8b0335ab69d51fc275f78dd524/config/nvim/lua/config/lsp/diagnostics.lua

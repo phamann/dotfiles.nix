@@ -4,6 +4,7 @@ return {
     lazy = true,
     event = "InsertEnter", -- lazy load cmp on InsertEnter
     dependencies = {
+        "onsails/lspkind.nvim",
         "hrsh7th/cmp-buffer",
         "hrsh7th/cmp-nvim-lsp",
         "hrsh7th/cmp-nvim-lsp-signature-help",
@@ -14,11 +15,16 @@ return {
     },
     config = function()
         local cmp = require("cmp")
+        local lspkind = require("lspkind")
+        local luasnip = require("luasnip")
+
+        vim.opt.completeopt = {"menu", "menuone", "noselect"}
+
         cmp.setup({
             snippet = {
                 expand = function(args)
-                    vim.fn["vsnip#anonymous"](args.body)
-                end,
+                    luasnip.lsp_expand(args.body)
+                end
             },
             mapping = {
                 ["<Up>"] = cmp.mapping.select_prev_item(),
@@ -36,11 +42,28 @@ return {
               },
             sources = {
                 { name = "buffer" },
+                { name = "nvim_lua" },
                 { name = "nvim_lsp" },
                 { name = "nvim_lsp_signature_help" },
+                { name = "luasnip"},
                 { name = "path" },
                 { name = "vsnip" },
             },
+            formatting = {
+                format = lspkind.cmp_format({
+                    mode = "text",
+                    maxwidth = 50,
+                    ellipsis_char = "...",
+                    menu = {
+                        buffer = "[buf]",
+                        nvim_lsp = "[LSP]",
+                        nvim_lua = "[api]",
+                        path = "[path]",
+                        luasnip = "[snip]"
+                    }
+                }),
+                experimental = {native_menu = false, ghost_text = true}
+            }
         })
     end,
 }

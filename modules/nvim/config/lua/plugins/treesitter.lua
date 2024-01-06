@@ -30,6 +30,7 @@ return {
               "markdown",
               "python",
               "regex",
+              "rego",
               "ruby",
               "rust",
               "terraform",

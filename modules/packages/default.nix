@@ -59,6 +59,7 @@ in
         java-language-server
         lua
         nodejs
+        regols
         rnix-lsp
         rust-analyzer
         terraform
