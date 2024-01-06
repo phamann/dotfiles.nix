@@ -55,21 +55,32 @@ in
         gnumake
         go
         gofumpt
+        goimports-reviser
         gopls
+        gotools
+        hadolint
         java-language-server
         lua
+        lua54Packages.luacheck
+        luaformatter
+        nixpkgs-fmt
+        nodePackages.fixjson
+        nodePackages.jsonlint
         nodejs
         regols
         rnix-lsp
         rust-analyzer
+        shfmt
+        statix
         terraform
         terraform-ls
         tflint
         tfswitch
+        yamllint
 
         (rust-bin.stable.latest.default.override {
           extensions = [ "rust-src" ];
-          targets = ["wasm32-wasi"];
+          targets = [ "wasm32-wasi" ];
         })
       ]
       ++ cfg.additional-packages;
