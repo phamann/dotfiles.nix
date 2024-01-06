@@ -35,6 +35,7 @@ in
         starship
         tree
         zoxide
+        zellij
 
         # tools
         _1password
@@ -63,6 +64,7 @@ in
         lua
         lua54Packages.luacheck
         luaformatter
+        nixd
         nixpkgs-fmt
         nodePackages.fixjson
         nodePackages.jsonlint
