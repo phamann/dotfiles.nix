@@ -35,6 +35,7 @@ in
         "...." = "cd ../../..";
         "....." = "cd ../../../..";
         cat = "bat --color=always --theme=ansi";
+        yoda = "ssh phamann@192.168.1.40";
       };
       history = {
         size = 10000;
