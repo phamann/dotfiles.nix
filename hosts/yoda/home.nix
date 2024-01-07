@@ -24,7 +24,7 @@
       gpg.enable = true;
       direnv.enable = true;
       zellij = {
-        enable = true;
+        enable = false;
         layout = "compact-bottom";
       };
     };
