@@ -69,6 +69,7 @@ in
         nodePackages.fixjson
         nodePackages.jsonlint
         nodejs
+        open-policy-agent
         regols
         rnix-lsp
         rust-analyzer

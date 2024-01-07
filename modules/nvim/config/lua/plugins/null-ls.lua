@@ -3,6 +3,18 @@ return {
     config = function()
         local null_ls = require("null-ls")
 
+        local opa_fmt = {
+            name = "opa_fmt",
+            method = null_ls.methods.FORMATTING,
+            filetypes = {"rego"},
+            generator = null_ls.formatter({
+                command = "opa",
+                to_stdin = true,
+                args = {"fmt"},
+                from_stderr = true
+            })
+        }
+
         local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
         null_ls.setup({
             -- format on save - https://github.com/jose-elias-alvarez/null-ls.nvim/wiki/Formatting-on-save#code
@@ -58,5 +70,7 @@ return {
                 -- null_ls.builtins.formatting.yamlfmt
             }
         })
+
+        null_ls.register(opa_fmt)
     end
 }
