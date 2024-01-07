@@ -1,0 +1,40 @@
+layout {
+    pane split_direction="vertical" {
+        pane
+    }
+
+    pane size=1 borderless=true {
+        plugin location="file:@zjstatus@" {
+            format_left  "{command_hostname} {mode} {tabs}"
+            format_right "{command_git_branch} {datetime}"
+            format_space ""
+
+            border_enabled  "false"
+            border_char     "─"
+            border_format   "#[fg=#6C7086]{char}"
+            border_position "top"
+
+            hide_frame_for_single_pane "true"
+
+            mode_normal  "#[fg=#9ece6a] {name}"
+
+            tab_normal "#[fg=#24283b,bg=#a9b1d6] {name} "
+            tab_active "#[fg=#24283b,bg=#9ece6a] {name} "
+
+            command_git_branch_command     "git rev-parse --abbrev-ref HEAD"
+            command_git_branch_format      "#[fg=blue] {stdout} "
+            command_git_branch_interval    "10"
+            command_git_branch_rendermode  "static"
+
+            command_hostname_command     "hostname"
+            command_hostname_format      "#[fg=#a9b1d6]{stdout}"
+            command_hostname_format      "{stdout}"
+            command_hostname_interval    "60"
+            command_hostname_rendermode  "static"
+
+            datetime        "#[fg=#6C7086,bold] {format} "
+            datetime_format "%A, %d %b %Y %H:%M"
+            datetime_timezone "Europe/London"
+        }
+    }
+}

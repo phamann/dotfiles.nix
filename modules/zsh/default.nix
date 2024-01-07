@@ -195,6 +195,9 @@ in
         # Load functions
         ${builtins.readFile ./functions.zsh}
 
+        zellij_tab_name_update
+        chpwd_functions+=(zellij_tab_name_update)
+
         # Load tools
         source ${pkgs.grc}/etc/grc.zsh
         eval "$(zoxide init zsh)"

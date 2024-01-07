@@ -4,6 +4,7 @@
 , ...
 }: {
   imports = [
+    ./alacritty
     ./direnv
     ./fzf
     ./git

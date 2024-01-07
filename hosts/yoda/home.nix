@@ -23,7 +23,10 @@
       tmux.enable = true;
       gpg.enable = true;
       direnv.enable = true;
-      zellij.enable = true;
+      zellij = {
+        enable = true;
+        layout = "compact-bottom";
+      };
     };
   };
 }
