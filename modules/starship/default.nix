@@ -35,10 +35,15 @@ in
         ];
         hostname = {
           ssh_symbol = "";
+          format = "on [$hostname]($style) ";
         };
         username = {
           show_always = true;
           style_user = "bold purple";
+          format = "[$user]($style) ";
+        };
+        directory = {
+          format = "in [$path]($style)[$read_only]($read_only_style) ";
         };
         character = {
           success_symbol = "[±](bold green)";
