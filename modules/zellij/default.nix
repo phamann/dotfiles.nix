@@ -15,7 +15,6 @@ in
       programs.zellij =
         {
           enable = true;
-          enableZshIntegration = true;
         };
       home.file = {
         ".config/zellij/layouts/compact-top.kdl".source = ./compact-top.kdl;

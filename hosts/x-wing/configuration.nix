@@ -53,6 +53,8 @@
       ShowPathbar = true;
       ShowStatusBar = true;
     };
+
+    CustomSystemPreferences = { };
   };
 
   homebrew.enable = true;
@@ -60,9 +62,9 @@
   homebrew.onActivation.cleanup = "zap";
   homebrew.onActivation.upgrade = true;
   homebrew.taps = [
-   "homebrew/cask"
-   "homebrew/cask-versions"
-   "homebrew/cask-fonts"
+    "homebrew/cask"
+    "homebrew/cask-versions"
+    "homebrew/cask-fonts"
   ];
   homebrew.casks = [
     "1password"

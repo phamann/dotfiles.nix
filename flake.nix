@@ -75,11 +75,15 @@
             }
             home-manager.darwinModules.home-manager
             {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users."${user}" = import (./. + "/hosts/${host}/home.nix");
-              home-manager.extraSpecialArgs = {
-                inherit inputs system;
+              home-manager = {
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                users."${user}".imports = [
+                  (./. + "/hosts/${host}/home.nix")
+                ];
+                extraSpecialArgs = {
+                  inherit inputs system;
+                };
               };
             }
           ];

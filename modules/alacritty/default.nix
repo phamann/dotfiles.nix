@@ -30,7 +30,7 @@ in
               bold_italic = {
                 style = "Semibold Italic";
               };
-              size = 15;
+              size = 16;
               offset = {
                 x = 0;
                 y = 4;

@@ -73,6 +73,13 @@ in
       loginExtra = ""; # TODO
       initExtraFirst = ""; # TODO
       initExtraBeforeCompInit = ''
+        if [[ -z "$ZELLIJ" ]]; then
+            zellij attach -c work
+
+            if [[ "$ZELLIJ_AUTO_EXIT" == "true" ]]; then
+                exit
+            fi
+        fi
         # ===== Basics
         setopt no_beep # don't beep on error
         setopt interactive_comments # Allow comments even in interactive shells (especially for Muness)
