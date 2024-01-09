@@ -26,7 +26,7 @@ in
         grep = "grep --color=auto --exclude=tags --exclude-dir=.git";
         g = "nocorrect git";
         k = "nocorrect kubectl";
-        r = "source ~/.zshrc";
+        r = "source ~/.zshenv";
         tmux = "tmux -2";
         l = "ls -l \${colorflag}";
         la = "ls -la \${colorflag}";
@@ -66,6 +66,8 @@ in
         export LSCOLORS=Gxfxcxdxbxegedabagacad
         export INFRA_SKIP_VERSION_CHECK=true
         export PATH=$PATH:$HOME/.cargo/bin
+        export JAVA_HOME=${pkgs.jdk17}
+        export PATH=$JAVA_HOME/bin:$PATH
       '';
       sessionVariables = { }; # TODO
       loginExtra = ""; # TODO

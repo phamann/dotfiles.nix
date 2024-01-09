@@ -60,10 +60,13 @@ in
         gopls
         gotools
         hadolint
+        jdk17
         java-language-server
+        jdt-language-server
         lua
         lua54Packages.luacheck
         luaformatter
+        maven
         nixd
         nixpkgs-fmt
         nodePackages.fixjson
