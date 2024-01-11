@@ -26,7 +26,7 @@ return {
     config = function()
         require("neo-tree").setup({
             close_if_last_window = true,
-            popup_border_style = "rounded",
+            popup_border_style = "single",
             enable_git_status = true,
             enable_diagnostics = true,
 
@@ -69,10 +69,30 @@ return {
             buffers = {
                 follow_current_file = {enabled = true, leave_dirs_open = true}
             },
-            sources = {
-                "filesystem", "buffers", "git_status", "document_symbols"
-            },
-            source_selector = {winbar = true, statusline = false}
+            sources = {"filesystem", "git_status", "document_symbols"},
+            source_selector = {winbar = true, statusline = false},
+            event_handlers = {
+                {
+                    event = "file_opened",
+                    handler = function(file_path)
+                        require("neo-tree.command").execute({action = "close"})
+                    end
+                }, {
+                    event = "neo_tree_window_after_open",
+                    handler = function(args)
+                        if args.position == "left" or args.position == "right" then
+                            vim.cmd("wincmd =")
+                        end
+                    end
+                }, {
+                    event = "neo_tree_window_after_close",
+                    handler = function(args)
+                        if args.position == "left" or args.position == "right" then
+                            vim.cmd("wincmd =")
+                        end
+                    end
+                }
+            }
         })
     end,
     keys = {
@@ -88,54 +108,3 @@ return {
         }
     }
 }
---[[
-return {
-    "nvim-tree/nvim-tree.lua",
-    dependencies = {"nvim-tree/nvim-web-devicons"},
-    config = function()
-        require("nvim-tree").setup({
-            view = {
-                relativenumber = false,
-                width = 30,
-                signcolumn = "yes",
-                number = false
-            },
-            reload_on_bufenter = false,
-            update_focused_file = {enable = true},
-            diagnostics = {
-                enable = true,
-                icons = {
-                    error = "",
-                    warning = "",
-                    hint = "",
-                    info = ""
-                }
-            },
-            -- open_on_setup_file = true,
-            git = {enable = true},
-            renderer = {
-                highlight_opened_files = "all",
-                icons = {
-                    padding = " ",
-                    git_placement = "after",
-                    glyphs = {
-                        default = '',
-                        symlink = '',
-                        git = {
-                            deleted = '',
-                            ignored = '◌',
-                            renamed = '➜',
-                            staged = '+',
-                            unmerged = '',
-                            unstaged = 'ϟ',
-                            untracked = '?'
-                        }
-                    }
-                }
-            },
-            actions = {open_file = {quit_on_open = true}},
-            source_selector = {winbar = true}
-        })
-    end,
-    keys = {{"<leader>;", "<cmd>NvimTreeToggle<cr>", desc = "Toggle NvimTree"}}
-} ]]
