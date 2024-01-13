@@ -29,12 +29,12 @@ in
 
         # cli
         fd
+        grc
         htop
         ripgrep
         starship
         tree
         zoxide
-        zellij
 
         # tools
         _1password

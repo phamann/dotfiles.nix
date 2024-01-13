@@ -34,7 +34,7 @@ in
         "..." = "cd ../..";
         "...." = "cd ../../..";
         "....." = "cd ../../../..";
-        cat = "bat --color=always --theme=ansi";
+        cat = "bat --color=always";
         yoda = "ssh phamann@192.168.1.40";
       };
       history = {
@@ -62,7 +62,6 @@ in
         export GREP_COLOR='1;32'
         export CLICOLOR=1
         export GOPATH=$HOME/Projects
-        export FZF_DEFAULT_OPTS='--height 40% --reverse --border'
         export LSCOLORS=Gxfxcxdxbxegedabagacad
         export INFRA_SKIP_VERSION_CHECK=true
         export PATH=$PATH:$HOME/.cargo/bin
