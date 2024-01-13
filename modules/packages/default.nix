@@ -28,7 +28,6 @@ in
         zsh-z
 
         # cli
-        bat
         fd
         htop
         ripgrep

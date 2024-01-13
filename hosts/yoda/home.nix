@@ -13,16 +13,17 @@
     programs.home-manager.enable = true;
 
     modules = {
-      zsh.enable = true;
-      fzf.enable = true;
-      starship.enable = true;
-      packages.enable = true;
-      nvim.enable = true;
-      git.enable = true;
-      ssh.enable = true;
-      tmux.enable = true;
-      gpg.enable = true;
+      bat.enable = true;
       direnv.enable = true;
+      fzf.enable = true;
+      git.enable = true;
+      gpg.enable = true;
+      nvim.enable = true;
+      packages.enable = true;
+      ssh.enable = true;
+      starship.enable = true;
+      tmux.enable = true;
+      zsh.enable = true;
       zellij = {
         enable = false;
         layout = "compact-bottom";

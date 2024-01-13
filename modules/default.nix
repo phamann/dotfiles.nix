@@ -5,6 +5,7 @@
 }: {
   imports = [
     ./alacritty
+    ./bat
     ./direnv
     ./fzf
     ./git

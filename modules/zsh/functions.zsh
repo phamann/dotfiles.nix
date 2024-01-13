@@ -3,7 +3,7 @@ function v() {
         nvim "$@";
         return
     fi
-    nvim $(fzf --height 60% --reverse --preview "bat --style=numbers --color=always --line-range :500 {}" --preview-window right:60%)
+    nvim $(fzf --height 60% --reverse --preview "bat --style=numbers --color=always --line-range :500 {}" --preview-window=right:60%:border-left --border=none)
 }
 
 function cd() {
