@@ -73,7 +73,7 @@ in
       loginExtra = ""; # TODO
       initExtraFirst = ""; # TODO
       initExtraBeforeCompInit = ''
-        if [[ -z "$ZELLIJ" ]]; then
+        if [[ -z "$ZELLIJ" ]] && [[ "$(uname -s)" = "Darwin" ]]; then
             zellij attach -c work
 
             if [[ "$ZELLIJ_AUTO_EXIT" == "true" ]]; then
