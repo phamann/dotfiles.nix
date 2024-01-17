@@ -67,6 +67,7 @@ in
         export PATH=$PATH:$HOME/.cargo/bin
         export JAVA_HOME=${pkgs.jdk17}
         export PATH=$JAVA_HOME/bin:$PATH
+        export PATH=$GOPATH/bin:$PATH
       '';
       sessionVariables = { }; # TODO
       loginExtra = ""; # TODO
