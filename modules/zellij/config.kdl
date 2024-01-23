@@ -1,5 +1,11 @@
 default_mode "normal"
 
+keybinds {
+    normal {
+        bind "Alt T" { NewTab; }
+    }
+}
+
 plugins {
     tab-bar { path "tab-bar"; }
     status-bar { path "status-bar"; }
@@ -40,9 +46,36 @@ themes {
     white 192 202 245
     orange 255 158 100
   }
+  github-dark {
+    bg "#30363d";
+    fg "#e6edf3";
+    black "#484f58";
+    red "#ff7b72";
+    green "#3fb950";
+    yellow  "#d29922";
+    blue "#58a6ff";
+    magenta "#bc8cff";
+    cyan "#39c5cf";
+    white "#b1bac4";
+    orange "#ffdfb6";
+  }
+  github-dark-dimmed {
+    bg "#22272e"
+    fg "#adbac7"
+    black "#545d68"
+    red  "#f47067"
+    green  "#57ab5a"
+    yellow "#c69026"
+    blue "#539bf5"
+    magenta "#b083f0"
+    cyan  "#39c5cf"
+    white "#909dab"
+    orange "#ffddb0"
+  }
 }
-
-theme "tokyo-night-storm"
+theme "github-dark"
+// theme "github-dark-dimmed"
+// theme "tokyo-night-storm"
 
 copy_on_select false
 

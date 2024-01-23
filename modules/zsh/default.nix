@@ -55,7 +55,7 @@ in
         export GPG_TTY=$(tty)
         export EDITOR="$(which nvim)"
         export GIT_EDITOR="nvim"
-        export TERMINAL="$(which kitty)"
+        # export TERMINAL="$(which kitty)"
         export BROWSER="$(which firefox)"
         export FASTLY_CHEF_USERNAME="phamann"
         export GITHUB_USER="phamann"
