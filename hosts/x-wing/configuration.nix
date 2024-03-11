@@ -83,7 +83,7 @@
     "zoom"
   ];
 
-  # Avoid having to restart the for certain seetings to apply post nix activation.
+  # Avoid having to restart the for certain settings to apply post nix activation.
   system.activationScripts.postUserActivation.text = ''
     /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
   '';

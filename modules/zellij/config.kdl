@@ -73,9 +73,9 @@ themes {
     orange "#ffddb0"
   }
 }
-theme "github-dark"
+// theme "github-dark"
 // theme "github-dark-dimmed"
-// theme "tokyo-night-storm"
+theme "tokyo-night-storm"
 
 copy_on_select false
 

@@ -9,7 +9,8 @@ in
       programs.bat = {
         enable = true;
         config = {
-          theme = "github_dark_dimmed";
+          theme = "tokyonight";
+          # theme = "github_dark_dimmed";
         };
         themes = {
           tokyonight = {

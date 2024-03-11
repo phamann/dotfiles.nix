@@ -10,8 +10,7 @@ in
         enable = true;
         enableZshIntegration = true;
         defaultOptions = [ "--height 40%" "--reverse" "--border none" ];
-        /*
-        tokyonight
+        # tokyonight
         colors = {
           bg = "#24283b";
           "bg+" = "#292e42";
@@ -26,8 +25,7 @@ in
           spinner = "#9ece6a";
           header = "#9ece6a";
         };
-        */
-        /* Github dark */
+        # Github dark
         /*
         colors = {
           fg = "#848d97";
@@ -44,8 +42,8 @@ in
           header = "#495058";
         };
         */
-
-        /* Github dark dimmed */
+        /*
+        # Github dark dimmed
         colors = {
           fg = "#768390";
           bg = "#22272e";
@@ -60,7 +58,7 @@ in
           spinner = "#636e7b";
           header = "#3c434d";
         };
-
+        */
       };
     };
 }
