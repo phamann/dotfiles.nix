@@ -8,4 +8,4 @@ yoda:
 
 .PHONY: x-wing
 x-wing:
-	darwin-rebuild switch --flake ~/.config/nixpkgs #phamann@x-wing
+	darwin-rebuild switch --impure --flake ~/.config/nixpkgs #phamann@x-wing
