@@ -19,10 +19,6 @@ in
       home.file = {
         ".config/zellij/layouts/compact-top.kdl".source = ./compact-top.kdl;
         ".config/zellij/layouts/compact-bottom.kdl".source = ./compact-bottom.kdl;
-        ".config/zellij/layouts/default.kdl".source = pkgs.substituteAll {
-          src = ./status.kdl;
-          zjstatus = "${pkgs.zjstatus}/bin/zjstatus.wasm";
-        };
         ".config/zellij/config.kdl".source = pkgs.substituteAll {
           src = ./config.kdl;
           layout = "${cfg.layout}";

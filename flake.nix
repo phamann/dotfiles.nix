@@ -22,12 +22,6 @@
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    zjstatus = {
-      url = "github:dj95/zjstatus";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
   };
 
   outputs =
@@ -37,7 +31,6 @@
     , nixpkgs-unstable
     , home-manager
     , rust-overlay
-    , zjstatus
     , ...
     } @ inputs:
     let
@@ -51,9 +44,6 @@
         overlays = [
           (overlay-unstable system)
           rust-overlay.overlays.default
-          (final: prev: {
-            zjstatus = zjstatus.packages.${prev.system}.default;
-          })
         ];
         inherit system;
         config.allowUnfree = true;
