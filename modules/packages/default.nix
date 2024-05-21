@@ -53,10 +53,10 @@ in
         cargo-nextest
         gcc
         gnumake
-        go
+        unstable.go
         gofumpt
         goimports-reviser
-        gopls
+        unstable.gopls
         gotools
         hadolint
         java-language-server

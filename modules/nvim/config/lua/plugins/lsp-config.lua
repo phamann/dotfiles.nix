@@ -49,8 +49,9 @@ end
 return {
     "neovim/nvim-lspconfig",
     dependencies = {
+        "hrsh7th/nvim-cmp",
         {"williamboman/nvim-lsp-installer", config = true},
-        {"j-hui/fidget.nvim", config = true}, "simrat39/rust-tools.nvim"
+        {"j-hui/fidget.nvim", config = true}, "simrat39/rust-tools.nvim",
     },
     config = function()
         local lspconfig = require("lspconfig")
@@ -113,7 +114,7 @@ return {
         -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
         local servers = {
             "rust_analyzer", "bashls", "dockerls", "terraformls", "tflint",
-            "nil", "tsserver", "jdtls"
+            "tsserver", "jdtls"
         }
 
         -- NOTE: Call setup last
@@ -123,32 +124,6 @@ return {
             -- lspconfig[lsp].setup(coq.lsp_ensure_capabilities())
             -- lspconfig[lsp].setup {capabilities = capabilities}
         end
-
-        lspconfig.gopls.setup({
-            on_attach = function(client, bufnr)
-                shared_on_attach(client, bufnr)
-
-                vim.api.nvim_create_autocmd("BufWritePre", {
-                    pattern = {"*.go"},
-                    command = [[lua OrgImports(1000)]]
-                })
-            end,
-            cmd = {"gopls"},
-            settings = {
-                gopls = {
-                    analyses = {
-                        nilness = true,
-                        unusedparams = true,
-                        unusedwrite = true,
-                        useany = true
-                    },
-                    experimentalPostfixCompletions = true,
-                    gofumpt = true,
-                    staticcheck = true,
-                    usePlaceholders = true
-                }
-            }
-        })
 
         require("rust-tools").setup({
             -- rust-tools options
