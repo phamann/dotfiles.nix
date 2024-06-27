@@ -18,8 +18,10 @@ in
     programs.zsh = {
       enable = true;
       enableCompletion = true;
-      enableAutosuggestions = true;
       dotDir = ".config/zsh";
+      autosuggestion = {
+        enable = true;
+      };
       shellAliases = {
         diff = "diff -u";
         tree = "tree --dirsfirst --noreport -ACF";
