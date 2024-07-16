@@ -100,9 +100,11 @@ in
               builtin_box_drawing = true;
             };
 
-            key_bindings = [
-              { chars = "\\x1bT"; key = "T"; mods = "Command"; }
-            ];
+            keyboard = {
+              bindings = [
+                { chars = "\\u001BT"; key = "T"; mods = "Command"; }
+              ];
+            };
 
             window = {
               padding = {
