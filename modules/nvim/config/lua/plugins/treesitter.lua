@@ -11,7 +11,7 @@ return {
             ensure_installed = {
                 "bash", "c", "cmake", "css", "cue", "dockerfile", "glimmer",
                 "go", "gomod", "gowork", "hcl", "html", "http", "java",
-                "javascript", "json", "kdl", "lua", "make", "markdown",
+                "javascript", "json", "kdl", "lua", "make", "markdown", "markdown_inline",
                 "python", "regex", "rego", "ruby", "rust", "terraform", "toml",
                 "vim", "yaml", "zig", "nix"
             },
