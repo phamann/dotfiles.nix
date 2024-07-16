@@ -40,10 +40,27 @@
           inputs.nixpkgs.config.allowUnfree = true;
         };
       };
+      overlay-elevation-fluxcd = final: prev:
+        {
+          fluxcd = prev.fluxcd.overrideAttrs (oldAttrs: rec {
+            name = "fluxcd";
+            src = prev.fetchzip {
+              url = "https://github.com/fluxcd/flux2/releases/download/v2.1.2/flux_2.1.2_darwin_arm64.tar.gz";
+              hash = "sha256-ymXlpd2/UP1kPdjAq4Ba6cvqvWeBTaaPqSJcruFmbgI=";
+            };
+            phases = [ "installPhase" "patchPhase" ];
+            installPhase = ''
+              mkdir -p $out/bin
+              cp -r $src/* $out/bin/
+              chmod +x $out/bin/flux
+            '';
+          });
+        };
       pkgsForSystem = system: import nixpkgs {
         overlays = [
           (overlay-unstable system)
           rust-overlay.overlays.default
+          overlay-elevation-fluxcd
         ];
         inherit system;
         config.allowUnfree = true;
