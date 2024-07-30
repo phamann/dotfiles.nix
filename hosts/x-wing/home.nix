@@ -36,6 +36,7 @@
         kubectl
         kubernetes-helm
         fluxcd
+        graphviz
       ];
     };
   };
