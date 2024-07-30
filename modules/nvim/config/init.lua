@@ -11,6 +11,7 @@ vim.g.active_color_scheme = "tokyonight"
 -- vim.g.active_color_scheme = "github"
 -- vim.g.active_color_scheme = "moonfly"
 -- vim.g.active_color_scheme = "onedark"
+-- vim.g.active_color_scheme = "material"
 
 require("options")
 require("plugin-manager")

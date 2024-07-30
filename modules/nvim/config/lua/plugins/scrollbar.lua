@@ -4,6 +4,7 @@ return {
     config = function()
         local scrollbar = require("scrollbar")
         -- local colors = require('github-theme.lib.color')
+        -- local colors = require("material.colors")
         local colors = require(vim.g.active_color_scheme .. ".colors").setup()
         scrollbar.setup({
             handle = {color = colors.bg_highlight},

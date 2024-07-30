@@ -10,9 +10,10 @@ in
   options.modules.nvim = { enable = mkEnableOption "nvim"; };
   config = mkIf cfg.enable {
     programs.neovim = {
-        enable = true;
-        viAlias = true;
-        vimAlias = true;
+      enable = true;
+      viAlias = true;
+      vimAlias = true;
+      package = pkgs.unstable.neovim-unwrapped;
     };
     xdg.configFile = {
       nvim = {
