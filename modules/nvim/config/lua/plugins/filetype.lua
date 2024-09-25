@@ -1,4 +1,4 @@
-return {
+--[[ return {
     "nathom/filetype.nvim",
     opts = {
         overrides = {
@@ -20,4 +20,4 @@ return {
             },
         }
     },
-}
+} ]]

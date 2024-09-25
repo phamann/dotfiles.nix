@@ -57,7 +57,6 @@ in
         export GPG_TTY=$(tty)
         export EDITOR="$(which nvim)"
         export GIT_EDITOR="nvim"
-        # export TERMINAL="$(which kitty)"
         export BROWSER="$(which firefox)"
         export FASTLY_CHEF_USERNAME="phamann"
         export GITHUB_USER="phamann"
@@ -70,6 +69,7 @@ in
         export JAVA_HOME=${pkgs.jdk17}
         export PATH=$JAVA_HOME/bin:$PATH
         export PATH=$GOPATH/bin:$PATH
+        export PATH=$HOME/bin:$PATH
       '';
       sessionVariables = { }; # TODO
       loginExtra = ""; # TODO

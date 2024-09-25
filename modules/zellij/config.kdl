@@ -1,5 +1,7 @@
 default_mode "normal"
 
+copy_command "pbcopy"
+
 keybinds {
     normal {
         bind "Alt T" { NewTab; }

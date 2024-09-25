@@ -17,6 +17,8 @@
   # Enable sudo authentication with Touch ID.
   security.pam.enableSudoTouchIdAuth = true;
 
+  system.stateVersion = 5;
+
   system.defaults = {
     NSGlobalDomain = {
       AppleInterfaceStyle = "Dark";

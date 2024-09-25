@@ -16,6 +16,11 @@ in
       controlPersist = "30m";
       forwardAgent = true;
 
+      includes = [
+        "jetpac.conf"
+        "fastly_config"
+      ];
+
       matchBlocks = {
         "*" = { };
 
