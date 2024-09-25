@@ -2,6 +2,10 @@
 update:
 	nix flake update ~/.config/nixpkgs
 
+.PHONY: jetpac
+jetpac:
+	home-manager switch --flake ~/.config/nixpkgs #phamann@jetpac
+
 .PHONY: yoda
 yoda:
 	home-manager switch --flake ~/.config/nixpkgs #phamann@yoda

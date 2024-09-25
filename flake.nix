@@ -112,7 +112,7 @@
       };
 
       homeConfigurations = {
-        # "phamann@x-wing" = hostHomeWithSystem "x-wing" "aarch64-darwin";
+        "phamann@jetpac" = hostHomeWithSystem "jetpac" "x86_64-linux";
         "phamann@yoda" = hostHomeWithSystem "yoda" "x86_64-linux";
       };
 
