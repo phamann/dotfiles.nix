@@ -20,14 +20,11 @@
       gpg.enable = true;
       nvim.enable = true;
       packages.enable = true;
-      ssh.enable = true;
+      ssh.enable = false;
       starship.enable = true;
       tmux.enable = true;
       zsh.enable = true;
-      zellij = {
-        enable = false;
-        layout = "compact-bottom";
-      };
+      zellij.enable = false;
     };
   };
 }

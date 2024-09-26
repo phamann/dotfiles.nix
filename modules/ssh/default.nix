@@ -28,6 +28,7 @@ in
           hostname = "ssh.github.com";
           user = "git";
           port = 443;
+          forwardAgent = true;
         };
       };
     };

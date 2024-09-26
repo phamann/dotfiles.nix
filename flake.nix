@@ -112,6 +112,7 @@
       };
 
       homeConfigurations = {
+        "phamann@dev-vm-phamann-20240925120906" = hostHomeWithSystem "jetpac" "x86_64-linux";
         "phamann@jetpac" = hostHomeWithSystem "jetpac" "x86_64-linux";
         "phamann@yoda" = hostHomeWithSystem "yoda" "x86_64-linux";
       };

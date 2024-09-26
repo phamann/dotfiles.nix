@@ -3,7 +3,13 @@ with lib; let
   cfg = config.modules.zsh;
 in
 {
-  options.modules.zsh = { enable = mkEnableOption "zsh"; };
+  options.modules.zsh = {
+    enable = mkEnableOption "zsh";
+    keychain = mkEnableOption {
+      type = types.bool;
+      default = true;
+    };
+  };
   config = mkIf cfg.enable {
     home.sessionVariables = {
       LANG = "en_US.UTF-8";
@@ -213,7 +219,7 @@ in
         # Load tools
         source ${pkgs.grc}/etc/grc.zsh
         eval "$(zoxide init zsh)"
-        eval $(keychain --eval --quiet ~/.ssh/id_rsa)
+        ${if cfg.keychain then "eval $(keychain --eval --quiet ~/.ssh/id_rsa)" else ""}
         eval "$(direnv hook zsh)"
         eval "$(starship init zsh)"
       '';
