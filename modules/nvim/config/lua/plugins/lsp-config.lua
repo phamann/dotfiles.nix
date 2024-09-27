@@ -114,7 +114,7 @@ return {
         -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
         local servers = {
             "rust_analyzer", "bashls", "dockerls", "terraformls", "tflint",
-            "tsserver", "jdtls"
+            "ts_ls", "jdtls"
         }
 
         -- NOTE: Call setup last
