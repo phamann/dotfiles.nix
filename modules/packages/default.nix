@@ -71,7 +71,6 @@ in
         nodePackages.fixjson
         nodePackages.jsonlint
         nodejs
-        unstable.open-policy-agent
         regols
         rust-analyzer
         shfmt

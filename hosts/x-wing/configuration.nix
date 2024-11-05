@@ -73,7 +73,6 @@
     "alfred"
     "bartender"
     "cron"
-    "divvy"
     "dropbox"
     "firefox"
     "firefox-developer-edition"
