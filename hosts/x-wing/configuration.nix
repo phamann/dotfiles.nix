@@ -60,7 +60,7 @@
   };
 
   homebrew.enable = true;
-  homebrew.onActivation.autoUpdate = false;
+  homebrew.onActivation.autoUpdate = true;
   homebrew.onActivation.cleanup = "zap";
   homebrew.onActivation.upgrade = true;
   homebrew.taps = [
@@ -72,10 +72,10 @@
     "1password"
     "alfred"
     "bartender"
-    "cron"
     "dropbox"
     "firefox"
     "firefox-developer-edition"
+    "notion-calendar"
     "obsidian"
     "signal"
     "slack"
