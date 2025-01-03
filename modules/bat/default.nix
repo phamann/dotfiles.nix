@@ -19,7 +19,7 @@ in
               rev = "v4.10.0";
               hash = "sha256-NOKzXsY+DLNrykyy2Fr1eiSpYDiBIBNHL/7PPvbgbSo=";
             };
-            file = "extras/sublime/tokyonight_night.tmTheme";
+            file = "extras/sublime/tokyonight_moon.tmTheme";
           };
         };
       };

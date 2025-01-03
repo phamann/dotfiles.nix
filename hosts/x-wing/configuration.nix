@@ -60,11 +60,11 @@
   };
 
   homebrew.enable = true;
-  homebrew.onActivation.autoUpdate = true;
+  homebrew.onActivation.autoUpdate = false;
   homebrew.onActivation.cleanup = "zap";
-  homebrew.onActivation.upgrade = true;
+  homebrew.onActivation.upgrade = false;
   homebrew.taps = [
-    "homebrew/cask"
+    # "homebrew/cask"
     "homebrew/cask-versions"
     "homebrew/cask-fonts"
   ];
@@ -74,13 +74,14 @@
     "bartender"
     "dropbox"
     "firefox"
-    "firefox-developer-edition"
+    "ghostty"
     "notion-calendar"
     "obsidian"
     "signal"
     "slack"
     "sonos"
     "spotify"
+    "warp"
     "zoom"
   ];
 

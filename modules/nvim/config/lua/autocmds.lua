@@ -29,3 +29,10 @@ vim.api.nvim_create_autocmd("BufEnter", {
     end
   end
 })
+
+-- Set custom filetype mappings
+vim.filetype.add({
+    filename = {
+        ["api.vcl.tftpl"] = "vcl",
+    },
+})

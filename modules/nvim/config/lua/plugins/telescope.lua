@@ -72,9 +72,12 @@ return {
         }, {
             "<leader>ts",
             "<Cmd>Telescope lsp_document_symbols<CR>",
-            desc = "search document tree"
-        },
-        {
+            desc = "search document symbol tree"
+        }, {
+            "<leader>ss",
+            "Telescope lsp_workspace_symbols",
+            desc = "search workspace symbol tree"
+        },{
             "<leader>m",
             "<Cmd>Telescope heading<CR>",
             desc = "search markdown headings"
