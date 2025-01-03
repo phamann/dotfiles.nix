@@ -67,6 +67,7 @@ in
         luaformatter
         maven
         nil
+        nixd
         nixpkgs-fmt
         nodePackages.fixjson
         nodePackages.jsonlint

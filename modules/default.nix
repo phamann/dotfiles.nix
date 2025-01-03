@@ -17,6 +17,7 @@
     ./ssh
     ./starship
     ./tmux
+    ./zed
     ./zellij
     ./zsh
   ];

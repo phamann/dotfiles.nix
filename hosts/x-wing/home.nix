@@ -27,6 +27,7 @@
       ssh.enable = true;
       starship.enable = true;
       tmux.enable = true;
+      zed.enable = true;
       zellij.enable = true;
       zsh.enable = true;
 
