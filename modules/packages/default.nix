@@ -37,7 +37,7 @@ in
         zoxide
 
         # tools
-        _1password
+        _1password-cli
         dig
         docker
         docker-compose

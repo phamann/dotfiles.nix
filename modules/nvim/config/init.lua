@@ -8,6 +8,7 @@ Neovim knows to search:
 -- vim.g.active_color_scheme = "catppuccin"
 -- vim.g.active_color_scheme = "nightfox"
 vim.g.active_color_scheme = "tokyonight"
+-- vim.g.active_color_scheme = "doom-one"
 -- vim.g.active_color_scheme = "github"
 -- vim.g.active_color_scheme = "moonfly"
 -- vim.g.active_color_scheme = "onedark"

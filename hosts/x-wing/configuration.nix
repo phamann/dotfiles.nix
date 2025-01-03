@@ -64,7 +64,6 @@
   homebrew.onActivation.cleanup = "zap";
   homebrew.onActivation.upgrade = false;
   homebrew.taps = [
-    # "homebrew/cask"
     "homebrew/cask-versions"
     "homebrew/cask-fonts"
   ];

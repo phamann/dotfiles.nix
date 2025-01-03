@@ -18,7 +18,6 @@
       bat.enable = true;
       direnv.enable = true;
       fzf.enable = true;
-      ghostty.enable = true;
       git.enable = true;
       gpg.enable = true;
       gui.enable = true;
@@ -36,7 +35,6 @@
         infra
         kubectl
         kubernetes-helm
-        fluxcd
         graphviz
       ];
     };
