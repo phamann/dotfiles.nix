@@ -1,0 +1,6 @@
+font-family = "JetBrainsMono Nerd Font Mono"
+font-size = 16
+adjust-cell-height = 10%
+theme = catppuccin-frappe
+window-padding-x = 6
+fullscreen = true
