@@ -6,8 +6,8 @@ return {
     priority = 1000, -- make sure to load this before all the other start plugins
     config = function()
         require("catppuccin").setup({
-            -- flavour = "frappe", -- latte, frappe, macchiato, mocha
-            flavour = "macchiato", -- latte, frappe, macchiato, mocha
+            flavour = "frappe", -- latte, frappe, macchiato, mocha
+            -- flavour = "macchiato", -- latte, frappe, macchiato, mocha
             -- flavour = "mocha", -- latte, frappe, macchiato, mocha
             dim_inactive = {enabled = true, shade = "dark", percentage = 0.15},
             integrations = {

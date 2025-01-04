@@ -1,12 +1,7 @@
-{ pkgs
-, lib
-, config
-, ...
-}:
-with lib; let
-  cfg = config.modules.packages;
-in
-{
+{ pkgs, lib, config, ... }:
+with lib;
+let cfg = config.modules.packages;
+in {
   options.modules.packages = {
     enable = mkEnableOption "packages";
     additional-packages = mkOption {
@@ -43,7 +38,8 @@ in
         docker-compose
         fastly
         git-crypt
-        (google-cloud-sdk.withExtraComponents ([ google-cloud-sdk.components.gke-gcloud-auth-plugin ]))
+        (google-cloud-sdk.withExtraComponents
+          ([ google-cloud-sdk.components.gke-gcloud-auth-plugin ]))
         jq
         keychain
         pinentry-curses
@@ -68,6 +64,7 @@ in
         maven
         nil
         nixd
+        nixfmt-classic
         nixpkgs-fmt
         nodePackages.fixjson
         nodePackages.jsonlint

@@ -5,10 +5,10 @@ Neovim knows to search:
 :h runtimepath
 --]] -- vim.g.active_color_scheme = "rose-pine"
 -- vim.g.active_color_scheme = "kanagawa"
--- vim.g.active_color_scheme = "catppuccin"
+vim.g.active_color_scheme = "catppuccin"
 -- vim.g.active_color_scheme = "nightfox"
 -- vim.g.active_color_scheme = "tokyonight"
-vim.g.active_color_scheme = "onedark"
+-- vim.g.active_color_scheme = "onedark"
 -- vim.g.active_color_scheme = "doom-one"
 -- vim.g.active_color_scheme = "github"
 -- vim.g.active_color_scheme = "moonfly"

@@ -1,8 +1,7 @@
 { pkgs, lib, config, ... }:
-with lib; let
-  cfg = config.modules.zsh;
-in
-{
+with lib;
+let cfg = config.modules.zsh;
+in {
   options.modules.zsh = {
     enable = mkEnableOption "zsh";
     keychain = mkEnableOption {
@@ -25,9 +24,7 @@ in
       enable = true;
       enableCompletion = true;
       dotDir = ".config/zsh";
-      autosuggestion = {
-        enable = true;
-      };
+      autosuggestion = { enable = true; };
       shellAliases = {
         diff = "diff -u";
         tree = "tree --dirsfirst --noreport -ACF";
@@ -50,14 +47,9 @@ in
         save = 10000;
         ignoreDups = true;
         ignoreSpace = true;
-        ignorePatterns = [
-          "rm *"
-          "pkill *"
-        ];
+        ignorePatterns = [ "rm *" "pkill *" ];
       };
-      historySubstringSearch = {
-        enable = true;
-      };
+      historySubstringSearch = { enable = true; };
       profileExtra = ""; # TODO
       envExtra = ''
         export GPG_TTY=$(tty)
@@ -81,7 +73,7 @@ in
       loginExtra = ""; # TODO
       initExtraFirst = ""; # TODO
       initExtraBeforeCompInit = ''
-        if [[ -z "$ZELLIJ" ]] && [[ "$(uname -s)" == "Darwin" ]] && [[ $TERM == "alacritty" ]]; then
+        if [[ -z "$ZELLIJ" ]] && [[ "$(uname -s)" != "Darwin" ]]; then
             zellij attach -c work
 
             if [[ "$ZELLIJ_AUTO_EXIT" == "true" ]]; then
@@ -219,7 +211,10 @@ in
         # Load tools
         source ${pkgs.grc}/etc/grc.zsh
         eval "$(zoxide init zsh)"
-        ${if cfg.keychain then "eval $(keychain --eval --quiet ~/.ssh/id_rsa)" else ""}
+        ${if cfg.keychain then
+          "eval $(keychain --eval --quiet ~/.ssh/id_rsa)"
+        else
+          ""}
         eval "$(direnv hook zsh)"
         eval "$(starship init zsh)"
       '';
