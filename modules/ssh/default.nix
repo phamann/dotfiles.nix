@@ -1,12 +1,7 @@
-{ pkgs
-, lib
-, config
-, ...
-}:
-with lib; let
-  cfg = config.modules.ssh;
-in
-{
+{ pkgs, lib, config, ... }:
+with lib;
+let cfg = config.modules.ssh;
+in {
   options.modules.ssh = { enable = mkEnableOption "ssh"; };
   config = mkIf cfg.enable {
     programs.ssh = {
@@ -16,13 +11,10 @@ in
       controlPersist = "30m";
       forwardAgent = true;
 
-      includes = [
-        "jetpac.conf"
-        "fastly_config"
-      ];
+      includes = [ "jetpac.conf" "fastly_config" ];
 
       matchBlocks = {
-        "*" = { };
+        "*" = { setEnv = { TERM = "xterm-256color"; }; };
 
         "github.com" = {
           hostname = "ssh.github.com";
