@@ -7,19 +7,6 @@ in {
     programs.zed-editor = {
       enable = true;
       userSettings = {
-        # theme = "One Dark";
-        # "experimental.theme_overrides" = {
-        #   "panel.background" = "#2e343eff";
-        #   "status_bar.background" =  "#282c33ff";
-        #   "title_bar.background" = "#282c33ff";
-        # };
-        # theme = "One Dark Flat";
-        # theme = "Siri Dark";
-        # "experimental.theme_overrides" = {
-        #   "panel.background" = "#282c33ff";
-        # };
-        # theme = "Atomize";
-        # theme = "One Dark Pro";
         theme = "Catppuccin Frappé";
         vim_mode = true;
         ui_font_size = 16;
@@ -30,7 +17,7 @@ in {
         load_direnv = "shell_hook";
         show_wrap_guides = true;
         wrap_guides = [ 80 ];
-        inlay_hints = { enabled = false; };
+        inlay_hints = { enabled = true; };
         preview_tabs = {
           enabled = true;
           enable_preview_from_file_finder = true;
