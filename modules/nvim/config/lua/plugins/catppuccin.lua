@@ -23,15 +23,6 @@ return {
                 },
                 native_lsp = {
                     enabled = true,
-                    underlines = {
-                        errors = { "undercurl" },
-                        hints = { "undercurl" },
-                        warnings = { "undercurl" },
-                        information = { "undercurl" }
-                    }
-                },
-                native_lsp = {
-                    enabled = true,
                     virtual_text = {
                         errors = { "italic" },
                         hints = { "italic" },
