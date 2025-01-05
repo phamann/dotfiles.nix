@@ -1,5 +1,4 @@
-{ pkgs, lib, inputs, ... }:
-{
+{ pkgs, lib, inputs, ... }: {
 
   networking.hostName = "x-wing";
 
@@ -63,10 +62,7 @@
   homebrew.onActivation.autoUpdate = false;
   homebrew.onActivation.cleanup = "zap";
   homebrew.onActivation.upgrade = false;
-  homebrew.taps = [
-    "homebrew/cask-versions"
-    "homebrew/cask-fonts"
-  ];
+  homebrew.taps = [ "homebrew/cask-versions" "homebrew/cask-fonts" ];
   homebrew.casks = [
     "1password"
     "alfred"
@@ -76,6 +72,7 @@
     "ghostty"
     "notion-calendar"
     "obsidian"
+    "raycast"
     "signal"
     "slack"
     "sonos"
@@ -91,7 +88,5 @@
 
   # Tailscale
   # ervices.tailscale.enable = true;
-  environment.systemPackages = with pkgs; [
-    unstable.tailscale
-  ];
+  environment.systemPackages = with pkgs; [ unstable.tailscale ];
 }
