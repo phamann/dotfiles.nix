@@ -16,8 +16,10 @@ return {
             integrations = {
                 aerial = true,
                 barbecue = {
-                    enabled = true,
                     dim_dirname = true,
+                    bold_basename = true,
+                    dim_context = false,
+                    alt_background = false,
                 },
                 native_lsp = {
                     enabled = true,
@@ -27,6 +29,26 @@ return {
                         warnings = { "undercurl" },
                         information = { "undercurl" }
                     }
+                },
+                native_lsp = {
+                    enabled = true,
+                    virtual_text = {
+                        errors = { "italic" },
+                        hints = { "italic" },
+                        warnings = { "italic" },
+                        information = { "italic" },
+                        ok = { "italic" },
+                    },
+                    underlines = {
+                        errors = { "undercurl" },
+                        hints = { "undercurl" },
+                        warnings = { "undercurl" },
+                        information = { "undercurl" },
+                        ok = { "underline" },
+                    },
+                    inlay_hints = {
+                        background = true,
+                    },
                 },
                 indent_blankline = { enabled = true },
                 diffview = true,
@@ -46,6 +68,10 @@ return {
                         },
                         IndentBlankLineContextSpaceChar = {
                             fg = colors.surface1,
+                            nocombine = true
+                        },
+                        WinSeparator = {
+                            fg = colors.surface0,
                             nocombine = true
                         }
                     }
