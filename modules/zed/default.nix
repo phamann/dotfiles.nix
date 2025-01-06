@@ -43,7 +43,6 @@ in {
         terminal = { line_height = "standard"; };
       };
       extensions = [
-        "atomize"
         "catppuccin"
         "cue"
         "docker-compose"
@@ -55,12 +54,9 @@ in {
         "kdl"
         "nginx"
         "nix"
-        "one-dark-flat"
-        "one-dark-pro"
         "perl"
         "rego"
         "ruby"
-        "siri"
         "sql"
         "xml"
       ];
