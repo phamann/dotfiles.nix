@@ -1,6 +1,7 @@
 { pkgs, ... }: {
   imports = [
     ../../modules/default.nix
+    ../../scripts/aliasApplications.nix
   ];
   config = {
     home = {
@@ -13,18 +14,30 @@
     programs.home-manager.enable = true;
 
     modules = {
+      alacritty.enable = true;
       bat.enable = true;
       direnv.enable = true;
       fzf.enable = true;
       git.enable = true;
       gpg.enable = true;
+      gui.enable = true;
+      kitty.enable = true;
       nvim.enable = true;
       packages.enable = true;
-      ssh.enable = false;
+      ssh.enable = true;
       starship.enable = true;
       tmux.enable = true;
+      zed.enable = true;
+      zellij.enable = true;
       zsh.enable = true;
-      zellij.enable = false;
+
+      packages.additional-packages = with pkgs; [
+        colima
+        infra
+        kubectl
+        kubernetes-helm
+        graphviz
+      ];
     };
   };
 }
