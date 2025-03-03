@@ -112,13 +112,12 @@
       };
 
       homeConfigurations = {
-        "phamann@dev-vm-phamann-20240925120906" = hostHomeWithSystem "jetpac" "x86_64-linux";
-        "phamann@jetpac" = hostHomeWithSystem "jetpac" "x86_64-linux";
         "phamann@yoda" = hostHomeWithSystem "yoda" "x86_64-linux";
       };
 
       darwinConfigurations = {
         "x-wing" = darwinHostWithSystem "x-wing" "aarch64-darwin" "phamann";
+        "r2-d2" = darwinHostWithSystem "r2-d2" "aarch64-darwin" "phamann";
       };
     };
 }
