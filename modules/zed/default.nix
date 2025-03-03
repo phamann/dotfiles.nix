@@ -13,6 +13,7 @@ in {
         buffer_font_size = 16;
         restore_on_startup = "last_workspace";
         buffer_font_family = "JetBrainsMono Nerd Font Mono";
+        buffer_font_features = { calt = false; };
         autosave = "on_window_change";
         load_direnv = "shell_hook";
         show_wrap_guides = true;
@@ -41,6 +42,36 @@ in {
           };
         };
         terminal = { line_height = "standard"; };
+        language_models = {
+          ollama = {
+            api_url = "http://localhost:11434";
+            available_models = [
+              {
+                name = "llama3.2";
+                display_name = "llama3.2";
+                max_tokens = 16384;
+              }
+              {
+                name = "qwen2.5-coder:7b";
+                display_name = "qwen2.5-coder:7b";
+                max_tokens = 128000;
+              }
+              {
+                name = "qwen2.5-coder:1.5b-instruct";
+                display_name = "qwen2.5-coder:1.5b-instruct";
+                max_tokens = 32000;
+              }
+            ];
+          };
+        };
+        assistant = {
+          enabled = true;
+          version = "2";
+          default_model = {
+            provider = "ollama";
+            model = "llama3.2";
+          };
+        };
       };
       extensions = [
         "catppuccin"

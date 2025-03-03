@@ -56,7 +56,7 @@ in {
         gotools
         hadolint
         java-language-server
-        jdk17
+        jdk21_headless
         jdt-language-server
         lua
         lua54Packages.luacheck
@@ -81,9 +81,11 @@ in {
 
         unstable.cue
 
+        ollama
+
         (rust-bin.stable.latest.default.override {
           extensions = [ "rust-src" ];
-          targets = [ "wasm32-wasi" ];
+          targets = [ "wasm32-wasip1" ];
         })
       ] ++ cfg.additional-packages;
   };
