@@ -78,6 +78,7 @@ in {
         tflint
         tfswitch
         yamllint
+        wireguard-tools
 
         unstable.cue
 

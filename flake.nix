@@ -118,6 +118,7 @@
       darwinConfigurations = {
         "x-wing" = darwinHostWithSystem "x-wing" "aarch64-darwin" "phamann";
         "r2-d2" = darwinHostWithSystem "r2-d2" "aarch64-darwin" "phamann";
-      };
+"H47L30L753" = darwinHostWithSystem "r2-d2" "aarch64-darwin" "phamann";      
+};
     };
 }
