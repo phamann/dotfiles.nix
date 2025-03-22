@@ -61,6 +61,9 @@
       ShowStatusBar = true;
     };
 
+    # Spaces
+    spaces.spans-displays = false;
+
     CustomSystemPreferences = { };
   };
 
@@ -74,6 +77,7 @@
     "dropbox"
     "firefox"
     "ghostty"
+    "nordvpn"
     "notion-calendar"
     "obsidian"
     "raycast"
@@ -82,6 +86,7 @@
     "sonos"
     "spotify"
     "tailscale"
+    "vlc"
     "zed"
     "zen-browser"
   ];

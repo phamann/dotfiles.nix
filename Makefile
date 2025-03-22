@@ -1,6 +1,6 @@
 .PHONY: update
 update:
-	nix flake update --flake ~/.config/nixpkgs
+	nix flake update --extra-experimental-features flakes --extra-experimental-features nix-command --flake ~/.config/nixpkgs
 
 .PHONY: jetpac
 jetpac:

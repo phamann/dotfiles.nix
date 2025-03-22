@@ -64,7 +64,7 @@ in {
         export LSCOLORS=Gxfxcxdxbxegedabagacad
         export INFRA_SKIP_VERSION_CHECK=true
         export PATH=$PATH:$HOME/.cargo/bin
-        export JAVA_HOME=${pkgs.jdk17}
+        export JAVA_HOME=${pkgs.jdk21_headless}
         export PATH=$JAVA_HOME/bin:$PATH
         export PATH=$GOPATH/bin:$PATH
         export PATH=$HOME/bin:$PATH

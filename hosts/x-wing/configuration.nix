@@ -1,6 +1,8 @@
 { pkgs, ... }: {
 
   networking.hostName = "x-wing";
+  networking.computerName = "x-wing";
+  networking.localHostName = "x-wing";
 
   # Even though we manage the ZSH config via home-manager, this is still required
   # at a system level, otherwise nix-darwin binaries won't get properly linked.
@@ -11,7 +13,7 @@
   # nix.package = pkgs.nix;
 
   # Necessary for using flakes on this system.
-  nix.settings.experimental-features = "nix-command flakes";
+  # nix.settings.experimental-features = "nix-command flakes";
 
   # Enable sudo authentication with Touch ID.
   security.pam.enableSudoTouchIdAuth = true;
@@ -25,6 +27,10 @@
       AppleShowScrollBars = "Always";
       # Disable saving documents to iCloud by default.
       NSDocumentSaveNewDocumentsToCloud = false;
+    };
+
+    WindowManager = {
+      EnableTiledWindowMargins = false;
     };
 
     # Dock settings
@@ -55,6 +61,9 @@
       ShowStatusBar = true;
     };
 
+    # Spaces
+    spaces.spans-displays = false;
+
     CustomSystemPreferences = { };
   };
 
@@ -62,14 +71,13 @@
   homebrew.onActivation.autoUpdate = false;
   homebrew.onActivation.cleanup = "zap";
   homebrew.onActivation.upgrade = false;
-  homebrew.taps = [ "homebrew/cask-versions" "homebrew/cask-fonts" ];
   homebrew.casks = [
     "1password"
-    "alfred"
     "bartender"
     "dropbox"
     "firefox"
     "ghostty"
+    "nordvpn"
     "notion-calendar"
     "obsidian"
     "raycast"
@@ -77,8 +85,10 @@
     "slack"
     "sonos"
     "spotify"
-    "warp"
-    "zoom"
+    "tailscale"
+    "vlc"
+    "zed"
+    "zen-browser"
   ];
 
   # Avoid having to restart the for certain settings to apply post nix activation.
