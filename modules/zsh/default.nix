@@ -68,11 +68,12 @@ in {
         export PATH=$JAVA_HOME/bin:$PATH
         export PATH=$GOPATH/bin:$PATH
         export PATH=$HOME/bin:$PATH
+        export PKG_CONFIG_PATH=${pkgs.openssl.dev}/lib/pkgconfig
       '';
       sessionVariables = { }; # TODO
       loginExtra = ""; # TODO
       initExtraFirst = ""; # TODO
-      initExtraBeforeCompInit = ''
+      initContent = lib.mkOrder 550 ''
         if [[ -z "$ZELLIJ" ]] && [[ "$(uname -s)" != "Darwin" ]]; then
             zellij attach -c work
 
@@ -134,9 +135,7 @@ in {
         bindkey '^[[3~' delete-char
         bindkey '^[^N' newtab
         bindkey '^?' backward-delete-char
-      '';
 
-      initExtra = ''
         zmodload -i zsh/complist
 
         # man zshcontrib

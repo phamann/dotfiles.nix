@@ -8,7 +8,8 @@ let
     rev = "e9e21cffd98787f1b59e6f6e42db599f9b8ab399";
     hash = "sha256-04po0A7bVMsmYdJcKL6oL39RlMLij1lRKvWl5AUXJ7Q=";
   };
-in {
+in
+{
   options.modules.git = { enable = mkEnableOption "git"; };
   config = mkIf cfg.enable {
     programs.git = {
@@ -46,7 +47,7 @@ in {
         hist =
           "log --graph --pretty=format:'%C(magenta)%h%Creset -%C(red)%d%Creset %s %C(dim green)(%cr) %C(cyan)<%an>%Creset' --abbrev-commit";
       };
-      ignores = [ ".devenv" ".direnv" ".envrc" "flake.lock" "flake.nix" ];
+      ignores = [ ".devenv" ".direnv" ".envrc" "flake.lock" "flake.nix" ".aider*" ];
     };
   };
 }

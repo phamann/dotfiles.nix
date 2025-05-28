@@ -13,7 +13,7 @@ in
       enable = true;
       viAlias = true;
       vimAlias = true;
-      package = pkgs.unstable.neovim-unwrapped;
+      # package = pkgs.unstable.neovim-unwrapped;
     };
     xdg.configFile = {
       nvim = {

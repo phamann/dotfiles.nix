@@ -19,8 +19,7 @@ in
       home.file = {
         ".config/zellij/layouts/compact-top.kdl".source = ./compact-top.kdl;
         ".config/zellij/layouts/compact-bottom.kdl".source = ./compact-bottom.kdl;
-        ".config/zellij/config.kdl".source = pkgs.substituteAll {
-          src = ./config.kdl;
+        ".config/zellij/config.kdl".source = pkgs.replaceVars ./config.kdl {
           layout = "${cfg.layout}";
         };
       };

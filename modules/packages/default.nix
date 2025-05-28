@@ -22,6 +22,9 @@ in {
         zsh-syntax-highlighting
         zsh-z
 
+        # ai
+        aider-chat-full
+
         # cli
         fd
         grc
@@ -42,22 +45,25 @@ in {
           [ google-cloud-sdk.components.gke-gcloud-auth-plugin ])
         jq
         keychain
+        pkg-config
         pinentry-curses
         yq-go
+
+        # k8s
+        k9s
 
         # languages and language tooling
         cargo-nextest
         gcc
         gnumake
-        unstable.go
         gofumpt
         goimports-reviser
-        unstable.gopls
         gotools
         hadolint
         java-language-server
         jdk21_headless
         jdt-language-server
+        lld
         lua
         lua54Packages.luacheck
         luaformatter
@@ -69,6 +75,7 @@ in {
         nodePackages.fixjson
         nodePackages.jsonlint
         nodejs
+        openssl
         regols
         rust-analyzer
         shfmt
@@ -77,12 +84,14 @@ in {
         terraform-ls
         tflint
         tfswitch
-        yamllint
+        unstable.go
+        unstable.gopls
         wireguard-tools
+        yamllint
 
         unstable.cue
 
-        ollama
+        unstable.ollama
 
         (rust-bin.stable.latest.default.override {
           extensions = [ "rust-src" ];

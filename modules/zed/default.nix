@@ -24,6 +24,7 @@ in {
           enable_preview_from_file_finder = true;
           enable_preview_from_code_navigation = true;
         };
+        minimap = { show = "auto"; };
         telemetry = {
           diagnostics = false;
           metrics = false;
@@ -45,32 +46,61 @@ in {
         language_models = {
           ollama = {
             api_url = "http://localhost:11434";
+            low_speed_timeout_in_seconds = 1000;
             available_models = [
               {
-                name = "llama3.2";
-                display_name = "llama3.2";
-                max_tokens = 16384;
+                provider = "ollama";
+                name = "devstral:24b";
+                display_name = "devstral:24b";
+                keep_alive = "10m";
+                max_tokens = 32768;
+                supports_tools = true;
               }
               {
-                name = "qwen2.5-coder:7b";
-                display_name = "qwen2.5-coder:7b";
-                max_tokens = 128000;
+                provider = "ollama";
+                name = "qwen2.5-coder:14b";
+                display_name = "qwen2.5-coder:14b";
+                keep_alive = "10m";
+                max_tokens = 32768;
+                supports_tools = true;
               }
               {
-                name = "qwen2.5-coder:1.5b-instruct";
-                display_name = "qwen2.5-coder:1.5b-instruct";
-                max_tokens = 32000;
+                provider = "ollama";
+                name = "deepseek-r1:14b";
+                display_name = "deepseek-r1:14b";
+                keep_alive = "10m";
+                max_tokens = 32768;
+                supports_tools = true;
               }
             ];
           };
         };
-        assistant = {
+        model_parameters = [
+          {
+            provider = "ollama";
+            model = "devstral:24b";
+            temperature = 0.15;
+          }
+        ];
+        agent = {
           enabled = true;
           version = "2";
           default_model = {
             provider = "ollama";
-            model = "llama3.2";
+            model = "devstral:24b";
+            display_name = "devstral:24b";
+            keep_alive = "10m";
+            max_tokens = 32768;
+            supports_tools = true;
           };
+        };
+        editor_model = {
+          provider = "ollama";
+          model = "devstral:24b";
+          display_name = "devstral:24b";
+          keep_alive = "10m";
+          max_tokens = 32768;
+          supports_tools = true;
         };
       };
       extensions = [

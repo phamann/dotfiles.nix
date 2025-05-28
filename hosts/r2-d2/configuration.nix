@@ -9,14 +9,16 @@
   programs.zsh.enable = true;
 
   # Auto upgrade nix package and the daemon service.
-  services.nix-daemon.enable = true;
+  # services.nix-daemon.enable = true;
   # nix.package = pkgs.nix;
 
   # Necessary for using flakes on this system.
   # nix.settings.experimental-features = "nix-command flakes";
 
   # Enable sudo authentication with Touch ID.
-  security.pam.enableSudoTouchIdAuth = true;
+  security.pam.services.sudo_local.touchIdAuth = true;
+
+  system.primaryUser = "phamann";
 
   system.stateVersion = 5;
 
@@ -74,9 +76,11 @@
   homebrew.casks = [
     "1password"
     "bartender"
+    "chef-workstation"
     "dropbox"
     "firefox"
     "ghostty"
+    "lm-studio"
     "nordvpn"
     "notion-calendar"
     "obsidian"
@@ -90,11 +94,6 @@
     "zed"
     "zen-browser"
   ];
-
-  # Avoid having to restart the for certain settings to apply post nix activation.
-  system.activationScripts.postUserActivation.text = ''
-    /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
-  '';
 
   # Tailscale
   # ervices.tailscale.enable = true;
