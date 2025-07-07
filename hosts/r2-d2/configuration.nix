@@ -1,5 +1,6 @@
 { pkgs, ... }: {
 
+  nixpkgs.config.allowUnfree = true;
   networking.hostName = "r2-d2";
   networking.computerName = "r2-d2";
   networking.localHostName = "r2-d2";

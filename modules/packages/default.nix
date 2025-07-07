@@ -23,7 +23,8 @@ in {
         zsh-z
 
         # ai
-        aider-chat-full
+        unstable.aider-chat
+        unstable.claude-code
 
         # cli
         fd
@@ -35,11 +36,13 @@ in {
         zoxide
 
         # tools
+        awscli2
         _1password-cli
         dig
         docker
         docker-compose
         fastly
+        gh
         git-crypt
         (google-cloud-sdk.withExtraComponents
           [ google-cloud-sdk.components.gke-gcloud-auth-plugin ])
@@ -48,6 +51,7 @@ in {
         pkg-config
         pinentry-curses
         yq-go
+        terminal-notifier
 
         # k8s
         k9s

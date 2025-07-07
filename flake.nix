@@ -37,7 +37,7 @@
       overlay-unstable = system: final: prev: {
         unstable = import nixpkgs-unstable {
           inherit system;
-          inputs.nixpkgs.config.allowUnfree = true;
+          config.allowUnfree = true;
         };
       };
       overlay-nodejs = self: super: {

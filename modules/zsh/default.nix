@@ -17,6 +17,7 @@ in {
       EDITOR = "nvim";
       PAGER = "less -FirSwX";
       MANPAGER = "sh -c 'col -bx | ${pkgs.bat}/bin/bat -l man -p'";
+      MANROFFOPT = "-c";
       GPG_TTY = "$(tty)";
     };
 
@@ -68,7 +69,15 @@ in {
         export PATH=$JAVA_HOME/bin:$PATH
         export PATH=$GOPATH/bin:$PATH
         export PATH=$HOME/bin:$PATH
+        export PATH=$HOME/.npm-global/bin:$PATH
         export PKG_CONFIG_PATH=${pkgs.openssl.dev}/lib/pkgconfig
+        export DOCKER_HOST=unix:///$HOME/.colima/default/docker.sock
+        export PROMPT_TOOLKIT_COLOR_DEPTH=DEPTH_24_BIT
+        export GOOGLE_GENAI_USE_VERTEXAI=true
+        export GOOGLE_CLOUD_PROJECT=vertexai-core-misc-b097
+        export GOOGLE_CLOUD_LOCATION=europe-west4
+        export GOOGLE_VERTEX_PROJECT=vertexai-core-misc-b097
+        export GOOGLE_VERTEX_LOCATION=europe-west4
       '';
       sessionVariables = { }; # TODO
       loginExtra = ""; # TODO

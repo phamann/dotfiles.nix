@@ -1,5 +1,7 @@
-font-family = "JetBrainsMono Nerd Font Mono"
+font-family = "JetBrainsMonoNL NF"
+font-family = "Symbols Nerd Font"
 font-size = 16
+font-feature = -calt, -liga, -dlig
 adjust-cell-height = 10%
 theme = catppuccin-frappe
 window-padding-x = 6

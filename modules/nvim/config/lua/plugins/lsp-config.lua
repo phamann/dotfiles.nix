@@ -162,10 +162,7 @@ return {
                             importPrefix = "crate"
                         },
                         cargo = { allFeatures = true },
-                        checkOnSave = {
-                            -- default: `cargo check`
-                            command = "clippy"
-                        }
+                        checkOnSave = true
                     },
                     inlayHints = {
                         lifetimeElisionHints = {
@@ -223,11 +220,12 @@ return {
                 virtual_text = { spacing = 2, prefix = "●" },
                 severity_sort = true
             })
+
         local signs = {
-            Error = " ",
-            Warn = " ",
-            Hint = " ",
-            Info = " "
+          Error = " ",
+          Warn  = " ",
+          Hint  = " ",
+          Info  = " ",
         }
 
         for type, icon in pairs(signs) do
