@@ -13,6 +13,7 @@
     ./gui
     ./kitty
     ./nvim
+    ./opencode
     ./packages
     ./ssh
     ./starship

@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(nix search nixpkgs aider-chat --json 2 > /dev/null)",
+      "Bash(nix why-depends ~/.nix-profile texlive)",
+      "Bash(nix-store --query --requisites ~/.nix-profile 2 > /dev/null)",
+      "Bash(nix-env --list-generations)",
+      "Bash(ls -la ~/.nix-profile/bin/)",
+      "Bash(nix-env -q)",
+      "Bash(ls -la /nix/store/)",
+      "Bash(nix-store --query --referrers /nix/store/*texlive* 2 > /dev/null)",
+      "Bash(home-manager generations)",
+      "Bash(nix-env -q '*tex*')",
+      "Bash(find /nix/var/nix/profiles -name \"*texlive*\" 2 > /dev/null)",
+      "Bash(nix-collect-garbage --dry-run 2 > /dev/null)",
+      "Bash(nix-store --gc --print-roots 2 > /dev/null)",
+      "Bash(python3 -c \"import pkg_resources; [print(pkg.project_name) for pkg in pkg_resources.working_set if ''tex'' in pkg.project_name.lower() or ''pandoc'' in pkg.project_name.lower()]\")",
+      "Bash(nix-collect-garbage -d)"
+    ],
+    "deny": []
+  }
+}

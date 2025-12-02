@@ -7,7 +7,11 @@ in {
     programs.zed-editor = {
       enable = true;
       userSettings = {
-        theme = "Catppuccin Frappé";
+        theme = {
+          mode = "system";
+          light = "Catppuccin Frappé";
+          dark = "Catppuccin Frappé";
+        };
         vim_mode = true;
         ui_font_size = 16;
         buffer_font_size = 16;
@@ -46,10 +50,8 @@ in {
         language_models = {
           ollama = {
             api_url = "http://localhost:11434";
-            low_speed_timeout_in_seconds = 1000;
             available_models = [
               {
-                provider = "ollama";
                 name = "devstral:24b";
                 display_name = "devstral:24b";
                 keep_alive = "10m";
@@ -57,7 +59,6 @@ in {
                 supports_tools = true;
               }
               {
-                provider = "ollama";
                 name = "qwen2.5-coder:14b";
                 display_name = "qwen2.5-coder:14b";
                 keep_alive = "10m";
@@ -65,7 +66,6 @@ in {
                 supports_tools = true;
               }
               {
-                provider = "ollama";
                 name = "deepseek-r1:14b";
                 display_name = "deepseek-r1:14b";
                 keep_alive = "10m";
@@ -75,32 +75,12 @@ in {
             ];
           };
         };
-        model_parameters = [
-          {
-            provider = "ollama";
-            model = "devstral:24b";
-            temperature = 0.15;
-          }
-        ];
         agent = {
           enabled = true;
-          version = "2";
           default_model = {
             provider = "ollama";
             model = "devstral:24b";
-            display_name = "devstral:24b";
-            keep_alive = "10m";
-            max_tokens = 32768;
-            supports_tools = true;
           };
-        };
-        editor_model = {
-          provider = "ollama";
-          model = "devstral:24b";
-          display_name = "devstral:24b";
-          keep_alive = "10m";
-          max_tokens = 32768;
-          supports_tools = true;
         };
       };
       extensions = [

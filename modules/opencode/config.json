@@ -1,0 +1,25 @@
+{
+  "theme": "dark",
+  "editor": {
+    "fontSize": 14,
+    "fontFamily": "Monaco, monospace",
+    "tabSize": 2,
+    "wordWrap": "on",
+    "lineNumbers": "on",
+    "minimap": {
+      "enabled": true
+    }
+  },
+  "workbench": {
+    "colorTheme": "Default Dark+",
+    "iconTheme": "vs-seti"
+  },
+  "files": {
+    "autoSave": "afterDelay",
+    "autoSaveDelay": 1000
+  },
+  "extensions": {
+    "autoUpdate": true,
+    "ignoreRecommendations": false
+  }
+}

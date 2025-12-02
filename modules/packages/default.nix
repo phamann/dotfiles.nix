@@ -23,8 +23,9 @@ in {
         zsh-z
 
         # ai
-        unstable.aider-chat
+        aider-chat
         unstable.claude-code
+        unstable.litellm
 
         # cli
         fd
@@ -80,6 +81,8 @@ in {
         nodePackages.jsonlint
         nodejs
         openssl
+        perl
+        perl540Packages.CPAN
         regols
         rust-analyzer
         shfmt

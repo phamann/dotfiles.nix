@@ -194,7 +194,7 @@ return {
             '$HOME/.cache/jdtls/' .. project_name)
 
         lspconfig.jdtls.setup {
-            cmd = { "jdt-language-server", "-data", workspace_dir }
+            cmd = { "jdtls", "-data", workspace_dir }
         }
 
         if not configs.regols then

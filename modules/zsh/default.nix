@@ -78,6 +78,12 @@ in {
         export GOOGLE_CLOUD_LOCATION=europe-west4
         export GOOGLE_VERTEX_PROJECT=vertexai-core-misc-b097
         export GOOGLE_VERTEX_LOCATION=europe-west4
+        export PATH=$HOME/perl5/bin:$PATH
+        export PATH=$HOME/Library/Python/3.9/bin:$PATH
+        export PERL5LIB=$HOME/perl5/lib/perl5
+        export PERL_LOCAL_LIB_ROOT=$HOME/perl5
+        export PERL_MB_OPT="--install_base \"$HOME/perl5\""
+        export PERL_MM_OPT="INSTALL_BASE=$HOME/perl5"
       '';
       sessionVariables = { }; # TODO
       loginExtra = ""; # TODO
