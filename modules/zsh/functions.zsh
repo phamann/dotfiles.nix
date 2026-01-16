@@ -71,3 +71,7 @@ function zellij_tab_name_update() {
     command nohup zellij action rename-tab $tab_name >/dev/null 2>&1
   fi
 }
+
+function cwhois() {
+    whois -h whois.cymru.com " -v $1"
+}

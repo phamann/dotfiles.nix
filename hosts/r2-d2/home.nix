@@ -1,7 +1,6 @@
 { pkgs, ... }: {
   imports = [
     ../../modules/default.nix
-    ../../scripts/aliasApplications.nix
   ];
   config = {
     home = {

@@ -6,15 +6,19 @@ in {
   config = mkIf cfg.enable {
     programs.ssh = {
       enable = true;
-      controlMaster = "no";
-      controlPath = "~/.ssh/master-%r@%n:%p";
-      controlPersist = "30m";
-      forwardAgent = true;
 
       includes = [ "jetpac.conf" "fastly_config" ];
 
+      enableDefaultConfig = false;
+
       matchBlocks = {
-        "*" = { setEnv = { TERM = "xterm-256color"; }; };
+        "*" = {
+          setEnv = { TERM = "xterm-256color"; };
+          controlMaster = "no";
+          controlPath = "~/.ssh/master-%r@%n:%p";
+          controlPersist = "30m";
+          forwardAgent = true;
+        };
 
         "github.com" = {
           hostname = "ssh.github.com";

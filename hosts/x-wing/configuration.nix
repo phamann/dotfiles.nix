@@ -79,6 +79,7 @@
     "ghostty"
     "nordvpn"
     "notion-calendar"
+    "macdown"
     "obsidian"
     "raycast"
     "signal"

@@ -1,6 +1,7 @@
 { pkgs, ... }: {
 
   nixpkgs.config.allowUnfree = true;
+
   networking.hostName = "r2-d2";
   networking.computerName = "r2-d2";
   networking.localHostName = "r2-d2";
@@ -78,12 +79,14 @@
     "1password"
     "bartender"
     "chef-workstation"
+    "daisydisk"
     "dropbox"
     "firefox"
     "ghostty"
     "lm-studio"
     "nordvpn"
     "notion-calendar"
+    "macdown"
     "obsidian"
     "raycast"
     "signal"
@@ -99,4 +102,8 @@
   # Tailscale
   # ervices.tailscale.enable = true;
   environment.systemPackages = with pkgs; [ unstable.tailscale ];
+
+  nix.settings = {
+    download-buffer-size = 524288000; # 500 MiB };
+  };
 }

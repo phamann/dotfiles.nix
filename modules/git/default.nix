@@ -14,24 +14,20 @@ in
   config = mkIf cfg.enable {
     programs.git = {
       enable = true;
-      userName = "Patrick Hamann";
-      userEmail = "patrick@fastly.com";
       includes = [{ path = "${catppuccin}/catppuccin.gitconfig"; }];
-      delta = {
-        enable = true;
-        options = {
-          navigate = true;
-          side-by-side = false;
-          line-numbers = true;
-          hunk-header-style = "file line-number syntax";
-          features = "catppuccin-frappe";
+      settings = {
+        alias = {
+          st = "status";
+          co = "checkout";
+          ci = "commit";
+          br = "branch";
+          hist =
+            "log --graph --pretty=format:'%C(magenta)%h%Creset -%C(red)%d%Creset %s %C(dim green)(%cr) %C(cyan)<%an>%Creset' --abbrev-commit";
         };
-      };
-      signing = {
-        key = "CD2E6283475DC528";
-        signByDefault = true;
-      };
-      extraConfig = {
+        user = {
+          name = "Patrick Hamann";
+          email = "patrick@fastly.com";
+        };
         init = { defaultBranch = "main"; };
         url = { "git@github.com:" = { insteadOf = "https://github.com/"; }; };
         mergetool = {
@@ -39,15 +35,22 @@ in
           keepBackup = false;
         };
       };
-      aliases = {
-        st = "status";
-        co = "checkout";
-        ci = "commit";
-        br = "branch";
-        hist =
-          "log --graph --pretty=format:'%C(magenta)%h%Creset -%C(red)%d%Creset %s %C(dim green)(%cr) %C(cyan)<%an>%Creset' --abbrev-commit";
+      signing = {
+        key = "CD2E6283475DC528";
+        signByDefault = true;
       };
       ignores = [ ".devenv" ".direnv" ".envrc" "flake.lock" "flake.nix" ".aider*" ];
+    };
+    programs.delta = {
+      enable = true;
+      options = {
+        navigate = true;
+        side-by-side = false;
+        line-numbers = true;
+        hunk-header-style = "file line-number syntax";
+        features = "catppuccin-frappe";
+      };
+
     };
   };
 }

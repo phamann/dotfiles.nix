@@ -24,7 +24,7 @@ in {
     programs.zsh = {
       enable = true;
       enableCompletion = true;
-      dotDir = ".config/zsh";
+      dotDir = "${config.home.homeDirectory}/.config/zsh";
       autosuggestion = { enable = true; };
       shellAliases = {
         diff = "diff -u";

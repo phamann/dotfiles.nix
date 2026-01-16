@@ -51,10 +51,14 @@ return {
     dependencies = {
         "hrsh7th/nvim-cmp",
         { "williamboman/nvim-lsp-installer", config = true },
-        { "j-hui/fidget.nvim",               config = true }, "simrat39/rust-tools.nvim",
+        { "j-hui/fidget.nvim",               config = true },
+        {
+          'mrcjkb/rustaceanvim',
+          version = '^6', -- Recommended
+          lazy = false, -- This plugin is already lazy
+        }
     },
     config = function()
-        local lspconfig = require("lspconfig")
         local configs = require("lspconfig.configs")
         local util = require("lspconfig.util")
         local map = vim.api.nvim_set_keymap
@@ -120,12 +124,12 @@ return {
         -- NOTE: Call setup last
         -- https://github.com/hrsh7th/nvim-cmp/issues/1208#issuecomment-1281501620
         for _, lsp in ipairs(servers) do
-            lspconfig[lsp].setup { on_attach = shared_on_attach }
+            vim.lsp.config(lsp, { on_attach = shared_on_attach })
             -- lspconfig[lsp].setup(coq.lsp_ensure_capabilities())
             -- lspconfig[lsp].setup {capabilities = capabilities}
         end
 
-        require("rust-tools").setup({
+        vim.g.rustaceanvim = {
             -- rust-tools options
             tools = {
                 autoSetHints = true,
@@ -138,7 +142,6 @@ return {
             },
 
             -- all the opts to send to nvim-lspconfig
-            -- these override the defaults set by rust-tools.nvim
             -- https://github.com/rust-analyzer/rust-analyzer/blob/master/docs/user/generated_config.adoc
             -- https://rust-analyzer.github.io/manual.html#features
             server = {
@@ -155,7 +158,7 @@ return {
                     vim.keymap.set('n', '<leader>rr', "<Cmd>RustRunnables<CR>",
                         bufopts)
                 end,
-                settings = {
+                default_settings = {
                     ["rust-analyzer"] = {
                         assist = {
                             importEnforceGranularity = true,
@@ -172,11 +175,11 @@ return {
                     }
                 }
             }
-        })
+        }
 
         -- NOTE: When using :LspInstallInfo to install available LSPs, we need to still
         -- add calls to their setup here in our Vim configuration.
-        lspconfig.terraformls.setup({
+        vim.lsp.config('terraformls', {
             filetypes = { "terraform", "terraform-vars", "hcl" },
             on_attach = function(client, bufnr)
                 shared_on_attach(client, bufnr)
@@ -193,9 +196,9 @@ return {
         local workspace_dir = vim.fn.expand(
             '$HOME/.cache/jdtls/' .. project_name)
 
-        lspconfig.jdtls.setup {
+        vim.lsp.config('jdtls', {
             cmd = { "jdtls", "-data", workspace_dir }
-        }
+        })
 
         if not configs.regols then
             configs.regols = {
@@ -206,7 +209,7 @@ return {
                 }
             }
         end
-        lspconfig.regols.setup {}
+        vim.lsp.enable('ruby_lsp')
 
         -- Styling
         -- https://github.com/folke/dot/blob/6e89c6cf2ad92a8b0335ab69d51fc275f78dd524/config/nvim/lua/config/lsp/diagnostics.lua

@@ -25,7 +25,7 @@ in {
         # ai
         aider-chat
         unstable.claude-code
-        unstable.litellm
+        litellm
 
         # cli
         fd
@@ -42,7 +42,7 @@ in {
         dig
         docker
         docker-compose
-        fastly
+        unstable.fastly
         gh
         git-crypt
         (google-cloud-sdk.withExtraComponents
@@ -51,6 +51,7 @@ in {
         keychain
         pkg-config
         pinentry-curses
+        poppler-utils
         yq-go
         terminal-notifier
 
@@ -59,6 +60,7 @@ in {
 
         # languages and language tooling
         cargo-nextest
+        d2
         gcc
         gnumake
         gofumpt
@@ -78,7 +80,6 @@ in {
         nixfmt-classic
         nixpkgs-fmt
         nodePackages.fixjson
-        nodePackages.jsonlint
         nodejs
         openssl
         perl
@@ -91,6 +92,8 @@ in {
         terraform-ls
         tflint
         tfswitch
+        typescript
+        typescript-language-server
         unstable.go
         unstable.gopls
         wireguard-tools
@@ -98,7 +101,7 @@ in {
 
         unstable.cue
 
-        unstable.ollama
+        # ollama
 
         (rust-bin.stable.latest.default.override {
           extensions = [ "rust-src" ];

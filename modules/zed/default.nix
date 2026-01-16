@@ -6,6 +6,7 @@ in {
   config = mkIf cfg.enable {
     programs.zed-editor = {
       enable = true;
+      package = null; # Don't install package as it's installed via cask.
       userSettings = {
         theme = {
           mode = "system";
