@@ -6,6 +6,7 @@
   imports = [
     ./alacritty
     ./bat
+    ./claude-code
     ./direnv
     ./fzf
     ./git

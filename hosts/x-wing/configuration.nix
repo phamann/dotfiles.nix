@@ -8,15 +8,11 @@
   # at a system level, otherwise nix-darwin binaries won't get properly linked.
   programs.zsh.enable = true;
 
-  # Auto upgrade nix package and the daemon service.
-  services.nix-daemon.enable = true;
-  # nix.package = pkgs.nix;
-
-  # Necessary for using flakes on this system.
-  # nix.settings.experimental-features = "nix-command flakes";
-
   # Enable sudo authentication with Touch ID.
-  security.pam.enableSudoTouchIdAuth = true;
+  security.pam.services.sudo_local.touchIdAuth = true;
+
+  # Primary user for nix-darwin 25.11+
+  system.primaryUser = "phamann";
 
   system.stateVersion = 5;
 
@@ -91,11 +87,6 @@
     "zed"
     "zen-browser"
   ];
-
-  # Avoid having to restart the for certain settings to apply post nix activation.
-  system.activationScripts.postUserActivation.text = ''
-    /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
-  '';
 
   # Tailscale
   # ervices.tailscale.enable = true;

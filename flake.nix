@@ -22,6 +22,11 @@
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -31,6 +36,7 @@
     , nixpkgs-unstable
     , home-manager
     , rust-overlay
+    , agenix
     , ...
     } @ inputs:
     let
@@ -73,6 +79,7 @@
         home-manager.lib.homeManagerConfiguration {
           pkgs = pkgsForSystem system;
           modules = [
+            agenix.homeManagerModules.default
             (./. + "/hosts/${host}/home.nix")
           ];
           extraSpecialArgs = {
@@ -83,6 +90,7 @@
         darwin.lib.darwinSystem {
           pkgs = pkgsForSystem system;
           modules = [
+            agenix.darwinModules.default
             (./. + "/hosts/${host}/configuration.nix")
             {
               users.users."${user}" = {
@@ -95,7 +103,9 @@
               home-manager = {
                 useGlobalPkgs = true;
                 useUserPackages = true;
+                backupFileExtension = "hm-backup";
                 users."${user}".imports = [
+                  agenix.homeManagerModules.default
                   (./. + "/hosts/${host}/home.nix")
                 ];
                 extraSpecialArgs = {

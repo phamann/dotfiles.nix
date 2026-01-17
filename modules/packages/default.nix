@@ -24,7 +24,7 @@ in {
 
         # ai
         aider-chat
-        unstable.claude-code
+        # claude-code is now managed via modules.claude-code
         litellm
 
         # cli

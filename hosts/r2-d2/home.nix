@@ -15,6 +15,7 @@
     modules = {
       alacritty.enable = true;
       bat.enable = true;
+      claude-code.enable = true;
       direnv.enable = true;
       fzf.enable = true;
       git.enable = true;
@@ -29,6 +30,7 @@
       zed.enable = true;
       zellij.enable = true;
       zsh.enable = true;
+      opencode.enable = true;
 
       packages.additional-packages = with pkgs; [
         colima
