@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, config, inputs, system, ... }:
 with lib;
 let
   cfg = config.modules.claude-code;
@@ -36,9 +36,7 @@ let
   };
 in
 {
-  options.modules.claude-code = {
-    enable = mkEnableOption "claude-code";
-  };
+  options.modules.claude-code = { enable = mkEnableOption "claude-code"; };
 
   config = mkIf cfg.enable {
     # Decrypt API key at activation time
@@ -48,7 +46,7 @@ in
 
     programs.claude-code = {
       enable = true;
-      package = pkgs.unstable.claude-code;
+      package = inputs.claude-code-nix.packages.${system}.claude-code;
 
       settings = {
         awsAuthRefresh = "aws sso login --profile bedrock";
@@ -56,16 +54,20 @@ in
           CLAUDE_CODE_USE_BEDROCK = "1";
           AWS_REGION = "eu-west-1";
           AWS_PROFILE = "bedrock";
-          ANTHROPIC_MODEL = "arn:aws:bedrock:eu-west-1:635784355978:inference-profile/global.anthropic.claude-opus-4-5-20251101-v1:0";
-          ANTHROPIC_DEFAULT_OPUS_MODEL = "arn:aws:bedrock:eu-west-1:635784355978:inference-profile/global.anthropic.claude-opus-4-5-20251101-v1:0";
-          ANTHROPIC_DEFAULT_SONNET_MODEL = "arn:aws:bedrock:eu-west-1:635784355978:inference-profile/global.anthropic.claude-sonnet-4-5-20250929-v1:0";
-          ANTHROPIC_DEFAULT_HAIKU_MODEL = "arn:aws:bedrock:eu-west-1:635784355978:inference-profile/eu.anthropic.claude-haiku-4-5-20251001-v1:0";
+          ANTHROPIC_MODEL =
+            "arn:aws:bedrock:eu-west-1:635784355978:inference-profile/global.anthropic.claude-opus-4-6-v1";
+          ANTHROPIC_DEFAULT_OPUS_MODEL =
+            "arn:aws:bedrock:eu-west-1:635784355978:inference-profile/global.anthropic.claude-opus-4-6-v1";
+          ANTHROPIC_DEFAULT_SONNET_MODEL =
+            "arn:aws:bedrock:eu-west-1:635784355978:inference-profile/global.anthropic.claude-sonnet-4-6";
+          ANTHROPIC_DEFAULT_HAIKU_MODEL =
+            "arn:aws:bedrock:eu-west-1:635784355978:inference-profile/eu.anthropic.claude-haiku-4-5-20251001-v1:0";
         };
         permissions = {
           allow = [
             "ReadFile"
             "Edit"
-            "Bash(git add .)"
+            "Bash(git add:*)"
             "Bash(git commit -m:*)"
             "Bash(git diff:*)"
             "Bash(gh pr diff:*)"
@@ -90,6 +92,15 @@ in
           "typescript-lsp@claude-plugins-official" = true;
           "gopls-lsp@claude-plugins-official" = true;
           "rust-analyzer-lsp@claude-plugins-official" = true;
+          "superpowers@superpowers-marketplace" = true;
+        };
+        extraKnownMarketplaces = {
+          superpowers-marketplace = {
+            source = {
+              source = "github";
+              repo = "obra/superpowers-marketplace";
+            };
+          };
         };
         statusLine = {
           command = "${ccline}/bin/ccline --theme catppuccin-frappe";
@@ -104,12 +115,30 @@ in
           command = "${context7Wrapper}";
           args = [ ];
         };
+        "chrome-devtools" = {
+          command = "npx";
+          args = [ "-y" "chrome-devtools-mcp@latest" ];
+        };
       };
 
       # User memory/instructions
       memory.text = ''
-        When creating git commit messages ALWAYS use conventional commit style: https://www.conventionalcommits.org/en/v1.0.0/#specification
-        When creating pull requests in Github ALWAYS mark them in draft status
+        # Working relationship
+        - No sycophancy.
+        - Be direct, matter-of-fact, and concise.
+        - Be critical; challenge my reasoning.
+        - Don't include timeline estimates in plans.
+
+        # Tooling
+
+        ## General
+        - Prefer Makefile targets (`make help`) over direct tool invocation.
+        - Use your Edit tool for changes; Search tool for searching.
+        - Use Mermaid diagrams for complex systems.
+
+        ## Git
+        - When creating git commit messages ALWAYS use [conventional commit style](https://www.conventionalcommits.org/en/v1.0.0/#specification).
+        - When creating pull requests in Github ALWAYS mark them in draft status.
       '';
     };
 

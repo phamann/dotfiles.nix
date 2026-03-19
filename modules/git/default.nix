@@ -8,8 +8,7 @@ let
     rev = "e9e21cffd98787f1b59e6f6e42db599f9b8ab399";
     hash = "sha256-04po0A7bVMsmYdJcKL6oL39RlMLij1lRKvWl5AUXJ7Q=";
   };
-in
-{
+in {
   options.modules.git = { enable = mkEnableOption "git"; };
   config = mkIf cfg.enable {
     programs.git = {
@@ -39,7 +38,8 @@ in
         key = "CD2E6283475DC528";
         signByDefault = true;
       };
-      ignores = [ ".devenv" ".direnv" ".envrc" "flake.lock" "flake.nix" ".aider*" ];
+      ignores =
+        [ ".devenv" ".direnv" ".envrc" "flake.lock" "flake.nix" ".aider*" ];
     };
     programs.delta = {
       enable = true;

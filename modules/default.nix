@@ -1,8 +1,4 @@
-{ inputs
-, pkgs
-, config
-, ...
-}: {
+{ inputs, pkgs, config, ... }: {
   imports = [
     ./alacritty
     ./bat

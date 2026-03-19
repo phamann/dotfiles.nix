@@ -1,12 +1,7 @@
-{ pkgs
-, lib
-, config
-, ...
-}:
-with lib; let
-  cfg = config.modules.gui;
-in
-{
+{ pkgs, lib, config, ... }:
+with lib;
+let cfg = config.modules.gui;
+in {
   options.modules.gui = {
     enable = mkEnableOption "gui";
     additional-packages = mkOption {
@@ -19,7 +14,6 @@ in
       [
         obsidian
         # signal-desktop
-      ]
-      ++ cfg.additional-packages;
+      ] ++ cfg.additional-packages;
   };
 }

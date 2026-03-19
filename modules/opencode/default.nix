@@ -8,8 +8,7 @@ let
     export UPSTASH_CONTEXT7_API_KEY="$(cat ${config.age.secrets.context7-api-key.path})"
     exec ${pkgs.nodejs}/bin/npx -y @upstash/context7-mcp "$@"
   '';
-in
-{
+in {
   options.modules.opencode = { enable = mkEnableOption "opencode"; };
 
   config = mkIf cfg.enable {
@@ -28,7 +27,16 @@ in
 
         # AWS Bedrock provider config (matching claude-code)
         provider = {
+          "lmstudio" = {
+            npm = "@ai-sdk/openai-compatible";
+            name = "LM Studio (local)";
+            options = { baseURL = "http://127.0.0.1:1234/v1"; };
+            models = {
+              "zai-org/glm-4.7-flash" = { name = "GLM 4.7 Flash (local)"; };
+            };
+          };
           "amazon-bedrock" = {
+            npm = "@ai-sdk/amazon-bedrock";
             options = {
               region = "eu-west-1";
               profile = "bedrock";

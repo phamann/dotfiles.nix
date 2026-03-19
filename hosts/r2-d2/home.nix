@@ -1,7 +1,5 @@
 { pkgs, ... }: {
-  imports = [
-    ../../modules/default.nix
-  ];
+  imports = [ ../../modules/default.nix ];
   config = {
     home = {
       username = "phamann";
@@ -33,7 +31,7 @@
       opencode.enable = true;
 
       packages.additional-packages = with pkgs; [
-        colima
+        unstable.colima
         infra
         kubectl
         kubernetes-helm

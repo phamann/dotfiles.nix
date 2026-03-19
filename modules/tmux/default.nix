@@ -1,5 +1,6 @@
-{ pkgs, lib, config, ...}:
-with lib; let
+{ pkgs, lib, config, ... }:
+with lib;
+let
   cfg = config.modules.tmux;
   tokyo-night-tmux = pkgs.tmuxPlugins.mkTmuxPlugin {
     pluginName = "tokyo-night-tmux";
@@ -12,8 +13,7 @@ with lib; let
       sha256 = "sha256-R1t6E5Dd3Zq0MPdXnYyvU0+juC2/0pt6r+Hi3QeMKm4=";
     };
   };
-in
-{
+in {
   options.modules.tmux = { enable = mkEnableOption "tmux"; };
   config = mkIf cfg.enable {
     programs.tmux = {

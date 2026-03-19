@@ -24,7 +24,6 @@ in {
 
         # ai
         aider-chat
-        # claude-code is now managed via modules.claude-code
         litellm
 
         # cli
@@ -48,12 +47,13 @@ in {
         (google-cloud-sdk.withExtraComponents
           [ google-cloud-sdk.components.gke-gcloud-auth-plugin ])
         jq
+        just
         keychain
-        pkg-config
         pinentry-curses
+        pkg-config
         poppler-utils
-        yq-go
         terminal-notifier
+        yq-go
 
         # k8s
         k9s

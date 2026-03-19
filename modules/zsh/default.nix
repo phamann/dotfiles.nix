@@ -56,7 +56,7 @@ in {
         export GPG_TTY=$(tty)
         export EDITOR="$(which nvim)"
         export GIT_EDITOR="nvim"
-        export BROWSER="$(which firefox)"
+        export BROWSER="/Applications/Zen Browser.app/Contents/MacOS/zen"
         export FASTLY_CHEF_USERNAME="phamann"
         export GITHUB_USER="phamann"
         export GREP_COLOR='1;32'
@@ -75,9 +75,9 @@ in {
         export PROMPT_TOOLKIT_COLOR_DEPTH=DEPTH_24_BIT
         export GOOGLE_GENAI_USE_VERTEXAI=true
         export GOOGLE_CLOUD_PROJECT=vertexai-core-misc-b097
-        export GOOGLE_CLOUD_LOCATION=europe-west4
+        export GOOGLE_CLOUD_LOCATION=global
         export GOOGLE_VERTEX_PROJECT=vertexai-core-misc-b097
-        export GOOGLE_VERTEX_LOCATION=europe-west4
+        export GOOGLE_VERTEX_LOCATION=global
         export PATH=$HOME/perl5/bin:$PATH
         export PATH=$HOME/Library/Python/3.9/bin:$PATH
         export PERL5LIB=$HOME/perl5/lib/perl5

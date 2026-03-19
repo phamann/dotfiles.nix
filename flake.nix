@@ -27,6 +27,8 @@
       url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    claude-code-nix.url = "github:sadjow/claude-code-nix";
   };
 
   outputs =
@@ -37,8 +39,9 @@
     , home-manager
     , rust-overlay
     , agenix
+    , claude-code-nix
     , ...
-    } @ inputs:
+    }@inputs:
     let
       overlay-unstable = system: final: prev: {
         unstable = import nixpkgs-unstable {
@@ -46,35 +49,34 @@
           config.allowUnfree = true;
         };
       };
-      overlay-nodejs = self: super: {
-        nodejs = super.nodejs_22;
+      overlay-nodejs = self: super: { nodejs = super.nodejs_22; };
+      overlay-elevation-fluxcd = final: prev: {
+        fluxcd = prev.fluxcd.overrideAttrs (oldAttrs: rec {
+          name = "fluxcd";
+          src = prev.fetchzip {
+            url =
+              "https://github.com/fluxcd/flux2/releases/download/v2.1.2/flux_2.1.2_darwin_arm64.tar.gz";
+            hash = "sha256-ymXlpd2/UP1kPdjAq4Ba6cvqvWeBTaaPqSJcruFmbgI=";
+          };
+          phases = [ "installPhase" "patchPhase" ];
+          installPhase = ''
+            mkdir -p $out/bin
+            cp -r $src/* $out/bin/
+            chmod +x $out/bin/flux
+          '';
+        });
       };
-      overlay-elevation-fluxcd = final: prev:
-        {
-          fluxcd = prev.fluxcd.overrideAttrs (oldAttrs: rec {
-            name = "fluxcd";
-            src = prev.fetchzip {
-              url = "https://github.com/fluxcd/flux2/releases/download/v2.1.2/flux_2.1.2_darwin_arm64.tar.gz";
-              hash = "sha256-ymXlpd2/UP1kPdjAq4Ba6cvqvWeBTaaPqSJcruFmbgI=";
-            };
-            phases = [ "installPhase" "patchPhase" ];
-            installPhase = ''
-              mkdir -p $out/bin
-              cp -r $src/* $out/bin/
-              chmod +x $out/bin/flux
-            '';
-          });
+      pkgsForSystem = system:
+        import nixpkgs {
+          overlays = [
+            (overlay-unstable system)
+            rust-overlay.overlays.default
+            overlay-elevation-fluxcd
+            overlay-nodejs
+          ];
+          inherit system;
+          config.allowUnfree = true;
         };
-      pkgsForSystem = system: import nixpkgs {
-        overlays = [
-          (overlay-unstable system)
-          rust-overlay.overlays.default
-          overlay-elevation-fluxcd
-          overlay-nodejs
-        ];
-        inherit system;
-        config.allowUnfree = true;
-      };
       hostHomeWithSystem = host: system:
         home-manager.lib.homeManagerConfiguration {
           pkgs = pkgsForSystem system;
@@ -82,9 +84,7 @@
             agenix.homeManagerModules.default
             (./. + "/hosts/${host}/home.nix")
           ];
-          extraSpecialArgs = {
-            inherit inputs system;
-          };
+          extraSpecialArgs = { inherit inputs system; };
         };
       darwinHostWithSystem = host: system: user:
         darwin.lib.darwinSystem {
@@ -108,9 +108,7 @@
                   agenix.homeManagerModules.default
                   (./. + "/hosts/${host}/home.nix")
                 ];
-                extraSpecialArgs = {
-                  inherit inputs system;
-                };
+                extraSpecialArgs = { inherit inputs system; };
               };
             }
           ];
@@ -120,9 +118,9 @@
     in
     {
       defaultPackage = {
-        x86_64-linux = home-manager.defaultPackage.x86_64-linux;
-        x86_64-darwin = home-manager.defaultPackage.x86_64-darwin;
-        aarch64-darwin = home-manager.defaultPackage.aarch64-darwin;
+        inherit (home-manager.defaultPackage) x86_64-linux;
+        inherit (home-manager.defaultPackage) x86_64-darwin;
+        inherit (home-manager.defaultPackage) aarch64-darwin;
       };
 
       homeConfigurations = {
