@@ -3,20 +3,15 @@ with lib;
 let
   cfg = config.modules.opencode;
 
-  # Wrapper script to inject API key from decrypted secret
+  # Wrapper script to inject API key from 1Password at runtime
   context7Wrapper = pkgs.writeShellScript "context7-mcp" ''
-    export UPSTASH_CONTEXT7_API_KEY="$(cat ${config.age.secrets.context7-api-key.path})"
+    export UPSTASH_CONTEXT7_API_KEY="$(${pkgs._1password-cli}/bin/op read 'op://Private/context7-api-token/password')"
     exec ${pkgs.nodejs}/bin/npx -y @upstash/context7-mcp "$@"
   '';
 in {
   options.modules.opencode = { enable = mkEnableOption "opencode"; };
 
   config = mkIf cfg.enable {
-    # Reuse context7 API key secret (already defined in claude-code module)
-    age.secrets.context7-api-key = {
-      file = ../../secrets/context7-api-key.age;
-    };
-
     programs.opencode = {
       enable = true;
       package = pkgs.unstable.opencode;

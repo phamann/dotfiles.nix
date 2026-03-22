@@ -7,7 +7,7 @@ in {
     programs.ssh = {
       enable = true;
 
-      includes = [ "jetpac.conf" "fastly_config" ];
+      includes = [ "jetpac.conf" ];
 
       enableDefaultConfig = false;
 
@@ -18,6 +18,8 @@ in {
           controlPath = "~/.ssh/master-%r@%n:%p";
           controlPersist = "30m";
           forwardAgent = true;
+          addKeysToAgent = "yes";
+          identityFile = "~/.ssh/id_ed25519";
         };
 
         "github.com" = {

@@ -35,7 +35,7 @@
       opencode.enable = true;
 
       packages.additional-packages = with pkgs; [
-        colima
+        unstable.colima
         kubectl
         kubernetes-helm
         graphviz

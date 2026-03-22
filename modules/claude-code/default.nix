@@ -3,9 +3,9 @@ with lib;
 let
   cfg = config.modules.claude-code;
 
-  # Wrapper script to inject API key from decrypted secret
+  # Wrapper script to inject API key from 1Password at runtime
   context7Wrapper = pkgs.writeShellScript "context7-mcp" ''
-    export UPSTASH_CONTEXT7_API_KEY="$(cat ${config.age.secrets.context7-api-key.path})"
+    export UPSTASH_CONTEXT7_API_KEY="$(${pkgs._1password-cli}/bin/op read 'op://Private/context7-api-token/password')"
     exec ${pkgs.nodejs}/bin/npx -y @upstash/context7-mcp "$@"
   '';
 
@@ -39,30 +39,11 @@ in
   options.modules.claude-code = { enable = mkEnableOption "claude-code"; };
 
   config = mkIf cfg.enable {
-    # Decrypt API key at activation time
-    age.secrets.context7-api-key = {
-      file = ../../secrets/context7-api-key.age;
-    };
-
     programs.claude-code = {
       enable = true;
       package = inputs.claude-code-nix.packages.${system}.claude-code;
 
       settings = {
-        awsAuthRefresh = "aws sso login --profile bedrock";
-        env = {
-          CLAUDE_CODE_USE_BEDROCK = "1";
-          AWS_REGION = "eu-west-1";
-          AWS_PROFILE = "bedrock";
-          ANTHROPIC_MODEL =
-            "arn:aws:bedrock:eu-west-1:635784355978:inference-profile/global.anthropic.claude-opus-4-6-v1";
-          ANTHROPIC_DEFAULT_OPUS_MODEL =
-            "arn:aws:bedrock:eu-west-1:635784355978:inference-profile/global.anthropic.claude-opus-4-6-v1";
-          ANTHROPIC_DEFAULT_SONNET_MODEL =
-            "arn:aws:bedrock:eu-west-1:635784355978:inference-profile/global.anthropic.claude-sonnet-4-6";
-          ANTHROPIC_DEFAULT_HAIKU_MODEL =
-            "arn:aws:bedrock:eu-west-1:635784355978:inference-profile/eu.anthropic.claude-haiku-4-5-20251001-v1:0";
-        };
         permissions = {
           allow = [
             "ReadFile"

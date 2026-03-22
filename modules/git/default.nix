@@ -25,7 +25,7 @@ in {
         };
         user = {
           name = "Patrick Hamann";
-          email = "patrick@fastly.com";
+          email = "patrickhamann@gmail.com";
         };
         init = { defaultBranch = "main"; };
         url = { "git@github.com:" = { insteadOf = "https://github.com/"; }; };

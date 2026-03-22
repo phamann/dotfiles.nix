@@ -23,11 +23,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    agenix = {
-      url = "github:ryantm/agenix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     claude-code-nix.url = "github:sadjow/claude-code-nix";
   };
 
@@ -38,7 +33,6 @@
     , nixpkgs-unstable
     , home-manager
     , rust-overlay
-    , agenix
     , claude-code-nix
     , ...
     }@inputs:
@@ -81,7 +75,6 @@
         home-manager.lib.homeManagerConfiguration {
           pkgs = pkgsForSystem system;
           modules = [
-            agenix.homeManagerModules.default
             (./. + "/hosts/${host}/home.nix")
           ];
           extraSpecialArgs = { inherit inputs system; };
@@ -90,7 +83,6 @@
         darwin.lib.darwinSystem {
           pkgs = pkgsForSystem system;
           modules = [
-            agenix.darwinModules.default
             (./. + "/hosts/${host}/configuration.nix")
             {
               users.users."${user}" = {
@@ -105,7 +97,6 @@
                 useUserPackages = true;
                 backupFileExtension = "hm-backup";
                 users."${user}".imports = [
-                  agenix.homeManagerModules.default
                   (./. + "/hosts/${host}/home.nix")
                 ];
                 extraSpecialArgs = { inherit inputs system; };
@@ -117,12 +108,6 @@
 
     in
     {
-      defaultPackage = {
-        inherit (home-manager.defaultPackage) x86_64-linux;
-        inherit (home-manager.defaultPackage) x86_64-darwin;
-        inherit (home-manager.defaultPackage) aarch64-darwin;
-      };
-
       homeConfigurations = {
         "phamann@yoda" = hostHomeWithSystem "yoda" "x86_64-linux";
       };

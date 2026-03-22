@@ -1,5 +1,7 @@
 { pkgs, ... }: {
 
+  nix.enable = false;
+
   networking = {
     hostName = "x-wing";
     computerName = "x-wing";
@@ -73,6 +75,7 @@
     casks = [
       "1password"
       "bartender"
+      "claude"
       "dropbox"
       "firefox"
       "ghostty"
