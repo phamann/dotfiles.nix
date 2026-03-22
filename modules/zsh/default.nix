@@ -57,8 +57,7 @@ in {
         export EDITOR="$(which nvim)"
         export GIT_EDITOR="nvim"
         export BROWSER="/Applications/Zen Browser.app/Contents/MacOS/zen"
-export GITHUB_USER="phamann"
-        export GITHUB_PERSONAL_ACCESS_TOKEN="$(op read 'op://Private/github-pat/password' 2>/dev/null)"
+        export GITHUB_USER="phamann"
         export GREP_COLOR='1;32'
         export CLICOLOR=1
         export GOPATH=$HOME/Projects

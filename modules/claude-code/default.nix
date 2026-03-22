@@ -9,6 +9,12 @@ let
     exec ${pkgs.nodejs}/bin/npx -y @upstash/context7-mcp "$@"
   '';
 
+  # Wrapper that injects GitHub token once at claude launch; inherited by all child processes
+  claudeWithToken = pkgs.writeShellScriptBin "claude" ''
+    export GITHUB_PERSONAL_ACCESS_TOKEN="$(${pkgs._1password-cli}/bin/op read 'op://Private/github-pat/password' 2>/dev/null)"
+    exec ${inputs.claude-code-nix.packages.${system}.claude-code}/bin/claude "$@"
+  '';
+
 in
 {
   options.modules.claude-code = { enable = mkEnableOption "claude-code"; };
@@ -16,7 +22,7 @@ in
   config = mkIf cfg.enable {
     programs.claude-code = {
       enable = true;
-      package = inputs.claude-code-nix.packages.${system}.claude-code;
+      package = claudeWithToken;
 
       settings = {
         permissions = {
