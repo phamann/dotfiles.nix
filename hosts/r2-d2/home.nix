@@ -16,10 +16,11 @@
       claude-code.enable = true;
       direnv.enable = true;
       fzf.enable = true;
+      ghostty.enable = true;
       git.enable = true;
       gpg.enable = true;
       gui.enable = true;
-      kitty.enable = true;
+      kitty.enable = false;
       nvim.enable = true;
       packages.enable = true;
       ssh.enable = true;
@@ -32,7 +33,6 @@
 
       packages.additional-packages = with pkgs; [
         unstable.colima
-        infra
         kubectl
         kubernetes-helm
         graphviz

@@ -5,6 +5,7 @@
     ./claude-code
     ./direnv
     ./fzf
+    ./ghostty
     ./git
     ./gpg
     ./gui

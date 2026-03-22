@@ -1,6 +1,6 @@
 { pkgs, ... }: {
 
-  nix.enable = false;
+  nixpkgs.config.allowUnfree = true;
 
   networking = {
     hostName = "x-wing";
@@ -76,9 +76,11 @@
       "1password"
       "bartender"
       "claude"
+      "daisydisk"
       "dropbox"
       "firefox"
       "ghostty"
+      "lm-studio"
       "nordvpn"
       "notion-calendar"
       "macdown"
@@ -88,16 +90,27 @@
       "slack"
       "sonos"
       "spotify"
+      "superwhisper"
       "tailscale"
       "vlc"
       "zed"
       "zen-browser"
     ];
-    taps = [{ name = "felipeelias/tap"; }];
-    brews = [{ name = "felipeelias/tap/claude-statusline"; }];
+    taps = [
+      { name = "terrastruct/tap"; }
+      { name = "felipeelias/tap"; }
+    ];
+    brews = [
+      { name = "terrastruct/tap/tala"; }
+      { name = "felipeelias/tap/claude-statusline"; }
+    ];
   };
 
   # Tailscale
   # ervices.tailscale.enable = true;
   environment.systemPackages = with pkgs; [ unstable.tailscale ];
+
+  environment.systemPath = [ "/opt/homebrew/bin" "/opt/homebrew/sbin" ];
+
+  nix.enable = false;
 }
