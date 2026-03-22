@@ -93,6 +93,8 @@
       "zed"
       "zen-browser"
     ];
+    taps = [{ name = "felipeelias/tap"; }];
+    brews = [{ name = "felipeelias/tap/claude-statusline"; }];
   };
 
   # Tailscale

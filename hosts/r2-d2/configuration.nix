@@ -102,8 +102,14 @@
       "zed"
       "zen-browser"
     ];
-    taps = [{ name = "terrastruct/tap"; }];
-    brews = [{ name = "terrastruct/tap/tala"; }];
+    taps = [
+      { name = "terrastruct/tap"; }
+      { name = "felipeelias/tap"; }
+    ];
+    brews = [
+      { name = "terrastruct/tap/tala"; }
+      { name = "felipeelias/tap/claude-statusline"; }
+    ];
   };
 
   # Tailscale

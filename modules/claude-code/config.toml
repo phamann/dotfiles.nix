@@ -1,0 +1,16 @@
+preset = "default"
+
+[directory]
+style = "fg:#8caaee bold"
+
+[git_branch]
+style = "fg:#a6d189"
+
+[model]
+style = "fg:#ca9ee6"
+
+[cost]
+style = "fg:#e5c890"
+
+[context]
+style = "fg:#babbf1"

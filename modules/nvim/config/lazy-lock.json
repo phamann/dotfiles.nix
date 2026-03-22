@@ -45,6 +45,7 @@
   "onedarkpro.nvim": { "branch": "main", "commit": "515d3299832d9e4a46296c8e5bc9a3eb539b5044" },
   "peek.nvim": { "branch": "master", "commit": "5820d937d5414baea5f586dc2a3d912a74636e5b" },
   "plenary.nvim": { "branch": "master", "commit": "857c5ac632080dba10aae49dba902ce3abf91b35" },
+  "rustaceanvim": { "branch": "master", "commit": "88575b98bb9937fb9983ddec5e532b67e75ce677" },
   "styler.nvim": { "branch": "main", "commit": "cd616580f206d929a319987f8f9aa7e0bd6f11ef" },
   "telescope-changed-files": { "branch": "main", "commit": "0ccf50680abba21127c46c477f4646f2c5589767" },
   "telescope-emoji.nvim": { "branch": "master", "commit": "86248d97be84a1ce83f0541500ef9edc99ea2aa1" },
