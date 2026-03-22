@@ -43,7 +43,23 @@ pbcopy < ~/.ssh/id_ed25519.pub
 
 ---
 
-## 3. Add SSH Key to GitHub
+## 3. Import GPG Key
+
+Import the GPG private key stored in 1Password:
+
+```zsh
+op document get private.gpg --output /tmp/private.asc && gpg --allow-secret-key-import --import /tmp/private.asc && rm /tmp/private.asc
+```
+
+Verify the key was imported:
+
+```zsh
+gpg --list-secret-keys
+```
+
+---
+
+## 4. Add SSH Key to GitHub
 
 1. Go to [github.com/settings/keys](https://github.com/settings/keys)
 2. **New SSH key** → paste the public key → save
@@ -57,7 +73,7 @@ ssh -T git@github.com
 
 ---
 
-## 4. Install Nix (Determinate Systems)
+## 5. Install Nix (Determinate Systems)
 
 **macOS:** Use the GUI `.pkg` installer — download from:
 
@@ -85,7 +101,7 @@ Restart your shell or source the environment:
 
 ---
 
-## 5. Clone Dotfiles
+## 6. Clone Dotfiles
 
 ```zsh
 git clone git@github.com:phamann/dotfiles.nix.git $HOME/.config/nixpkgs
@@ -94,7 +110,7 @@ cd $HOME/.config/nixpkgs
 
 ---
 
-## 6. Apply Configuration
+## 7. Apply Configuration
 
 Run the appropriate target for this machine:
 
@@ -112,7 +128,7 @@ This will take a while on first run.
 
 ---
 
-## 7. Test Configuration
+## 8. Test Configuration
 
 ```zsh
 # Verify nix-darwin (macOS)
