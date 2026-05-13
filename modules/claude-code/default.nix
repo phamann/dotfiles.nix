@@ -1,6 +1,6 @@
 { pkgs, lib, config, inputs, system, ... }:
-with lib;
 let
+  inherit (lib) mkEnableOption mkIf;
   cfg = config.modules.claude-code;
   palette = config.modules.theme.palette;
 

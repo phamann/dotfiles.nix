@@ -1,6 +1,7 @@
 { lib, config, ... }:
-with lib;
-let cfg = config.modules.zed;
+let
+  inherit (lib) mkEnableOption mkIf;
+  cfg = config.modules.zed;
 in {
   options.modules.zed = { enable = mkEnableOption "zed"; };
   config = mkIf cfg.enable {

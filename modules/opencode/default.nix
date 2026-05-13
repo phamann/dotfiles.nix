@@ -1,6 +1,6 @@
 { pkgs, lib, config, ... }:
-with lib;
 let
+  inherit (lib) mkEnableOption mkIf;
   cfg = config.modules.opencode;
   themeCfg = config.modules.theme;
 

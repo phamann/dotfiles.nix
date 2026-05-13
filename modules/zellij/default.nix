@@ -1,6 +1,7 @@
 { pkgs, lib, config, ... }:
-with lib;
-let cfg = config.modules.zellij;
+let
+  inherit (lib) mkEnableOption mkIf mkOption types;
+  cfg = config.modules.zellij;
 in {
   options.modules.zellij = {
     enable = mkEnableOption "zellij";

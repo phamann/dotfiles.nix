@@ -1,6 +1,6 @@
 { inputs, lib, config, ... }:
-with lib;
 let
+  inherit (lib) mkEnableOption mkIf mkOption types mapAttrs importJSON;
   cfg = config.modules.theme;
 
   # Read the active flavour's hex palette straight from catppuccin/nix's

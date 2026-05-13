@@ -1,6 +1,7 @@
 { pkgs, lib, config, ... }:
-with lib;
-let cfg = config.modules.git;
+let
+  inherit (lib) mkEnableOption mkIf;
+  cfg = config.modules.git;
 in
 {
   options.modules.git = { enable = mkEnableOption "git"; };

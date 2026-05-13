@@ -1,10 +1,11 @@
 { pkgs, lib, config, ... }:
-with lib;
 let
+  inherit (lib) mkEnableOption mkIf;
+  inherit (lib.strings) toUpper;
   cfg = config.modules.ghostty;
   themeCfg = config.modules.theme;
   # Ghostty ships built-in Catppuccin themes named like "Catppuccin Frappe".
-  ghosttyTheme = flavour: "Catppuccin ${strings.toUpper (substring 0 1 flavour)}${substring 1 (-1) flavour}";
+  ghosttyTheme = flavour: "Catppuccin ${toUpper (builtins.substring 0 1 flavour)}${builtins.substring 1 (-1) flavour}";
 in {
   options.modules.ghostty = { enable = mkEnableOption "ghostty"; };
   config = mkIf cfg.enable {

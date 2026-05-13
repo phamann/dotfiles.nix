@@ -1,6 +1,7 @@
 { pkgs, lib, config, ... }:
-with lib;
-let cfg = config.modules.zsh;
+let
+  inherit (lib) mkEnableOption mkIf mkOrder types;
+  cfg = config.modules.zsh;
 in {
   options.modules.zsh = {
     enable = mkEnableOption "zsh";

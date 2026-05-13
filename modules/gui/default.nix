@@ -1,6 +1,7 @@
 { pkgs, lib, config, ... }:
-with lib;
-let cfg = config.modules.gui;
+let
+  inherit (lib) mkEnableOption mkIf mkOption types;
+  cfg = config.modules.gui;
 in {
   options.modules.gui = {
     enable = mkEnableOption "gui";

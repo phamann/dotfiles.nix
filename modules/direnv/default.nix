@@ -1,6 +1,7 @@
 { pkgs, lib, config, ... }:
-with lib;
-let cfg = config.modules.direnv;
+let
+  inherit (lib) mkEnableOption mkIf;
+  cfg = config.modules.direnv;
 in {
   options.modules.direnv = { enable = mkEnableOption "direnv"; };
   config = mkIf cfg.enable {
