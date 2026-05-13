@@ -11,8 +11,8 @@ let
     mkMerge
     mkOrder
     ;
-  cfg = config.modules.zsh;
-  isDarwin = pkgs.stdenv.hostPlatform.isDarwin;
+  inherit (config.modules) zsh;
+  inherit (pkgs.stdenv.hostPlatform) isDarwin;
 in
 {
   options.modules.zsh = {
@@ -25,7 +25,7 @@ in
     work = mkEnableOption "work-specific env (Vertex AI, postgresql@17 PATH)";
   };
 
-  config = mkIf cfg.enable (mkMerge [
+  config = mkIf zsh.enable (mkMerge [
     # ===== Universal =====
     {
       home.sessionVariables = {
@@ -229,7 +229,7 @@ in
           # Load tools
           source ${pkgs.grc}/etc/grc.zsh
           eval "$(zoxide init zsh)"
-          ${if cfg.keychain then "eval $(keychain --eval --quiet ~/.ssh/id_rsa)" else ""}
+          ${if zsh.keychain then "eval $(keychain --eval --quiet ~/.ssh/id_rsa)" else ""}
           eval "$(direnv hook zsh)"
           eval "$(starship init zsh)"
         '';
@@ -248,7 +248,7 @@ in
     })
 
     # ===== Work =====
-    (mkIf cfg.work {
+    (mkIf zsh.work {
       home.sessionVariables = {
         GOOGLE_GENAI_USE_VERTEXAI = "true";
         GOOGLE_CLOUD_PROJECT = "vertexai-core-misc-b097";

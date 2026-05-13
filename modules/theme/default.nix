@@ -93,7 +93,7 @@ in
     # use tokyo-night). Per-app modules are opted-in inside each app's module.
     catppuccin = {
       flavor = cfg.flavour;
-      accent = cfg.accent;
+      inherit (cfg) accent;
     };
 
     home.sessionVariables = {

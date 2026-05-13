@@ -8,8 +8,8 @@
 }:
 let
   inherit (lib) mkEnableOption mkIf;
-  cfg = config.modules.claude-code;
-  palette = config.modules.theme.palette;
+  inherit (config.modules) claude-code;
+  inherit (config.modules.theme) palette;
 
   mcpWrappers = import ../../lib/mcp-wrappers.nix { inherit pkgs; };
 
@@ -25,7 +25,7 @@ in
     enable = mkEnableOption "claude-code";
   };
 
-  config = mkIf cfg.enable {
+  config = mkIf claude-code.enable {
     programs.claude-code = {
       enable = true;
       package = claudeWithToken;

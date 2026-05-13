@@ -15,6 +15,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    git-hooks = {
+      url = "github:cachix/git-hooks.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     darwin = {
       url = "github:nix-darwin/nix-darwin/nix-darwin-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -53,6 +58,7 @@
         ./flake/treefmt.nix
         ./flake/checks.nix
         ./flake/dev-shell.nix
+        ./flake/git-hooks.nix
       ];
 
       perSystem =

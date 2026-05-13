@@ -1,0 +1,9 @@
+# statix lints to disable for this repo.
+disabled = [
+  # `cfg = config.modules.<name>;` is the canonical module-config alias
+  # idiom across nixpkgs/nix-darwin/home-manager. Statix wants this rewritten
+  # to `inherit (config.modules) <name>;`, but that drops the `cfg` short
+  # name that the rest of the module body relies on — there's no
+  # inherit-with-rename syntax in Nix to keep both. Disable repo-wide.
+  "manual_inherit",
+]
