@@ -1,0 +1,44 @@
+name: check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: nix flake check (${{ matrix.os }})
+    strategy:
+      # Don't cancel macOS just because Linux failed (or vice-versa) — we
+      # want full cross-platform visibility on every PR.
+      fail-fast: false
+      matrix:
+        os:
+          - macos-14 # aarch64-darwin (Apple silicon) — covers r2-d2 + x-wing
+          - ubuntu-24.04 # x86_64-linux — covers yoda
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+      - name: Run flake check
+        # Exercises everything via the per-host eval checks plus treefmt
+        # and pre-commit (statix + deadnix). The Linux runner is what
+        # finally validates yoda's homeConfiguration end-to-end — catppuccin
+        # IFD requires substituting an x86_64-linux derivation which
+        # aarch64-darwin can't realize locally.
+        run: nix flake check --accept-flake-config
+
+  lockfile:
+    name: flake lockfile staleness
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inspect flake.lock
+        uses: DeterminateSystems/flake-checker-action@main
+        with:
+          # Don't fail PRs on staleness — just publish a summary report.
+          fail-mode: false
