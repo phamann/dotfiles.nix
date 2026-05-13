@@ -10,6 +10,19 @@ return {
         require("go").setup({
             lsp_cfg = {
                 capabilities = capabilities,
+                cmd = { "env", "GOMEMLIMIT=12GiB", "gopls" },
+                settings = {
+                    gopls = {
+                        directoryFilters = {
+                            "-**/vendor",
+                            "-**/node_modules",
+                            "-**/apps",
+                        },
+                        expandWorkspaceToModule = false,
+                        diagnosticsDelay = "1s",
+                        gofumpt = true,
+                    },
+                },
             },
         })
         local format_sync_grp = vim.api.nvim_create_augroup("GoFormat", {})

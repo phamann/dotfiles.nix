@@ -25,7 +25,7 @@ local shared_on_attach = function(client, bufnr)
         bufopts)
 
     vim.api.nvim_create_autocmd("BufWritePre", {
-        pattern = { "*.rs", "*.go" },
+        pattern = { "*.rs" },
         command = [[lua vim.lsp.buf.format()]]
     })
 end
@@ -199,6 +199,38 @@ return {
         vim.lsp.config('jdtls', {
             cmd = { "jdtls", "-data", workspace_dir }
         })
+
+        vim.lsp.config('ts_ls', {
+            filetypes = {
+                "typescript", "typescriptreact",
+                "javascript", "javascriptreact"
+            },
+            on_attach = function(client, bufnr)
+                shared_on_attach(client, bufnr)
+                vim.keymap.set('n', '<leader>oi',
+                    function()
+                        vim.lsp.buf.code_action({
+                            apply = true,
+                            context = { only = { "source.organizeImports" }, diagnostics = {} }
+                        })
+                    end,
+                    { noremap = true, silent = true, buffer = bufnr, desc = "Organize imports" }
+                )
+            end,
+            init_options = {
+                preferences = {
+                    includeInlayParameterNameHints = "all",
+                    includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+                    includeInlayFunctionParameterTypeHints = true,
+                    includeInlayVariableTypeHints = true,
+                    includeInlayPropertyDeclarationTypeHints = true,
+                    includeInlayFunctionLikeReturnTypeHints = true,
+                    includeInlayEnumMemberValueHints = true,
+                    importModuleSpecifierPreference = "non-relative"
+                }
+            }
+        })
+        vim.lsp.enable('ts_ls')
 
         if not configs.regols then
             configs.regols = {
