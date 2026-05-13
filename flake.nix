@@ -10,6 +10,11 @@
       inputs.nixpkgs-lib.follows = "nixpkgs";
     };
 
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     darwin = {
       url = "github:nix-darwin/nix-darwin/nix-darwin-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -41,6 +46,7 @@
 
       imports = [
         ./flake/hosts.nix
+        ./flake/treefmt.nix
       ];
 
       perSystem = { system, ... }: {
