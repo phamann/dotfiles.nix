@@ -51,6 +51,7 @@
       imports = [
         ./flake/hosts.nix
         ./flake/treefmt.nix
+        ./flake/checks.nix
       ];
 
       perSystem =
