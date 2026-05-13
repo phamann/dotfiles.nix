@@ -8,7 +8,8 @@ let
     rev = "e9e21cffd98787f1b59e6f6e42db599f9b8ab399";
     hash = "sha256-04po0A7bVMsmYdJcKL6oL39RlMLij1lRKvWl5AUXJ7Q=";
   };
-in {
+in
+{
   options.modules.git = { enable = mkEnableOption "git"; };
   config = mkIf cfg.enable {
     programs.git = {
@@ -25,8 +26,9 @@ in {
         };
         user = {
           name = "Patrick Hamann";
-          email = "patrickhamann@gmail.com";
+          email = "patrick.hamann@incident.io";
         };
+        core = { hooksPath = "~/.git-hooks"; };
         init = { defaultBranch = "main"; };
         url = { "git@github.com:" = { insteadOf = "https://github.com/"; }; };
         mergetool = {
@@ -35,7 +37,7 @@ in {
         };
       };
       signing = {
-        key = "CD2E6283475DC528";
+        key = "51DEA9FE8BB98BD2";
         signByDefault = true;
       };
       ignores =
