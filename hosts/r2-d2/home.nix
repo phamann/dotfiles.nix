@@ -39,7 +39,10 @@
       tmux.enable = true;
       zed.enable = true;
       zellij.enable = true;
-      zsh.enable = true;
+      zsh = {
+        enable = true;
+        work = true;
+      };
       opencode.enable = true;
 
       # incident.io-specific tooling that doesn't yet have a home in the
