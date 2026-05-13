@@ -75,11 +75,16 @@
       "1password"
       "bartender"
       "claude"
+      "cursor"
       "daisydisk"
       "dropbox"
       "firefox"
       "ghostty"
+      "gram"
+      "granola"
+      "linear"
       "lm-studio"
+      "loom"
       "nordvpn"
       "notion-calendar"
       "macdown"
@@ -90,10 +95,12 @@
       "sonos"
       "spotify"
       "superwhisper"
-      "tailscale"
+      "postico"
+      "tailscale-app"
       "vlc"
       "zed"
-      "zen-browser"
+      "zen"
+      "zoom"
     ];
     taps = [
       { name = "terrastruct/tap"; }
@@ -102,6 +109,9 @@
     brews = [
       { name = "terrastruct/tap/tala"; }
       { name = "felipeelias/tap/claude-statusline"; }
+      "postgresql@17"
+      "redis"
+      "memcached"
     ];
   };
 
@@ -109,6 +119,6 @@
   # ervices.tailscale.enable = true;
   environment.systemPackages = with pkgs; [ unstable.tailscale ];
 
-  environment.systemPath = [ "/opt/homebrew/bin" "/opt/homebrew/sbin" ];
+  environment.systemPath = [ "/opt/homebrew/bin" "/opt/homebrew/sbin" "/opt/homebrew/opt/postgresql@17/bin" ];
 
 }

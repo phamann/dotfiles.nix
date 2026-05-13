@@ -91,10 +91,10 @@
       "sonos"
       "spotify"
       "superwhisper"
-      "tailscale"
+      "tailscale-app"
       "vlc"
       "zed"
-      "zen-browser"
+      "zen"
     ];
     taps = [
       { name = "terrastruct/tap"; }
