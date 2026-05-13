@@ -7,6 +7,7 @@ All configuration is defined in functionality/package-specific modules in the `m
 ## Documentation
 
 - [New machine setup](docs/SETUP.md)
+- [Theming](docs/THEMING.md)
 
 ## Hosts
 
