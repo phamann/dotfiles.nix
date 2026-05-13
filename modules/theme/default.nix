@@ -1,35 +1,71 @@
-{ inputs, lib, config, ... }:
+{
+  inputs,
+  lib,
+  config,
+  ...
+}:
 let
-  inherit (lib) mkEnableOption mkIf mkOption types mapAttrs importJSON;
+  inherit (lib)
+    mkEnableOption
+    mkIf
+    mkOption
+    types
+    mapAttrs
+    importJSON
+    ;
   cfg = config.modules.theme;
 
   # Read the active flavour's hex palette straight from catppuccin/nix's
   # palette source. Same JSON the upstream per-app modules consume.
-  paletteFor = flavour:
+  paletteFor =
+    flavour:
     mapAttrs (_: c: c.hex)
       (importJSON "${config.catppuccin.sources.palette}/palette.json").${flavour}.colors;
-in {
+in
+{
   imports = [ inputs.catppuccin.homeModules.catppuccin ];
 
   options.modules.theme = {
     enable = mkEnableOption "theme";
 
     flavour = mkOption {
-      type = types.enum [ "latte" "frappe" "macchiato" "mocha" ];
+      type = types.enum [
+        "latte"
+        "frappe"
+        "macchiato"
+        "mocha"
+      ];
       default = "frappe";
       description = "Primary (dark) Catppuccin flavour.";
     };
 
     lightFlavour = mkOption {
-      type = types.enum [ "latte" "frappe" "macchiato" "mocha" ];
+      type = types.enum [
+        "latte"
+        "frappe"
+        "macchiato"
+        "mocha"
+      ];
       default = "latte";
       description = "Flavour for apps that support a light/dark split (e.g. ghostty, zed).";
     };
 
     accent = mkOption {
       type = types.enum [
-        "rosewater" "flamingo" "pink" "mauve" "red" "maroon"
-        "peach" "yellow" "green" "teal" "sky" "sapphire" "blue" "lavender"
+        "rosewater"
+        "flamingo"
+        "pink"
+        "mauve"
+        "red"
+        "maroon"
+        "peach"
+        "yellow"
+        "green"
+        "teal"
+        "sky"
+        "sapphire"
+        "blue"
+        "lavender"
       ];
       default = "mauve";
       description = "Global Catppuccin accent colour.";

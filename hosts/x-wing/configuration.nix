@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
 
   nixpkgs.config.allowUnfree = true;
 
@@ -28,7 +29,9 @@
         NSDocumentSaveNewDocumentsToCloud = false;
       };
 
-      WindowManager = { EnableTiledWindowMargins = false; };
+      WindowManager = {
+        EnableTiledWindowMargins = false;
+      };
 
       # Dock settings
       dock = {
@@ -110,7 +113,10 @@
   # ervices.tailscale.enable = true;
   environment.systemPackages = with pkgs; [ unstable.tailscale ];
 
-  environment.systemPath = [ "/opt/homebrew/bin" "/opt/homebrew/sbin" ];
+  environment.systemPath = [
+    "/opt/homebrew/bin"
+    "/opt/homebrew/sbin"
+  ];
 
   nix.enable = false;
 }

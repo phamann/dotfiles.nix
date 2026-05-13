@@ -1,9 +1,17 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 let
   inherit (lib) mkEnableOption mkIf;
   cfg = config.modules.kitty;
-in {
-  options.modules.kitty = { enable = mkEnableOption "kitty"; };
+in
+{
+  options.modules.kitty = {
+    enable = mkEnableOption "kitty";
+  };
   config = mkIf cfg.enable {
     programs.kitty = {
       enable = true;
@@ -11,8 +19,7 @@ in {
     };
     xdg.configFile = {
       "kitty/kitty.app.icns" = {
-        source = config.lib.file.mkOutOfStoreSymlink
-          "${config.home.homeDirectory}/.config/nixpkgs/modules/kitty/kitty.app.icns";
+        source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/nixpkgs/modules/kitty/kitty.app.icns";
       };
     };
   };

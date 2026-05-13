@@ -40,45 +40,51 @@
     catppuccin.url = "github:catppuccin/nix/release-25.11";
   };
 
-  outputs = inputs@{ flake-parts, ... }:
+  outputs =
+    inputs@{ flake-parts, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
-      systems = [ "aarch64-darwin" "x86_64-linux" ];
+      systems = [
+        "aarch64-darwin"
+        "x86_64-linux"
+      ];
 
       imports = [
         ./flake/hosts.nix
         ./flake/treefmt.nix
       ];
 
-      perSystem = { system, ... }: {
-        # Custom pkgs for every flake-module that consumes `{ pkgs, ... }`.
-        # Same overlays as the pre-flake-parts pkgsForSystem helper:
-        # `pkgs.unstable.*` for unstable channel access, rust-overlay for
-        # toolchain pinning, and aarch64-darwin checkPhase skips.
-        _module.args.pkgs = import inputs.nixpkgs {
-          inherit system;
-          config.allowUnfree = true;
-          overlays = [
-            (_: _: {
-              unstable = import inputs.nixpkgs-unstable {
-                inherit system;
-                config.allowUnfree = true;
-              };
-            })
-            inputs.rust-overlay.overlays.default
-            (_: prev: {
-              coredns = prev.coredns.overrideAttrs (_: {
-                doCheck = false;
-                doInstallCheck = false;
-              });
-              open-policy-agent = prev.open-policy-agent.overrideAttrs (_: {
-                doCheck = false;
-              });
-              direnv = prev.direnv.overrideAttrs (_: {
-                doCheck = false;
-              });
-            })
-          ];
+      perSystem =
+        { system, ... }:
+        {
+          # Custom pkgs for every flake-module that consumes `{ pkgs, ... }`.
+          # Same overlays as the pre-flake-parts pkgsForSystem helper:
+          # `pkgs.unstable.*` for unstable channel access, rust-overlay for
+          # toolchain pinning, and aarch64-darwin checkPhase skips.
+          _module.args.pkgs = import inputs.nixpkgs {
+            inherit system;
+            config.allowUnfree = true;
+            overlays = [
+              (_: _: {
+                unstable = import inputs.nixpkgs-unstable {
+                  inherit system;
+                  config.allowUnfree = true;
+                };
+              })
+              inputs.rust-overlay.overlays.default
+              (_: prev: {
+                coredns = prev.coredns.overrideAttrs (_: {
+                  doCheck = false;
+                  doInstallCheck = false;
+                });
+                open-policy-agent = prev.open-policy-agent.overrideAttrs (_: {
+                  doCheck = false;
+                });
+                direnv = prev.direnv.overrideAttrs (_: {
+                  doCheck = false;
+                });
+              })
+            ];
+          };
         };
-      };
     };
 }

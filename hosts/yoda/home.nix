@@ -1,10 +1,10 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   imports = [ ../../modules/default.nix ];
   config = {
     home = {
       username = "phamann";
-      homeDirectory =
-        "/${if pkgs.stdenv.isDarwin then "Users" else "home"}/phamann";
+      homeDirectory = "/${if pkgs.stdenv.isDarwin then "Users" else "home"}/phamann";
       stateVersion = "22.11";
     };
 

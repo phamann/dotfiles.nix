@@ -2,8 +2,11 @@
 let
   inherit (lib) mkEnableOption mkIf;
   cfg = config.modules.zed;
-in {
-  options.modules.zed = { enable = mkEnableOption "zed"; };
+in
+{
+  options.modules.zed = {
+    enable = mkEnableOption "zed";
+  };
   config = mkIf cfg.enable {
     programs.zed-editor = {
       enable = true;
@@ -14,18 +17,24 @@ in {
         buffer_font_size = 16;
         restore_on_startup = "last_workspace";
         buffer_font_family = "JetBrainsMono Nerd Font Mono";
-        buffer_font_features = { calt = false; };
+        buffer_font_features = {
+          calt = false;
+        };
         autosave = "on_window_change";
         load_direnv = "shell_hook";
         show_wrap_guides = true;
         wrap_guides = [ 80 ];
-        inlay_hints = { enabled = true; };
+        inlay_hints = {
+          enabled = true;
+        };
         preview_tabs = {
           enabled = true;
           enable_preview_from_file_finder = true;
           enable_preview_from_code_navigation = true;
         };
-        minimap = { show = "auto"; };
+        minimap = {
+          show = "auto";
+        };
         telemetry = {
           diagnostics = false;
           metrics = false;
@@ -33,7 +42,9 @@ in {
         lsp = {
           nil = {
             initialization_options = {
-              formatting = { command = [ "nixfmt" ]; };
+              formatting = {
+                command = [ "nixfmt" ];
+              };
             };
           };
         };
@@ -43,7 +54,9 @@ in {
             delay_ms = 500;
           };
         };
-        terminal = { line_height = "standard"; };
+        terminal = {
+          line_height = "standard";
+        };
         language_models = {
           ollama = {
             api_url = "http://localhost:11434";

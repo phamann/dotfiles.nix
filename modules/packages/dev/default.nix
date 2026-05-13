@@ -1,8 +1,14 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 let
   inherit (lib) mkEnableOption mkIf;
   cfg = config.modules.packages.dev;
-in {
+in
+{
   options.modules.packages.dev.enable =
     mkEnableOption "language toolchains, LSPs, linters, formatters, build tools";
 

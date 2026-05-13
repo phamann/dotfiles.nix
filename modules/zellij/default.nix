@@ -1,8 +1,19 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 let
-  inherit (lib) mkEnableOption mkIf mkOption types;
+  inherit (lib)
+    mkEnableOption
+    mkIf
+    mkOption
+    types
+    ;
   cfg = config.modules.zellij;
-in {
+in
+{
   options.modules.zellij = {
     enable = mkEnableOption "zellij";
     layout = mkOption {
@@ -18,11 +29,10 @@ in {
     home.file = {
       ".config/zellij/layouts/compact-top.kdl".source = ./compact-top.kdl;
       ".config/zellij/layouts/compact-bottom.kdl".source = ./compact-bottom.kdl;
-      ".config/zellij/config.kdl".source =
-        pkgs.replaceVars ./config.kdl {
-          layout = "${cfg.layout}";
-          theme = "catppuccin-${config.modules.theme.flavour}";
-        };
+      ".config/zellij/config.kdl".source = pkgs.replaceVars ./config.kdl {
+        layout = "${cfg.layout}";
+        theme = "catppuccin-${config.modules.theme.flavour}";
+      };
     };
   };
 }

@@ -2,8 +2,11 @@
 let
   inherit (lib) mkEnableOption mkIf;
   cfg = config.modules.ssh;
-in {
-  options.modules.ssh = { enable = mkEnableOption "ssh"; };
+in
+{
+  options.modules.ssh = {
+    enable = mkEnableOption "ssh";
+  };
   config = mkIf cfg.enable {
     programs.ssh = {
       enable = true;
@@ -14,7 +17,9 @@ in {
 
       matchBlocks = {
         "*" = {
-          setEnv = { TERM = "xterm-256color"; };
+          setEnv = {
+            TERM = "xterm-256color";
+          };
           controlMaster = "no";
           controlPath = "~/.ssh/master-%r@%n:%p";
           controlPersist = "30m";

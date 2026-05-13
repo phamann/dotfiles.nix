@@ -1,9 +1,20 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 let
-  inherit (lib) mkEnableOption mkIf mkMerge mkOrder;
+  inherit (lib)
+    mkEnableOption
+    mkIf
+    mkMerge
+    mkOrder
+    ;
   cfg = config.modules.zsh;
   isDarwin = pkgs.stdenv.hostPlatform.isDarwin;
-in {
+in
+{
   options.modules.zsh = {
     enable = mkEnableOption "zsh";
     # NB: the pre-Phase-1 form was `mkEnableOption { type = ...; default = true; }`
@@ -75,7 +86,10 @@ in {
           save = 10000;
           ignoreDups = true;
           ignoreSpace = true;
-          ignorePatterns = [ "rm *" "pkill *" ];
+          ignorePatterns = [
+            "rm *"
+            "pkill *"
+          ];
         };
         historySubstringSearch.enable = true;
         initContent = mkOrder 550 ''
@@ -215,10 +229,7 @@ in {
           # Load tools
           source ${pkgs.grc}/etc/grc.zsh
           eval "$(zoxide init zsh)"
-          ${if cfg.keychain then
-            "eval $(keychain --eval --quiet ~/.ssh/id_rsa)"
-          else
-            ""}
+          ${if cfg.keychain then "eval $(keychain --eval --quiet ~/.ssh/id_rsa)" else ""}
           eval "$(direnv hook zsh)"
           eval "$(starship init zsh)"
         '';

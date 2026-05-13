@@ -1,4 +1,9 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 let
   inherit (lib) mkEnableOption mkIf;
   cfg = config.modules.opencode;
@@ -11,8 +16,11 @@ let
     export GITHUB_PERSONAL_ACCESS_TOKEN="$(${pkgs._1password-cli}/bin/op read 'op://Private/github-pat/password' 2>/dev/null)"
     exec ${pkgs.unstable.opencode}/bin/opencode "$@"
   '';
-in {
-  options.modules.opencode = { enable = mkEnableOption "opencode"; };
+in
+{
+  options.modules.opencode = {
+    enable = mkEnableOption "opencode";
+  };
 
   config = mkIf cfg.enable {
     programs.opencode = {
@@ -30,7 +38,9 @@ in {
           "lmstudio" = {
             npm = "@ai-sdk/openai-compatible";
             name = "LM Studio (local)";
-            options = { baseURL = "http://127.0.0.1:1234/v1"; };
+            options = {
+              baseURL = "http://127.0.0.1:1234/v1";
+            };
             models = {
               "qwen3.6-35b-a3b" = {
                 name = "Qwen3.6 35B-A3B (local)";
@@ -43,7 +53,9 @@ in {
                   output = 16384;
                 };
               };
-              "zai-org/glm-4.7-flash" = { name = "GLM 4.7 Flash (local)"; };
+              "zai-org/glm-4.7-flash" = {
+                name = "GLM 4.7 Flash (local)";
+              };
             };
           };
         };

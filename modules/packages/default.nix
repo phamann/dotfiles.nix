@@ -1,8 +1,14 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 let
   inherit (lib) mkOption types;
   cfg = config.modules.packages;
-in {
+in
+{
   imports = [
     ./cli
     ./dev

@@ -1,4 +1,9 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 let
   inherit (lib) mkEnableOption mkIf;
   cfg = config.modules.tmux;
@@ -13,8 +18,11 @@ let
       sha256 = "sha256-R1t6E5Dd3Zq0MPdXnYyvU0+juC2/0pt6r+Hi3QeMKm4=";
     };
   };
-in {
-  options.modules.tmux = { enable = mkEnableOption "tmux"; };
+in
+{
+  options.modules.tmux = {
+    enable = mkEnableOption "tmux";
+  };
   config = mkIf cfg.enable {
     programs.tmux = {
       enable = true;

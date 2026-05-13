@@ -1,9 +1,17 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 let
   inherit (lib) mkEnableOption mkIf;
   cfg = config.modules.starship;
-in {
-  options.modules.starship = { enable = mkEnableOption "starship"; };
+in
+{
+  options.modules.starship = {
+    enable = mkEnableOption "starship";
+  };
   config = mkIf cfg.enable {
     programs.starship = {
       enable = true;
@@ -50,10 +58,11 @@ in {
           error_symbol = "[±](bold red)";
           vicmd_symbol = "[±](bold green)";
         };
-        git_commit = { tag_symbol = " tag "; };
+        git_commit = {
+          tag_symbol = " tag ";
+        };
         git_status = {
-          format =
-            "([\\[](bold green)[$conflicted$renamed]($style)$modified$untracked$staged$deleted$ahead_behind[\\]](bold green)) ";
+          format = "([\\[](bold green)[$conflicted$renamed]($style)$modified$untracked$staged$deleted$ahead_behind[\\]](bold green)) ";
           ahead = "[>$count](bold red)";
           behind = "[<$count](bold cyan)";
           diverged = "<>";
@@ -71,12 +80,16 @@ in {
           truncate_to_repo = false;
           style = "bold yellow";
         };
-        docker_context = { symbol = "docker "; };
+        docker_context = {
+          symbol = "docker ";
+        };
         git_branch = {
           style = "bold cyan";
           symbol = " ";
         };
-        nix_shell = { symbol = "nix "; };
+        nix_shell = {
+          symbol = "nix ";
+        };
       };
     };
     catppuccin.starship.enable = true;

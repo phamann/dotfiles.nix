@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   imports = [
     ../../modules/default.nix
     # TODO: Fix aliasApplications.nix for darwin.apple_sdk_11_0 removal
@@ -7,8 +8,7 @@
   config = {
     home = {
       username = "phamann";
-      homeDirectory =
-        "/${if pkgs.stdenv.isDarwin then "Users" else "home"}/phamann";
+      homeDirectory = "/${if pkgs.stdenv.isDarwin then "Users" else "home"}/phamann";
       stateVersion = "22.11";
     };
 

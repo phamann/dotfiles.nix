@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
 
   nix.enable = false;
 
@@ -27,7 +28,9 @@
         NSDocumentSaveNewDocumentsToCloud = false;
       };
 
-      WindowManager = { EnableTiledWindowMargins = false; };
+      WindowManager = {
+        EnableTiledWindowMargins = false;
+      };
 
       # Dock settings
       dock = {
@@ -120,6 +123,10 @@
   # ervices.tailscale.enable = true;
   environment.systemPackages = with pkgs; [ unstable.tailscale ];
 
-  environment.systemPath = [ "/opt/homebrew/bin" "/opt/homebrew/sbin" "/opt/homebrew/opt/postgresql@17/bin" ];
+  environment.systemPath = [
+    "/opt/homebrew/bin"
+    "/opt/homebrew/sbin"
+    "/opt/homebrew/opt/postgresql@17/bin"
+  ];
 
 }

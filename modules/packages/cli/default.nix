@@ -1,8 +1,14 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 let
   inherit (lib) mkEnableOption mkIf;
   cfg = config.modules.packages.cli;
-in {
+in
+{
   options.modules.packages.cli.enable =
     mkEnableOption "general CLI utilities, shell plugins, and cloud CLIs";
 
@@ -42,9 +48,12 @@ in {
       _1password-cli
       awscli2
       unstable.fastly
-      (google-cloud-sdk.withExtraComponents (with google-cloud-sdk.components; [
-        gke-gcloud-auth-plugin
-      ]))
+      (google-cloud-sdk.withExtraComponents (
+        with google-cloud-sdk.components;
+        [
+          gke-gcloud-auth-plugin
+        ]
+      ))
 
       # macOS-flavoured
       terminal-notifier

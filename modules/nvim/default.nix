@@ -1,8 +1,14 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 let
   inherit (lib) mkEnableOption mkIf mkMerge;
   cfg = config.modules.nvim;
-in {
+in
+{
   options.modules.nvim = {
     enable = mkEnableOption "nvim";
     # Opt-in for hosts where you iterate on the nvim config live. When set,
@@ -23,8 +29,7 @@ in {
     }
     (mkIf cfg.dev {
       xdg.configFile.nvim = {
-        source = config.lib.file.mkOutOfStoreSymlink
-          "${config.home.homeDirectory}/.config/nixpkgs/modules/nvim/config";
+        source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/nixpkgs/modules/nvim/config";
         recursive = true;
       };
     })

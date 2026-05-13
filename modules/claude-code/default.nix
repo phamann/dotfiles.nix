@@ -1,4 +1,11 @@
-{ pkgs, lib, config, inputs, system, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  inputs,
+  system,
+  ...
+}:
 let
   inherit (lib) mkEnableOption mkIf;
   cfg = config.modules.claude-code;
@@ -14,7 +21,9 @@ let
 
 in
 {
-  options.modules.claude-code = { enable = mkEnableOption "claude-code"; };
+  options.modules.claude-code = {
+    enable = mkEnableOption "claude-code";
+  };
 
   config = mkIf cfg.enable {
     programs.claude-code = {
@@ -31,7 +40,10 @@ in
           };
           "chrome-devtools" = {
             command = "npx";
-            args = [ "-y" "chrome-devtools-mcp@latest" ];
+            args = [
+              "-y"
+              "chrome-devtools-mcp@latest"
+            ];
           };
         };
         permissions = {
@@ -140,9 +152,14 @@ in
       '';
     };
 
-    home.file.".config/claude-statusline/config.toml".source =
-      pkgs.replaceVars ./config.toml {
-        inherit (palette) blue green mauve yellow lavender;
-      };
+    home.file.".config/claude-statusline/config.toml".source = pkgs.replaceVars ./config.toml {
+      inherit (palette)
+        blue
+        green
+        mauve
+        yellow
+        lavender
+        ;
+    };
   };
 }

@@ -1,10 +1,15 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 let
   inherit (lib) mkEnableOption mkIf;
   cfg = config.modules.packages.k8s;
-in {
-  options.modules.packages.k8s.enable =
-    mkEnableOption "Kubernetes / cloud-native tooling";
+in
+{
+  options.modules.packages.k8s.enable = mkEnableOption "Kubernetes / cloud-native tooling";
 
   config = mkIf cfg.enable {
     home.packages = with pkgs; [

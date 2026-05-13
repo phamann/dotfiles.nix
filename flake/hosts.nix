@@ -1,7 +1,13 @@
 { inputs, withSystem, ... }:
 let
-  mkDarwin = { host, system, user }:
-    withSystem system ({ pkgs, ... }:
+  mkDarwin =
+    {
+      host,
+      system,
+      user,
+    }:
+    withSystem system (
+      { pkgs, ... }:
       inputs.darwin.lib.darwinSystem {
         inherit pkgs;
         specialArgs = { inherit inputs; };
@@ -24,15 +30,19 @@ let
             };
           }
         ];
-      });
+      }
+    );
 
-  mkHomeManager = { host, system }:
-    withSystem system ({ pkgs, ... }:
+  mkHomeManager =
+    { host, system }:
+    withSystem system (
+      { pkgs, ... }:
       inputs.home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
         modules = [ (../hosts + "/${host}/home.nix") ];
         extraSpecialArgs = { inherit inputs system; };
-      });
+      }
+    );
 in
 {
   flake.darwinConfigurations = {

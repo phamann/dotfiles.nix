@@ -1,8 +1,19 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 let
-  inherit (lib) mkEnableOption mkIf mkOption types;
+  inherit (lib)
+    mkEnableOption
+    mkIf
+    mkOption
+    types
+    ;
   cfg = config.modules.gui;
-in {
+in
+{
   options.modules.gui = {
     enable = mkEnableOption "gui";
     additional-packages = mkOption {
@@ -11,10 +22,12 @@ in {
     };
   };
   config = mkIf cfg.enable {
-    home.packages = with pkgs;
+    home.packages =
+      with pkgs;
       [
         obsidian
         # signal-desktop
-      ] ++ cfg.additional-packages;
+      ]
+      ++ cfg.additional-packages;
   };
 }
