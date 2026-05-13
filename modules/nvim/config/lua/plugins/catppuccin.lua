@@ -6,7 +6,7 @@ return {
     priority = 1000, -- make sure to load this before all the other start plugins
     config = function()
         require("catppuccin").setup({
-            flavour = "frappe", -- latte, frappe, macchiato, mocha
+            flavour = vim.env.CATPPUCCIN_FLAVOUR or "frappe", -- latte, frappe, macchiato, mocha
             dim_inactive = {
                 enabled = false,
                 shade = "dark",

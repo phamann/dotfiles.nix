@@ -2,6 +2,7 @@
 with lib;
 let
   cfg = config.modules.opencode;
+  themeCfg = config.modules.theme;
 
   mcpWrappers = import ../lib/mcp-wrappers.nix { inherit pkgs; };
 
@@ -19,7 +20,7 @@ in {
       package = opencodeWithGhToken;
 
       settings = {
-        theme = "catppuccin-frappe";
+        theme = "catppuccin-${themeCfg.flavour}";
 
         provider = {
           # Local models served by LM Studio's OpenAI-compatible API.
@@ -72,6 +73,5 @@ in {
         - When creating pull requests in Github ALWAYS mark them in draft status.
       '';
     };
-
   };
 }

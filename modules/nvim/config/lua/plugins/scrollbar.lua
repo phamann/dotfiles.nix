@@ -7,7 +7,7 @@ return {
         -- local colors = require("material.colors")
         -- local colors = require(vim.g.active_color_scheme .. ".colors").setup()
         -- local colors = require(vim.g.active_color_scheme .. ".colors")
-        local colors = require("catppuccin.palettes").get_palette "frappe"
+        local colors = require("catppuccin.palettes").get_palette(vim.env.CATPPUCCIN_FLAVOUR or "frappe")
         scrollbar.setup({
             handle = {color = colors.bg_highlight},
             excluded_filetypes = {

@@ -24,6 +24,8 @@
     };
 
     claude-code-nix.url = "github:sadjow/claude-code-nix";
+
+    catppuccin.url = "github:catppuccin/nix/release-25.11";
   };
 
   outputs =
@@ -34,6 +36,7 @@
     , home-manager
     , rust-overlay
     , claude-code-nix
+    , catppuccin
     , ...
     }@inputs:
     let

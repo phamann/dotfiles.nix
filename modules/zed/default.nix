@@ -8,11 +8,6 @@ in {
       enable = true;
       package = null; # Don't install package as it's installed via cask.
       userSettings = {
-        theme = {
-          mode = "system";
-          light = "Catppuccin Frappé";
-          dark = "Catppuccin Frappé";
-        };
         vim_mode = true;
         ui_font_size = 16;
         buffer_font_size = 16;
@@ -103,5 +98,6 @@ in {
         "xml"
       ];
     };
+    catppuccin.zed.enable = true;
   };
 }

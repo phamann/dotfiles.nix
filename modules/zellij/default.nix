@@ -18,7 +18,10 @@ in {
       ".config/zellij/layouts/compact-top.kdl".source = ./compact-top.kdl;
       ".config/zellij/layouts/compact-bottom.kdl".source = ./compact-bottom.kdl;
       ".config/zellij/config.kdl".source =
-        pkgs.replaceVars ./config.kdl { layout = "${cfg.layout}"; };
+        pkgs.replaceVars ./config.kdl {
+          layout = "${cfg.layout}";
+          theme = "catppuccin-${config.modules.theme.flavour}";
+        };
     };
   };
 }

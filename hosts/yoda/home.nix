@@ -20,6 +20,10 @@
       packages.enable = true;
       ssh.enable = true;
       starship.enable = true;
+      theme = {
+        enable = true;
+        flavour = "frappe";
+      };
       tmux.enable = true;
       zsh.enable = true;
       zellij = {

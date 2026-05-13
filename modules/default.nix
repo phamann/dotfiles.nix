@@ -15,6 +15,7 @@
     ./packages
     ./ssh
     ./starship
+    ./theme
     ./tmux
     ./zed
     ./zellij

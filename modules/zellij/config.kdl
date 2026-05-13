@@ -35,45 +35,6 @@ ui {
 }
 
 themes {
-  tokyo-night-storm {
-    fg 169 177 214
-    bg 36 40 59
-    black 56 62 90
-    red 249 51 87
-    green 158 206 106
-    yellow 224 175 104
-    blue 122 162 247
-    magenta 187 154 247
-    cyan 42 195 222
-    white 192 202 245
-    orange 255 158 100
-  }
-  github-dark {
-    bg "#30363d";
-    fg "#e6edf3";
-    black "#484f58";
-    red "#ff7b72";
-    green "#3fb950";
-    yellow  "#d29922";
-    blue "#58a6ff";
-    magenta "#bc8cff";
-    cyan "#39c5cf";
-    white "#b1bac4";
-    orange "#ffdfb6";
-  }
-  github-dark-dimmed {
-    bg "#22272e"
-    fg "#adbac7"
-    black "#545d68"
-    red  "#f47067"
-    green  "#57ab5a"
-    yellow "#c69026"
-    blue "#539bf5"
-    magenta "#b083f0"
-    cyan  "#39c5cf"
-    white "#909dab"
-    orange "#ffddb0"
-  }
   catppuccin-latte {
     bg "#acb0be" // Surface2
     fg "#4c4f69" // Text
@@ -127,9 +88,7 @@ themes {
     white "#cdd6f4" // Text
   }
 }
-// theme "github-dark"
-// theme "github-dark-dimmed"
-theme "catppuccin-frappe"
+theme "@theme@"
 
 copy_on_select false
 
