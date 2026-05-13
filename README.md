@@ -19,7 +19,6 @@ Adding a new host = a 5–20 line file importing the right profile.
 
 - [New machine setup + dev workflow](docs/SETUP.md)
 - [Theming](docs/THEMING.md)
-- [Refactor plan (Phases 1–5)](plans/refactor-nix-structure.md)
 
 ## Hosts
 
