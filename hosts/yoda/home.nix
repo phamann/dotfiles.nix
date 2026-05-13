@@ -17,7 +17,11 @@
       git.enable = true;
       gpg.enable = true;
       nvim.enable = true;
-      packages.enable = true;
+      packages = {
+        cli.enable = true;
+        dev.enable = true;
+        k8s.enable = true;
+      };
       ssh.enable = true;
       starship.enable = true;
       theme = {

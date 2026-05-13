@@ -29,7 +29,11 @@
         enable = true;
         dev = true;
       };
-      packages.enable = true;
+      packages = {
+        cli.enable = true;
+        dev.enable = true;
+        k8s.enable = true;
+      };
       ssh.enable = true;
       starship.enable = true;
       theme = {
@@ -42,11 +46,10 @@
       zsh.enable = true;
       opencode.enable = true;
 
+      # kubectl/helm now come from packages.k8s; graphviz from packages.dev.
+      # unstable.colima stays here pending platform-aware handling (Phase 3).
       packages.additional-packages = with pkgs; [
         unstable.colima
-        kubectl
-        kubernetes-helm
-        graphviz
       ];
     };
   };

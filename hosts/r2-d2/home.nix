@@ -25,7 +25,11 @@
         enable = true;
         dev = true;
       };
-      packages.enable = true;
+      packages = {
+        cli.enable = true;
+        dev.enable = true;
+        k8s.enable = true;
+      };
       ssh.enable = true;
       starship.enable = true;
       theme = {
@@ -38,24 +42,16 @@
       zsh.enable = true;
       opencode.enable = true;
 
+      # incident.io-specific tooling that doesn't yet have a home in the
+      # cli/dev/k8s split; moves to profiles/work-laptop.nix in Phase 4.
+      # unstable.colima is here pending platform-aware module handling in
+      # Phase 3.
       packages.additional-packages = with pkgs; [
-        coreutils
-        parallel
-        tilt
-        argocd
-        bun
-        graphviz
-        kubectl
-        ngrok
-        unstable.colima
-        kubernetes-helm
         caddy
-        conftest
         grafana-alloy
         haproxy
-        kubeconform
-        kustomize
-        open-policy-agent
+        ngrok
+        unstable.colima
       ];
     };
   };
