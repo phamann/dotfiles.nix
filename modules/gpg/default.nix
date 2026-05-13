@@ -20,9 +20,7 @@ in
     services.gpg-agent = {
       enable = pkgs.stdenv.hostPlatform.isLinux;
       enableSshSupport = true;
-      extraConfig = ''
-        pinentry-program ${pkgs.pinentry.gnome3}/bin/pinentry
-      '';
+      pinentry.package = pkgs.pinentry-gnome3;
     };
   };
 }
