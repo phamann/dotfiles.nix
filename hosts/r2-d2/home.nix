@@ -11,7 +11,7 @@
     programs.home-manager.enable = true;
 
     modules = {
-      alacritty.enable = true;
+      alacritty.enable = false;
       bat.enable = true;
       claude-code.enable = true;
       direnv.enable = true;
@@ -32,10 +32,23 @@
       opencode.enable = true;
 
       packages.additional-packages = with pkgs; [
-        unstable.colima
-        kubectl
-        kubernetes-helm
+        coreutils
+        parallel
+        tilt
+        argocd
+        bun
         graphviz
+        kubectl
+        ngrok
+        unstable.colima
+        kubernetes-helm
+        caddy
+        conftest
+        grafana-alloy
+        haproxy
+        kubeconform
+        kustomize
+        open-policy-agent
       ];
     };
   };
