@@ -10,27 +10,51 @@ permissions:
 
 jobs:
   check:
-    name: nix flake check (${{ matrix.os }})
+    name: nix checks (${{ matrix.os }})
     strategy:
-      # Don't cancel macOS just because Linux failed (or vice-versa) — we
-      # want full cross-platform visibility on every PR.
+      # Don't cancel macOS just because Linux failed (or vice-versa) — full
+      # cross-platform visibility on every PR.
       fail-fast: false
       matrix:
         os:
-          - macos-14 # aarch64-darwin (Apple silicon) — covers r2-d2 + x-wing
-          - ubuntu-24.04 # x86_64-linux — covers yoda
+          - macos-14 # aarch64-darwin (Apple silicon) — r2-d2 + x-wing
+          - ubuntu-24.04 # x86_64-linux — yoda
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@main
-      - name: Run flake check
-        # Exercises everything via the per-host eval checks plus treefmt
-        # and pre-commit (statix + deadnix). The Linux runner is what
-        # finally validates yoda's homeConfiguration end-to-end — catppuccin
-        # IFD requires substituting an x86_64-linux derivation which
-        # aarch64-darwin can't realize locally.
-        run: nix flake check --accept-flake-config
+
+      # We don't run `nix flake check` directly because it evaluates EVERY
+      # flake output regardless of the runner's system — including the
+      # cross-platform homeConfigurations / darwinConfigurations. The
+      # catppuccin per-app modules (starship, fzf, etc.) use IFD: at
+      # eval time they need to substitute or build a derivation for the
+      # configuration's target system. macOS can't substitute the
+      # x86_64-linux derivations yoda needs, and Linux can't substitute
+      # the aarch64-darwin ones the Macs need. The eval fails before any
+      # check runs.
+      #
+      # Instead, target only the checks for the runner's own system.
+
+      - name: Build aarch64-darwin checks
+        if: matrix.os == 'macos-14'
+        run: |
+          nix build \
+            .#checks.aarch64-darwin.eval-r2-d2 \
+            .#checks.aarch64-darwin.eval-x-wing \
+            .#checks.aarch64-darwin.treefmt \
+            .#checks.aarch64-darwin.pre-commit \
+            --no-link --accept-flake-config
+
+      - name: Build x86_64-linux checks
+        if: matrix.os == 'ubuntu-24.04'
+        run: |
+          nix build \
+            .#checks.x86_64-linux.eval-yoda \
+            .#checks.x86_64-linux.treefmt \
+            .#checks.x86_64-linux.pre-commit \
+            --no-link --accept-flake-config
 
   lockfile:
     name: flake lockfile staleness
