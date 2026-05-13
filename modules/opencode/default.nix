@@ -3,10 +3,12 @@ with lib;
 let
   cfg = config.modules.opencode;
 
-  # Wrapper script to inject API key from 1Password at runtime
-  context7Wrapper = pkgs.writeShellScript "context7-mcp" ''
-    export UPSTASH_CONTEXT7_API_KEY="$(${pkgs._1password-cli}/bin/op read 'op://Private/context7-api-token/password')"
-    exec ${pkgs.nodejs}/bin/npx -y @upstash/context7-mcp "$@"
+  mcpWrappers = import ../lib/mcp-wrappers.nix { inherit pkgs; };
+
+  # Thin wrapper: inject the GitHub PAT for opencode's gh-flavoured tools.
+  opencodeWithGhToken = pkgs.writeShellScriptBin "opencode" ''
+    export GITHUB_PERSONAL_ACCESS_TOKEN="$(${pkgs._1password-cli}/bin/op read 'op://Private/github-pat/password' 2>/dev/null)"
+    exec ${pkgs.unstable.opencode}/bin/opencode "$@"
   '';
 in {
   options.modules.opencode = { enable = mkEnableOption "opencode"; };
@@ -14,83 +16,62 @@ in {
   config = mkIf cfg.enable {
     programs.opencode = {
       enable = true;
-      package = pkgs.unstable.opencode;
+      package = opencodeWithGhToken;
 
       settings = {
-        # Theme
         theme = "catppuccin-frappe";
 
-        # AWS Bedrock provider config (matching claude-code)
         provider = {
+          # Local models served by LM Studio's OpenAI-compatible API.
+          # The model ID below must match what LM Studio reports at
+          # `curl http://127.0.0.1:1234/v1/models`. Adjust if LM Studio
+          # exposes a different identifier for the loaded GGUF.
           "lmstudio" = {
             npm = "@ai-sdk/openai-compatible";
             name = "LM Studio (local)";
             options = { baseURL = "http://127.0.0.1:1234/v1"; };
             models = {
+              "qwen3.6-35b-a3b" = {
+                name = "Qwen3.6 35B-A3B (local)";
+                cost = {
+                  input = 0.0;
+                  output = 0.0;
+                };
+                limit = {
+                  context = 32768;
+                  output = 16384;
+                };
+              };
               "zai-org/glm-4.7-flash" = { name = "GLM 4.7 Flash (local)"; };
-            };
-          };
-          "amazon-bedrock" = {
-            npm = "@ai-sdk/amazon-bedrock";
-            options = {
-              region = "eu-west-1";
-              profile = "bedrock";
-            };
-            models = {
-              "global.anthropic.claude-sonnet-4-5-20250929-v1:0" = {
-                name = "Claude Sonnet 4";
-                cost = {
-                  input = 3.0;
-                  output = 15.0;
-                };
-                limit = {
-                  context = 200000;
-                  output = 16000;
-                };
-              };
-              "global.anthropic.claude-opus-4-5-20251101-v1:0" = {
-                name = "Claude Opus 4.5";
-                cost = {
-                  input = 15.0;
-                  output = 75.0;
-                };
-                limit = {
-                  context = 200000;
-                  output = 16000;
-                };
-              };
-              "eu.anthropic.claude-haiku-4-5-20251001-v1:0" = {
-                name = "Claude Haiku 4";
-                cost = {
-                  input = 0.8;
-                  output = 4.0;
-                };
-                limit = {
-                  context = 200000;
-                  output = 8192;
-                };
-              };
             };
           };
         };
 
-        # Default model (Claude Opus 4.5 via Bedrock)
-        model = "amazon-bedrock/global.anthropic.claude-opus-4-5-20251101-v1:0";
+        # Default to the local Qwen MoE model.
+        model = "lmstudio/qwen3.6-35b-a3b";
 
-        # MCP servers
         mcp = {
           context7 = {
             type = "local";
-            command = [ "${context7Wrapper}" ];
+            command = [ "${mcpWrappers.context7}" ];
           };
         };
       };
 
-      # Rules (equivalent to claude-code memory)
+      # Aligned with claude-code's memory.text rather than a divergent subset.
       rules = ''
-        When creating git commit messages ALWAYS use conventional commit style: https://www.conventionalcommits.org/en/v1.0.0/#specification
-        When creating pull requests in Github ALWAYS mark them in draft status
+        # Working relationship
+        - No sycophancy.
+        - Be direct, matter-of-fact, and concise.
+        - Be critical; challenge my reasoning.
+        - Don't include timeline estimates in plans.
+
+        # Tooling
+        - Prefer Makefile targets (`make help`) over direct tool invocation.
+        - When creating git commit messages ALWAYS use conventional commit style: https://www.conventionalcommits.org/en/v1.0.0/#specification
+        - When creating pull requests in Github ALWAYS mark them in draft status.
       '';
     };
+
   };
 }

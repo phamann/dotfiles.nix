@@ -3,11 +3,7 @@ with lib;
 let
   cfg = config.modules.claude-code;
 
-  # Wrapper script to inject API key from 1Password at runtime
-  context7Wrapper = pkgs.writeShellScript "context7-mcp" ''
-    export UPSTASH_CONTEXT7_API_KEY="$(${pkgs._1password-cli}/bin/op read 'op://Private/context7-api-token/password')"
-    exec ${pkgs.nodejs}/bin/npx -y @upstash/context7-mcp "$@"
-  '';
+  mcpWrappers = import ../lib/mcp-wrappers.nix { inherit pkgs; };
 
   # Wrapper that injects GitHub token once at claude launch; inherited by all child processes
   claudeWithToken = pkgs.writeShellScriptBin "claude" ''
@@ -25,22 +21,62 @@ in
       package = claudeWithToken;
 
       settings = {
+        includeCoAuthoredBy = true;
+        model = "claude-opus-4-7[1m]";
+        mcpServers = {
+          context7 = {
+            command = "${mcpWrappers.context7}";
+            args = [ ];
+          };
+          "chrome-devtools" = {
+            command = "npx";
+            args = [ "-y" "chrome-devtools-mcp@latest" ];
+          };
+        };
         permissions = {
+          additionalDirectories = [
+            "/Users/phamann/Projects/core"
+            "/Users/phamann/Projects/infrastructure"
+            "/Users/phamann/Projects/manifests"
+            "/Users/phamann/Projects/mobile-app"
+          ];
           allow = [
-            "ReadFile"
-            "Edit"
-            "Bash(git add:*)"
-            "Bash(git commit -m:*)"
-            "Bash(git diff:*)"
-            "Bash(gh pr diff:*)"
-            "Bash(gh pr view:*)"
-            "Bash(gh pr list:*)"
-            "Bash(curl:*)"
-            "Bash(mvn:*)"
+            "Bash(gh:*)"
+            "Bash(git:*)"
+            "Bash(go:*)"
+            "Bash(ginkgo:*)"
+            "Bash(yarn:*)"
+            "Bash(npm:*)"
+            "Bash(bun:*)"
+            "Bash(make:*)"
+            "Bash(rg:*)"
+            "Bash(tree:*)"
+            "Bash(jq:*)"
+            "Bash(find:*)"
+            "Bash(say:*)"
+            "Bash(ls:*)"
+            "Bash(cat:*)"
+            "Bash(less:*)"
+            "Bash(head:*)"
+            "Bash(tail:*)"
+            "Bash(grep:*)"
+            "Bash(pwd:*)"
+            "Bash(wc:*)"
+            "Bash(diff:*)"
+            "Bash(bq:*)"
+            "WebSearch"
             "WebFetch"
-            "Bash(go test:*)"
-            "Bash(go run:*)"
-            "Bash(make test:*)"
+            "mcp__Sentry__get_list_issues"
+            "mcp__Sentry__resolve_short_id"
+            "mcp__Sentry__get_sentry_event"
+            "mcp__Sentry__list_projects"
+            "mcp__Sentry__get_issue_details"
+            "mcp__Sentry__search_docs"
+            "mcp__github__get_pull_request"
+            "mcp__github__get_pull_request_files"
+            "mcp__linear__list_issues"
+            "mcp__linear__get_issue"
+            "mcp__linear__list_comments"
           ];
         };
         enabledPlugins = {
@@ -64,21 +100,21 @@ in
             };
           };
         };
+        hooks = {
+          Stop = [
+            {
+              hooks = [
+                {
+                  type = "command";
+                  command = "osascript -e 'display notification \"Claude has finished\" with title \"Claude Code\"'";
+                }
+              ];
+            }
+          ];
+        };
         statusLine = {
           type = "command";
           command = "/opt/homebrew/bin/claude-statusline prompt";
-        };
-      };
-
-      # MCP servers - uses wrapper script to inject API key at runtime
-      mcpServers = {
-        context7 = {
-          command = "${context7Wrapper}";
-          args = [ ];
-        };
-        "chrome-devtools" = {
-          command = "npx";
-          args = [ "-y" "chrome-devtools-mcp@latest" ];
         };
       };
 
