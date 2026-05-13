@@ -27,7 +27,7 @@
       starship.enable = true;
       theme = {
         enable = true;
-        flavour = "frappe";
+        flavour = "mocha";
       };
       tmux.enable = true;
       zed.enable = true;
