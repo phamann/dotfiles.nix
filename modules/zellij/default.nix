@@ -10,7 +10,10 @@ in {
     };
   };
   config = mkIf cfg.enable {
-    programs.zellij = { enable = true; };
+    programs.zellij = {
+      enable = true;
+      package = pkgs.unstable.zellij;
+    };
     home.file = {
       ".config/zellij/layouts/compact-top.kdl".source = ./compact-top.kdl;
       ".config/zellij/layouts/compact-bottom.kdl".source = ./compact-bottom.kdl;

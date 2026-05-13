@@ -23,7 +23,6 @@ in {
         zsh-z
 
         # ai
-        aider-chat
         litellm
 
         # cli
@@ -44,11 +43,15 @@ in {
         unstable.fastly
         gh
         git-crypt
-        (google-cloud-sdk.withExtraComponents
-          [ google-cloud-sdk.components.gke-gcloud-auth-plugin ])
+        (google-cloud-sdk.withExtraComponents (with google-cloud-sdk.components; [
+          gke-gcloud-auth-plugin
+        ]))
         jq
         just
+        k3d
         keychain
+        kubectx
+        sloth
         pinentry-curses
         pkg-config
         poppler-utils
@@ -67,9 +70,6 @@ in {
         goimports-reviser
         gotools
         hadolint
-        java-language-server
-        jdk21_headless
-        jdt-language-server
         lld
         lua
         lua54Packages.luacheck
@@ -80,28 +80,28 @@ in {
         nixfmt-classic
         nixpkgs-fmt
         nodePackages.fixjson
-        nodejs
+        nodejs_22
         openssl
-        perl
-        perl540Packages.CPAN
-        regols
+        python313
         rust-analyzer
+        semgrep
         shfmt
         statix
         terraform
         terraform-ls
         tflint
         tfswitch
+        tree-sitter
         typescript
         typescript-language-server
+        typescript-go
         unstable.go
         unstable.gopls
         wireguard-tools
         yamllint
+        yarn
 
         unstable.cue
-
-        # ollama
 
         (rust-bin.stable.latest.default.override {
           extensions = [ "rust-src" ];

@@ -69,8 +69,9 @@ in {
         export PATH=$GOPATH/bin:$PATH
         export PATH=$HOME/bin:$PATH
         export PATH=$HOME/.npm-global/bin:$PATH
-        export PKG_CONFIG_PATH=${pkgs.openssl.dev}/lib/pkgconfig
+        export PATH=$HOME/.lmstudio/bin:$PATH
         export DOCKER_HOST=unix:///$HOME/.colima/default/docker.sock
+        export PKG_CONFIG_PATH=${pkgs.openssl.dev}/lib/pkgconfig
         export PROMPT_TOOLKIT_COLOR_DEPTH=DEPTH_24_BIT
         export GOOGLE_GENAI_USE_VERTEXAI=true
         export GOOGLE_CLOUD_PROJECT=vertexai-core-misc-b097
@@ -79,6 +80,7 @@ in {
         export GOOGLE_VERTEX_LOCATION=global
         export PATH=$HOME/perl5/bin:$PATH
         export PATH=$HOME/Library/Python/3.9/bin:$PATH
+        export PATH=/opt/homebrew/opt/postgresql@17/bin:$PATH
         export PERL5LIB=$HOME/perl5/lib/perl5
         export PERL_LOCAL_LIB_ROOT=$HOME/perl5
         export PERL_MB_OPT="--install_base \"$HOME/perl5\""
