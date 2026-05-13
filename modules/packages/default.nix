@@ -40,6 +40,7 @@ in {
         dig
         docker
         docker-compose
+        eas-cli
         unstable.fastly
         gh
         git-crypt
@@ -86,6 +87,7 @@ in {
         rust-analyzer
         semgrep
         shfmt
+        sourcekit-lsp
         statix
         terraform
         terraform-ls

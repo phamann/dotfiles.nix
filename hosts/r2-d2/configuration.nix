@@ -78,6 +78,7 @@
       "cursor"
       "daisydisk"
       "dropbox"
+      "expo-orbit"
       "firefox"
       "ghostty"
       "gram"
