@@ -55,6 +55,7 @@
 
       imports = [
         ./flake/hosts.nix
+        ./flake/modules.nix
         ./flake/treefmt.nix
         ./flake/checks.nix
         ./flake/dev-shell.nix
