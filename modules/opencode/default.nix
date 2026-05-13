@@ -4,7 +4,7 @@ let
   cfg = config.modules.opencode;
   themeCfg = config.modules.theme;
 
-  mcpWrappers = import ../lib/mcp-wrappers.nix { inherit pkgs; };
+  mcpWrappers = import ../../lib/mcp-wrappers.nix { inherit pkgs; };
 
   # Thin wrapper: inject the GitHub PAT for opencode's gh-flavoured tools.
   opencodeWithGhToken = pkgs.writeShellScriptBin "opencode" ''

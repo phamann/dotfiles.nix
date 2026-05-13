@@ -4,7 +4,7 @@ let
   cfg = config.modules.claude-code;
   palette = config.modules.theme.palette;
 
-  mcpWrappers = import ../lib/mcp-wrappers.nix { inherit pkgs; };
+  mcpWrappers = import ../../lib/mcp-wrappers.nix { inherit pkgs; };
 
   # Wrapper that injects GitHub token once at claude launch; inherited by all child processes
   claudeWithToken = pkgs.writeShellScriptBin "claude" ''
