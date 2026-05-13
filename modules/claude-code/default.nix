@@ -7,9 +7,10 @@
   ...
 }:
 let
-  inherit (lib) mkEnableOption mkIf;
+  inherit (lib) mkEnableOption mkIf optionalAttrs;
   inherit (config.modules) claude-code;
   inherit (config.modules.theme) palette;
+  inherit (pkgs.stdenv.hostPlatform) isDarwin;
 
   mcpWrappers = import ../../lib/mcp-wrappers.nix { inherit pkgs; };
 
@@ -113,6 +114,10 @@ in
             };
           };
         };
+      }
+      // optionalAttrs isDarwin {
+        # macOS-specific: osascript for notifications, claude-statusline
+        # binary installed via the system Homebrew (configuration.nix).
         hooks = {
           Stop = [
             {

@@ -1,10 +1,12 @@
 {
+  pkgs,
   lib,
   config,
   ...
 }:
 let
-  inherit (lib) mkEnableOption mkIf;
+  inherit (lib) mkEnableOption mkIf optionalAttrs;
+  inherit (pkgs.stdenv.hostPlatform) isDarwin;
   cfg = config.modules.kitty;
 in
 {
@@ -16,7 +18,8 @@ in
       enable = true;
       extraConfig = builtins.readFile ./kitty.conf;
     };
-    xdg.configFile = {
+    # The .icns file is the macOS app icon; meaningless on Linux.
+    xdg.configFile = optionalAttrs isDarwin {
       "kitty/kitty.app.icns" = {
         source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/nixpkgs/modules/kitty/kitty.app.icns";
       };
