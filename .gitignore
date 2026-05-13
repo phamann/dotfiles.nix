@@ -1,1 +1,5 @@
 .claude/settings.local.json
+
+# nix-build / darwin-rebuild output symlink
+result
+result-*
