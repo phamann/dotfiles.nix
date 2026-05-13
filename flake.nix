@@ -43,13 +43,27 @@
           config.allowUnfree = true;
         };
       };
-      overlay-nodejs = self: super: { nodejs = super.nodejs_22; };
+      # Disable checkPhase for packages whose upstream tests are currently
+      # broken on aarch64-darwin in nixpkgs. The tests pass on cache builders;
+      # we only hit them when forced to build locally on cache misses.
+      overlay-skip-tests = final: prev: {
+        coredns = prev.coredns.overrideAttrs (_: {
+          doCheck = false;
+          doInstallCheck = false;
+        });
+        open-policy-agent = prev.open-policy-agent.overrideAttrs (_: {
+          doCheck = false;
+        });
+        direnv = prev.direnv.overrideAttrs (_: {
+          doCheck = false;
+        });
+      };
       pkgsForSystem = system:
         import nixpkgs {
           overlays = [
             (overlay-unstable system)
             rust-overlay.overlays.default
-            overlay-nodejs
+            overlay-skip-tests
           ];
           inherit system;
           config.allowUnfree = true;
@@ -98,7 +112,7 @@
       darwinConfigurations = {
         "x-wing" = darwinHostWithSystem "x-wing" "aarch64-darwin" "phamann";
         "r2-d2" = darwinHostWithSystem "r2-d2" "aarch64-darwin" "phamann";
-        "H47L30L753" = darwinHostWithSystem "r2-d2" "aarch64-darwin" "phamann";
+        "MVNX7235JF" = darwinHostWithSystem "r2-d2" "aarch64-darwin" "phamann";
       };
     };
 }
