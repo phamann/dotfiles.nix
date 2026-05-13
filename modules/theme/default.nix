@@ -1,6 +1,13 @@
 { inputs, lib, config, ... }:
 with lib;
-let cfg = config.modules.theme;
+let
+  cfg = config.modules.theme;
+
+  # Read the active flavour's hex palette straight from catppuccin/nix's
+  # palette source. Same JSON the upstream per-app modules consume.
+  paletteFor = flavour:
+    mapAttrs (_: c: c.hex)
+      (importJSON "${config.catppuccin.sources.palette}/palette.json").${flavour}.colors;
 in {
   imports = [ inputs.catppuccin.homeModules.catppuccin ];
 
@@ -26,6 +33,19 @@ in {
       ];
       default = "mauve";
       description = "Global Catppuccin accent colour.";
+    };
+
+    palette = mkOption {
+      type = types.attrsOf types.str;
+      readOnly = true;
+      default = paletteFor cfg.flavour;
+      defaultText = "catppuccin palette for the active flavour, keyed by colour name (e.g. blue, mauve, base)";
+      description = ''
+        Hex values from the active Catppuccin flavour, keyed by colour name.
+        Use as `config.modules.theme.palette.<name>` when templating raw config
+        files (e.g. via `pkgs.replaceVars`) for apps that aren't covered by an
+        upstream catppuccin/nix module.
+      '';
     };
   };
 

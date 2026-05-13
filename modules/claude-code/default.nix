@@ -2,6 +2,7 @@
 with lib;
 let
   cfg = config.modules.claude-code;
+  palette = config.modules.theme.palette;
 
   mcpWrappers = import ../lib/mcp-wrappers.nix { inherit pkgs; };
 
@@ -139,6 +140,9 @@ in
       '';
     };
 
-    home.file.".config/claude-statusline/config.toml".source = ./config.toml;
+    home.file.".config/claude-statusline/config.toml".source =
+      pkgs.replaceVars ./config.toml {
+        inherit (palette) blue green mauve yellow lavender;
+      };
   };
 }
