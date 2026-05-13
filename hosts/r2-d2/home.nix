@@ -21,7 +21,10 @@
       gpg.enable = true;
       gui.enable = true;
       kitty.enable = false;
-      nvim.enable = true;
+      nvim = {
+        enable = true;
+        dev = true;
+      };
       packages.enable = true;
       ssh.enable = true;
       starship.enable = true;
