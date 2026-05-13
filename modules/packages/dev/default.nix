@@ -63,8 +63,7 @@ in
       # nix
       nil
       nixd
-      nixfmt-classic
-      nixpkgs-fmt
+      nixfmt-rfc-style
       statix
 
       # terraform / infra

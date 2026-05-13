@@ -52,6 +52,7 @@
         ./flake/hosts.nix
         ./flake/treefmt.nix
         ./flake/checks.nix
+        ./flake/dev-shell.nix
       ];
 
       perSystem =
