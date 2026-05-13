@@ -1,5 +1,4 @@
-{ ... }:
-{
+_: {
   # incident.io work Mac system config. Adds work-specific homebrew and
   # the postgresql@17 PATH entry on top of the shared desktop profile.
   imports = [ ./desktop.nix ];

@@ -22,7 +22,6 @@ in
     # attrset arg and unconditionally defaults to false. Audit before flipping —
     # the keychain block in initContent has effectively been dead code.
     keychain = mkEnableOption "keychain --eval for SSH key persistence";
-    work = mkEnableOption "work-specific env (Vertex AI, postgresql@17 PATH)";
   };
 
   config = mkIf zsh.enable (mkMerge [
@@ -247,18 +246,5 @@ in
       ];
     })
 
-    # ===== Work =====
-    (mkIf zsh.work {
-      home.sessionVariables = {
-        GOOGLE_GENAI_USE_VERTEXAI = "true";
-        GOOGLE_CLOUD_PROJECT = "vertexai-core-misc-b097";
-        GOOGLE_CLOUD_LOCATION = "global";
-        GOOGLE_VERTEX_PROJECT = "vertexai-core-misc-b097";
-        GOOGLE_VERTEX_LOCATION = "global";
-      };
-      home.sessionPath = [
-        "/opt/homebrew/opt/postgresql@17/bin"
-      ];
-    })
   ]);
 }

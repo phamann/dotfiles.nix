@@ -1,5 +1,4 @@
-{ ... }:
-{
+_: {
   imports = [ ../../profiles/darwin/desktop.nix ];
 
   networking = {

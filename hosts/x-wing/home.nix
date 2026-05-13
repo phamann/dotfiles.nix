@@ -1,5 +1,4 @@
-{ ... }:
-{
+_: {
   imports = [
     ../../profiles/dev-laptop.nix
     ../../modules/alacritty
