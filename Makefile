@@ -4,16 +4,16 @@ update:
 
 .PHONY: jetpac
 jetpac:
-	sudo home-manager switch --flake ~/.config/nixpkgs #phamann@jetpac
+	sudo home-manager switch --flake ~/.config/nixpkgs#phamann@jetpac
 
 .PHONY: yoda
 yoda:
-	sudo home-manager switch --flake ~/.config/nixpkgs #phamann@yoda
+	sudo home-manager switch --flake ~/.config/nixpkgs#phamann@yoda
 
 .PHONY: x-wing
 x-wing:
-	sudo darwin-rebuild switch --impure --flake ~/.config/nixpkgs #phamann@x-wing
+	sudo darwin-rebuild switch --flake ~/.config/nixpkgs#x-wing
 
-.PHONY:r2-d2
+.PHONY: r2-d2
 r2-d2:
-	sudo darwin-rebuild switch --impure --flake ~/.config/nixpkgs #phamann@r2-d2
+	sudo darwin-rebuild switch --flake ~/.config/nixpkgs#r2-d2
