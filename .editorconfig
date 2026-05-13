@@ -1,0 +1,25 @@
+root = true
+
+[*]
+end_of_line = lf
+charset = utf-8
+indent_style = space
+indent_size = 2
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+# Match nixfmt-rfc-style.
+[*.nix]
+indent_size = 2
+
+# Lua files in nvim config use 2-space too.
+[*.lua]
+indent_size = 2
+
+# Markdown can have meaningful trailing whitespace (line breaks).
+[*.md]
+trim_trailing_whitespace = false
+
+# Makefiles need real tabs.
+[{Makefile,*.mk}]
+indent_style = tab
