@@ -14,9 +14,6 @@ in
 
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
-      # AI / dev tooling
-      litellm
-
       # docker
       docker
       docker-compose
