@@ -94,7 +94,6 @@ in
         };
       };
       extensions = [
-        "catppuccin"
         "cue"
         "docker-compose"
         "dockerfile"
@@ -112,6 +111,12 @@ in
         "xml"
       ];
     };
-    catppuccin.zed.enable = true;
+    stylix.targets.zed = {
+      enable = true;
+      # Colours only — we set buffer/ui font size and family explicitly in
+      # `userSettings` above. Letting Stylix manage Zed fonts would
+      # override those to `stylix.fonts.sizes.applications` (default 12).
+      fonts.enable = false;
+    };
   };
 }
