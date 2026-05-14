@@ -1,5 +1,5 @@
 _: {
   imports = [ ../../profiles/work-laptop.nix ];
 
-  modules.theme.flavour = "macchiato";
+  modules.theme.scheme = "catppuccin-macchiato";
 }

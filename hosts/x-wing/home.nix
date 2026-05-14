@@ -6,6 +6,6 @@ _: {
 
   modules = {
     alacritty.enable = true;
-    theme.flavour = "frappe";
+    theme.scheme = "catppuccin-frappe";
   };
 }

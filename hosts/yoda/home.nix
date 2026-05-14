@@ -1,5 +1,5 @@
 _: {
   imports = [ ../../profiles/headless-server.nix ];
 
-  modules.theme.flavour = "frappe";
+  modules.theme.scheme = "catppuccin-frappe";
 }
