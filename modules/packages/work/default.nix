@@ -9,8 +9,7 @@ let
   cfg = config.modules.packages.work;
 in
 {
-  options.modules.packages.work.enable =
-    mkEnableOption "incident.io infrastructure tooling";
+  options.modules.packages.work.enable = mkEnableOption "incident.io infrastructure tooling";
 
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
