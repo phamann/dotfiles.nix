@@ -63,6 +63,16 @@ in
       nixfmt-rfc-style
       statix
 
+      # cloud CLIs
+      awscli2
+      unstable.fastly
+      (google-cloud-sdk.withExtraComponents (
+        with google-cloud-sdk.components;
+        [
+          gke-gcloud-auth-plugin
+        ]
+      ))
+
       # terraform / infra
       terraform
       terraform-ls

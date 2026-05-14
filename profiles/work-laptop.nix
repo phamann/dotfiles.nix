@@ -1,19 +1,13 @@
-{ pkgs, ... }:
-{
-  # incident.io work laptop. Inherits everything dev-laptop has, adds
-  # company-specific tooling and env. Pre-Phase-4 the env vars and
-  # postgresql@17 PATH lived in modules/zsh behind a `modules.zsh.work`
-  # flag; now the profile owns them directly.
+_: {
+  # incident.io work laptop. Inherits everything dev-laptop has, plus the
+  # work packages sub-module and incident.io engineering env.
   imports = [ ./dev-laptop.nix ];
 
-  home = {
-    packages = with pkgs; [
-      caddy
-      grafana-alloy
-      haproxy
-      ngrok
-    ];
+  modules.packages.work.enable = true;
 
+  home = {
+    # incident.io engineering env. Pre-Phase-4 these lived in modules/zsh
+    # behind a `modules.zsh.work` flag; the profile owns them directly now.
     sessionVariables = {
       GOOGLE_GENAI_USE_VERTEXAI = "true";
       GOOGLE_CLOUD_PROJECT = "vertexai-core-misc-b097";

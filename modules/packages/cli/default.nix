@@ -11,7 +11,7 @@ let
 in
 {
   options.modules.packages.cli.enable =
-    mkEnableOption "general CLI utilities, shell plugins, and cloud CLIs";
+    mkEnableOption "general CLI utilities and shell plugins (universal — no work/dev specifics)";
 
   config = mkIf cfg.enable {
     home.packages =
@@ -47,17 +47,8 @@ in
         yq-go
         zoxide
 
-        # cloud CLIs
+        # secrets
         _1password-cli
-        awscli2
-        unstable.fastly
-        (google-cloud-sdk.withExtraComponents (
-          with google-cloud-sdk.components;
-          [
-            gke-gcloud-auth-plugin
-          ]
-        ))
-
       ]
       ++ optionals isDarwin [
         # macOS-only — meta.platforms restricts to darwin.

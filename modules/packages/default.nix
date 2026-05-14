@@ -8,5 +8,6 @@
     ./cli
     ./dev
     ./k8s
+    ./work
   ];
 }
