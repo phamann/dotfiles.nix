@@ -7,7 +7,6 @@
 let
   inherit (lib) mkEnableOption mkIf;
   cfg = config.modules.opencode;
-  themeCfg = config.modules.theme;
 
   mcpWrappers = import ../../lib/mcp-wrappers.nix { inherit pkgs; };
 
@@ -23,13 +22,13 @@ in
   };
 
   config = mkIf cfg.enable {
+    stylix.targets.opencode.enable = true;
+
     programs.opencode = {
       enable = true;
       package = opencodeWithGhToken;
 
       settings = {
-        theme = "catppuccin-${themeCfg.flavour}";
-
         provider = {
           # Local models served by LM Studio's OpenAI-compatible API.
           # The model ID below must match what LM Studio reports at
