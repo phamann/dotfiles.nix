@@ -19,9 +19,9 @@ require("lazy").setup("plugins", {
     ui = {
         border = "rounded",
     },
-    install = {
-        colorscheme = { vim.g.active_color_scheme },
-    },
+    -- No `install.colorscheme` — Stylix's nvim target applies
+    -- mini.base16 directly via init.lua. lazy.nvim doesn't need a
+    -- preferred scheme to install/restore.
     checker = { enabled = true },
 })
 

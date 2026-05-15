@@ -201,10 +201,9 @@ in
       inherit (cfg) accent;
     };
 
-    home.sessionVariables = mkIf isCatppuccinScheme {
-      CATPPUCCIN_FLAVOUR = inferredFlavour;
-      CATPPUCCIN_LIGHT_FLAVOUR = cfg.lightFlavour;
-      CATPPUCCIN_ACCENT = cfg.accent;
-    };
+    # Phase D removed the env-var → vim.env.CATPPUCCIN_FLAVOUR dance.
+    # nvim's only consumer is gone (Stylix injects mini.base16 directly
+    # into init.lua). If catppuccin/nix's per-app modules ever need env
+    # vars, add them back behind isCatppuccinScheme.
   };
 }

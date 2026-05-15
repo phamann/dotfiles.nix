@@ -6,7 +6,7 @@ return {
     "SmiteshP/nvim-navic",
     "nvim-tree/nvim-web-devicons", -- optional dependency
   },
-  opts = {
-    theme = vim.g.active_color_scheme,
-  },
+  -- No explicit theme — barbecue auto-derives from current highlights
+  -- (Stylix's mini.base16 sets them).
+  opts = { },
 }
