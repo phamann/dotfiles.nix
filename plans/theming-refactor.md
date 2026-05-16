@@ -347,10 +347,78 @@ Each phase is independently shippable; you can stop after any phase and have a c
 ### Phase D — Migrate nvim
 
 - Set `stylix.targets.neovim.enable = true` in `modules/nvim/default.nix`.
-- Delete `vim.g.active_color_scheme = "catppuccin"` and the commented-out alternatives in `init.lua`.
-- Delete the 7 inert colorscheme plugin files: `tokyonight.lua`, `doom-one.lua`, `onedark.lua`, `onedark-pro.lua`, `github-theme.lua`, plus any other scheme files not actively used. **Verify Stylix's neovim integration** pulls in catppuccin (or whatever scheme) before deleting `catppuccin.lua`.
-- Drop `home.sessionVariables.CATPPUCCIN_*` from `modules/theme/default.nix`.
+- Stylix's nvim target injects `mini.base16.setup({ palette = { ... } })` into `programs.neovim.extraLuaConfig`. This causes home-manager to start writing `~/.config/nvim/init.lua`, which collides with the pre-Phase-D `xdg.configFile.nvim = { recursive = true; ... }` claim. **Narrow the symlink scope:** in `modules/nvim/default.nix`, replace the single recursive `xdg.configFile.nvim` claim with per-subfile claims for `xdg.configFile."nvim/lua"` and `xdg.configFile."nvim/lazy-lock.json"`. The repo's `init.lua` content moves to `programs.neovim.extraLuaConfig` (its 4 `require()` lines).
+- Delete the standalone `modules/nvim/config/init.lua` file. Its content lives in `extraLuaConfig` now.
+- Delete 10 colorscheme plugin files (turned out to be 10, not 7 as the initial plan said): `catppuccin.lua`, `doom-one.lua`, `github-theme.lua`, `kanagawa.lua`, `material.lua`, `nightfox.lua`, `onedark.lua`, `onedark-pro.lua`, `rose-pine.lua`, `tokyonight.lua`. Stylix's `mini.base16` integration replaces `catppuccin.lua`; the other 9 were already inert.
+- Clean up `vim.g.active_color_scheme` consumers:
+  - `plugin-manager.lua`: drop `install.colorscheme = { vim.g.active_color_scheme }` (lazy.nvim doesn't need a preferred scheme).
+  - `barbecue.lua`: drop `theme = vim.g.active_color_scheme` from opts (barbecue auto-derives from current highlights).
+  - `styler.lua`: drop the `markdown.colorscheme` override (no per-filetype override today).
+- Drop `home.sessionVariables.CATPPUCCIN_*` from `modules/theme/default.nix`. nvim was the only consumer.
 - Exit criteria: nvim launches with stylix-generated colours; no env-var dance.
+
+#### Activation note (read before `make <host>`)
+
+The narrowing of `xdg.configFile.nvim` from a recursive symlink to per-file claims is **not safe for home-manager activation against a host that previously had the recursive shape**. The failure mode:
+
+1. Pre-Phase-D state on a real host: `~/.config/nvim → /nix/store/.../hm_config → <repo>/modules/nvim/config` (a chain of symlinks; the user's nvim config dir IS the repo dir via mkOutOfStoreSymlink).
+2. `make <host>` activates Phase D. HM builds a new `home-manager-files` derivation with per-file children (`nvim/init.lua`, `nvim/lua`, `nvim/lazy-lock.json` as separate entries).
+3. HM activation tries to install the new children INTO `~/.config/nvim/`. But `~/.config/nvim` is still the old recursive symlink pointing at the repo. So the new children get written THROUGH the symlink, ending up as stray files at `<repo>/modules/nvim/config/{init.lua, lua, lazy-lock.json}` — symlinks pointing back into the new HM store.
+4. Worse, HM creates `lazy-lock.json.hm-backup` and `lua.hm-backup` inside the repo dir (backups of the pre-activation state) — adding to the mess.
+5. After all that, the parent `~/.config/nvim` symlink isn't updated to point at the new store. It still resolves to the repo, which now contains a symlink loop: `<repo>/lua → /nix/store/.../home-manager-files/.../lua`, and that store path is itself a `mkOutOfStoreSymlink` back to `<repo>/lua`.
+6. Result: nvim launches, fails with `module 'options' not found` because the lua loader hits "Too many levels of symbolic links" trying to resolve `~/.config/nvim/lua/options.lua`.
+
+**Prep step before `make <host>` (run once per Mac that had the pre-Phase-D recursive symlink):**
+
+```sh
+# Remove the stale recursive symlink so HM activation can create the
+# new narrow-scope structure cleanly.
+rm ~/.config/nvim
+
+# Then run the rebuild as usual.
+make <host>
+```
+
+If the failure has already happened (stray symlinks in the repo + symlink loop), recovery is:
+
+```sh
+# Clean the stray HM-written symlinks and backups in the repo.
+cd ~/.config/nixpkgs/modules/nvim/config
+rm -f init.lua lua lazy-lock.json
+rm -rf lua.hm-backup lazy-lock.json.hm-backup
+
+# Restore the real repo files from git.
+cd ~/.config/nixpkgs
+git checkout HEAD -- modules/nvim/config/lua modules/nvim/config/lazy-lock.json
+
+# Nuke the stale home symlink.
+rm ~/.config/nvim
+
+# Re-run the rebuild.
+make <host>
+```
+
+yoda is unaffected by this trap because `nvim.dev = false` on yoda (the pre-Phase-D config used `source = ./config` which copies into the store rather than a recursive mkOutOfStoreSymlink). Only `nvim.dev = true` hosts (x-wing, r2-d2) need the prep step.
+
+#### lazy.nvim + Stylix interaction
+
+Stylix's nvim target installs `pkgs.vimPlugins.mini-nvim` via `programs.neovim.plugins` (lands at `pack/myNeovimPackages/start/mini.nvim`) AND appends `require('mini.base16').setup({palette=...})` to `extraLuaConfig`. That snippet runs at the **end** of init.lua, after our `require("plugin-manager")` call which executes `lazy.setup()`.
+
+lazy.nvim defaults `performance.rtp.reset = true`, which clears `vim.opt.rtp` to roughly `{ stdpath('config'), VIMRUNTIME, lazypath }` before re-adding plugins lazy manages. That wipes nvim's packpath entries — so by the time Stylix's appended `require('mini.base16')` fires, the plugin Stylix installed is no longer reachable. Error: `module 'mini.base16' not found`.
+
+Fix: declare mini.nvim as a normal lazy plugin spec with eager loading. `modules/nvim/config/lua/plugins/mini.lua`:
+
+```lua
+return {
+    "echasnovski/mini.nvim",
+    lazy = false,
+    priority = 1000,
+}
+```
+
+`lazy = false` makes it a start plugin; `priority = 1000` orders it before other start plugins. By the time `lazy.setup()` returns, mini.nvim is on rtp from lazy's own clone in `~/.local/share/nvim/lazy/`, and the trailing setup call resolves.
+
+Caveat — duplicate install: Stylix has no opt-out for `programs.neovim.plugins`, so mini.nvim ends up installed twice (nix-store packpath copy + lazy git clone). The packpath copy is unreachable after lazy's rtp reset; lazy's copy is what gets used. ~5MB of disk waste, otherwise harmless. To deduplicate would require either overriding `programs.neovim.plugins` to filter Stylix's entry or disabling `stylix.targets.neovim.enable` and re-emitting the palette setup ourselves — neither worth the abstraction violation.
 
 ### Phase E — Delete unused terminal modules (alacritty / kitty / tmux)
 
