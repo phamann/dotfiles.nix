@@ -14,12 +14,12 @@ let
     ;
   cfg = config.modules.theme;
 
-  # Parse `<system>-<bare>` from cfg.scheme. Strict: the prefix is required
-  # so the value matches tinted-vim filenames / tinted-gallery scheme IDs.
-  parts = builtins.match "(base16|base24)-(.+)" cfg.scheme;
-  parseError = throw "modules.theme.scheme: '${cfg.scheme}' must be prefixed with `base16-` or `base24-` (e.g. `base24-catppuccin-mocha`, `base16-default-dark`).";
-  system = if parts == null then parseError else builtins.elemAt parts 0;
-  bareScheme = if parts == null then parseError else builtins.elemAt parts 1;
+  # Extract `<system>` and `<bare>` from cfg.scheme. The regex shape is
+  # validated by `types.strMatching` on the option itself (below), so by
+  # the time we reach this binding `parts` is guaranteed non-null.
+  parts = builtins.match "(base16|base24)-([a-z0-9._-]+)" cfg.scheme;
+  system = builtins.elemAt parts 0;
+  bareScheme = builtins.elemAt parts 1;
 in
 {
   imports = [ inputs.stylix.homeModules.stylix ];
@@ -28,7 +28,7 @@ in
     enable = mkEnableOption "theme";
 
     scheme = mkOption {
-      type = types.strMatching "(base16|base24)-.+";
+      type = types.strMatching "(base16|base24)-[a-z0-9._-]+";
       default = "base24-catppuccin-mocha";
       example = "base16-default-dark";
       description = ''

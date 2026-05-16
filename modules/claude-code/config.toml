@@ -10,7 +10,7 @@ style = "fg:@success@"
 style = "fg:@accent@"
 
 [cost]
-style = "fg:@warning@"
+style = "fg:@cost@"
 
 [context]
 style = "fg:@accentAlt@"

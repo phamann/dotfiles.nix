@@ -163,9 +163,13 @@ in
         primary
         success
         accent
-        warning
         accentAlt
         ;
+      # cost is rendered in the `warning` palette slot (yellow) — the
+      # semantic role doesn't truly fit "warning", but yellow is the
+      # right colour for cost in a statusline. Alias locally rather than
+      # bloating `modules.theme.semantic` with a per-consumer role.
+      cost = semantic.warning;
     };
   };
 }
