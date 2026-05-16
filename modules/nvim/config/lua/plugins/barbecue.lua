@@ -22,12 +22,16 @@ return {
         modified  = { fg = p.base09 },
         context   = {},
 
-        -- LSP symbol kinds → base16/24 accent slots.
-        context_file           = { fg = p.base0D },
-        context_module         = { fg = p.base0E },
-        context_namespace      = { fg = p.base0E },
-        context_package        = { fg = p.base0E },
-        context_class          = { fg = p.base0A },
+        -- LSP symbol kinds → base24 slots, aligned to base16-nvim's
+        -- treesitter mapping so breadcrumb colours match what you see in
+        -- the buffer (e.g. a `namespace Foo` displays `Foo` in base08,
+        -- not base0E — base16-nvim treats namespace identifiers as
+        -- variable-like rather than keyword-like).
+        context_file           = { fg = p.base0D }, -- @text.title / heading
+        context_module         = { fg = p.base08 }, -- @namespace
+        context_namespace      = { fg = p.base08 },
+        context_package        = { fg = p.base08 },
+        context_class          = { fg = p.base0A }, -- @type
         context_interface      = { fg = p.base0A },
         context_enum           = { fg = p.base0A },
         context_struct         = { fg = p.base0A },
@@ -35,20 +39,20 @@ return {
         context_object         = { fg = p.base0A },
         context_event          = { fg = p.base0A },
         context_type_parameter = { fg = p.base0A },
-        context_method         = { fg = p.base0D },
+        context_method         = { fg = p.base0D }, -- @function / @method
         context_function       = { fg = p.base0D },
         context_constructor    = { fg = p.base0D },
-        context_property       = { fg = p.base05 },
+        context_property       = { fg = p.base05 }, -- @property / @field
         context_field          = { fg = p.base05 },
-        context_variable       = { fg = p.base05 },
         context_key            = { fg = p.base05 },
-        context_enum_member    = { fg = p.base09 },
+        context_variable       = { fg = p.base05 }, -- @variable (overridden to base05 in autocmds.lua)
+        context_enum_member    = { fg = p.base09 }, -- @constant
         context_constant       = { fg = p.base09 },
-        context_string         = { fg = p.base0B },
-        context_number         = { fg = p.base09 },
-        context_boolean        = { fg = p.base09 },
+        context_string         = { fg = p.base0B }, -- @string
+        context_number         = { fg = p.base09 }, -- @number
+        context_boolean        = { fg = p.base09 }, -- @boolean
         context_null           = { fg = p.base09 },
-        context_operator       = { fg = p.base05 },
+        context_operator       = { fg = p.base05 }, -- @operator
       },
     }
   end,
