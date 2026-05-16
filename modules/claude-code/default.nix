@@ -154,6 +154,7 @@ in
         ## Git
         - When creating git commit messages ALWAYS use [conventional commit style](https://www.conventionalcommits.org/en/v1.0.0/#specification).
         - When creating pull requests in Github ALWAYS mark them in draft status.
+        - When interacting with Github (pull request actions, comments etc.) ALWAYS prefer using the `gh` CLI over the Github MCP or other actions.
       '';
     };
 
