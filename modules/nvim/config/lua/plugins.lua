@@ -9,7 +9,7 @@ return {
         },
         config = true,
     }, ]]
-    "fladson/vim-kitty", "fgsch/vim-varnish", "L3MON4D3/LuaSnip",
+    "fgsch/vim-varnish", "L3MON4D3/LuaSnip",
 
     -- git change indicator
     {"lewis6991/gitsigns.nvim", config = true}, -- ui improvements

@@ -13,7 +13,6 @@ _: {
   # - claude-code requires `inputs.claude-code-nix` and `system`
   # External consumers must wire those through their own HM specialArgs.
   flake.homeManagerModules = {
-    alacritty = ../modules/alacritty;
     bat = ../modules/bat;
     claude-code = ../modules/claude-code;
     direnv = ../modules/direnv;
@@ -21,14 +20,12 @@ _: {
     ghostty = ../modules/ghostty;
     git = ../modules/git;
     gpg = ../modules/gpg;
-    kitty = ../modules/kitty;
     nvim = ../modules/nvim;
     opencode = ../modules/opencode;
     packages = ../modules/packages;
     ssh = ../modules/ssh;
     starship = ../modules/starship;
     theme = ../modules/theme;
-    tmux = ../modules/tmux;
     zed = ../modules/zed;
     zellij = ../modules/zellij;
     zsh = ../modules/zsh;

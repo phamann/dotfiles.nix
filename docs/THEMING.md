@@ -34,7 +34,7 @@ flowchart LR
   T -->|home.sessionVariables<br/>CATPPUCCIN_FLAVOUR| E[shell env]
   T -->|modules.theme.palette| P[hex palette attrset]
 
-  U -->|catppuccin.&lt;app&gt;.enable| A1[bat / fzf / starship / delta /<br/>zed / kitty / alacritty / tmux / ...]
+  U -->|catppuccin.&lt;app&gt;.enable| A1[bat / fzf / starship / delta /<br/>zed / ...]
   E --> N[nvim<br/>lua reads vim.env.CATPPUCCIN_FLAVOUR]
   T -->|cfg.flavour| G[ghostty / zellij / opencode<br/>via pkgs.replaceVars or string interp]
   P --> C[claude-statusline<br/>via pkgs.replaceVars]
@@ -115,9 +115,6 @@ These modules use a different theme on purpose. Don't change them as part of a f
 
 | Module | Active theme | Where it's set |
 |---|---|---|
-| `alacritty` | Tokyo Night Moon | inline `colors = { ... }` in `default.nix` |
-| `kitty` | Tokyo Night | hex codes in `kitty.conf` |
-| `tmux` | Tokyo Night | `tokyo-night-tmux` plugin |
 | `nvim` alt-colorschemes | Various | `lua/plugins/{onedark,tokyonight,github-theme,...}.lua` — gated by `vim.g.active_color_scheme` in `init.lua` |
 
 If you want to migrate any of these to Catppuccin, follow one of the patterns in §3.

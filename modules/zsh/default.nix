@@ -70,7 +70,6 @@ in
           g = "nocorrect git";
           k = "nocorrect kubectl";
           r = "source ~/.zshenv";
-          tmux = "tmux -2";
           l = "ls -l \${colorflag}";
           la = "ls -la \${colorflag}";
           ".." = "cd ..";
