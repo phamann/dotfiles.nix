@@ -76,7 +76,7 @@ in
             require("plugin-manager")
             require("mappings")
             require("autocmds")
-            vim.cmd.colorscheme("base16-${config.modules.theme.scheme}")
+            vim.cmd.colorscheme("base24-${config.modules.theme.scheme}")
           '';
       };
     }
