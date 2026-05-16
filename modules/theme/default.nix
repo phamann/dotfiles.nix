@@ -13,6 +13,13 @@ let
     types
     ;
   cfg = config.modules.theme;
+
+  # Parse `<system>-<bare>` from cfg.scheme. Strict: the prefix is required
+  # so the value matches tinted-vim filenames / tinted-gallery scheme IDs.
+  parts = builtins.match "(base16|base24)-(.+)" cfg.scheme;
+  parseError = throw "modules.theme.scheme: '${cfg.scheme}' must be prefixed with `base16-` or `base24-` (e.g. `base24-catppuccin-mocha`, `base16-default-dark`).";
+  system = if parts == null then parseError else builtins.elemAt parts 0;
+  bareScheme = if parts == null then parseError else builtins.elemAt parts 1;
 in
 {
   imports = [ inputs.stylix.homeModules.stylix ];
@@ -21,15 +28,22 @@ in
     enable = mkEnableOption "theme";
 
     scheme = mkOption {
-      type = types.str;
-      default = "catppuccin-mocha";
+      type = types.strMatching "(base16|base24)-.+";
+      default = "base24-catppuccin-mocha";
+      example = "base16-default-dark";
       description = ''
-        Scheme name (without `.yaml`) from `tinted-theming/schemes`. The
-        `system` option resolves which subdirectory the file lives in
-        (`base24/` preferred over `base16/`). Browse available schemes:
+        tinted-theming scheme ID — the value matches scheme IDs in the
+        gallery and tinted-vim's colorscheme filenames exactly. Format:
+        `<system>-<name>` where `<system>` is `base16` or `base24`.
+
+        Browse available schemes:
           ls ${inputs.tinted-schemes}/base24 | sed 's/\.yaml$//'
           ls ${inputs.tinted-schemes}/base16 | sed 's/\.yaml$//'
         Or in the browser: https://tinted-theming.github.io/tinted-gallery
+
+        base24 schemes get a richer 24-slot palette (extended bright
+        accents at base10-base17); base16 schemes are 16-slot and the
+        extended slots fall back to their base counterparts.
       '';
     };
 
@@ -39,18 +53,9 @@ in
         "base24"
       ];
       readOnly = true;
-      default =
-        if builtins.pathExists "${inputs.tinted-schemes}/base24/${cfg.scheme}.yaml" then
-          "base24"
-        else if builtins.pathExists "${inputs.tinted-schemes}/base16/${cfg.scheme}.yaml" then
-          "base16"
-        else
-          throw "modules.theme.scheme: '${cfg.scheme}' not found in tinted-theming/schemes (looked in base24/ and base16/)";
-      defaultText = "Inferred from `scheme` — `base24` preferred, falls back to `base16`.";
-      description = ''
-        Resolved scheme system. Inferred from which subdirectory of
-        `tinted-theming/schemes` contains the scheme file. Read-only.
-      '';
+      default = system;
+      defaultText = "Parsed from the prefix of `scheme`.";
+      description = "Resolved scheme system (base16 or base24). Read-only.";
     };
 
     polarity = mkOption {
@@ -99,7 +104,7 @@ in
   config = mkIf cfg.enable {
     stylix = {
       enable = true;
-      base16Scheme = "${inputs.tinted-schemes}/${cfg.system}/${cfg.scheme}.yaml";
+      base16Scheme = "${inputs.tinted-schemes}/${system}/${bareScheme}.yaml";
       inherit (cfg) polarity;
       autoEnable = false;
       fonts.monospace = {

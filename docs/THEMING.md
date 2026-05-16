@@ -11,8 +11,10 @@ The plumbing is [Stylix](https://github.com/nix-community/stylix) over scheme fi
 Edit your host's `home.nix`:
 
 ```nix
-modules.theme.scheme = "catppuccin-macchiato";
+modules.theme.scheme = "base24-catppuccin-macchiato";
 ```
+
+The value is the tinted-theming scheme ID — same string shown in the [tinted-gallery](https://tinted-theming.github.io/tinted-gallery/) and used as tinted-vim's colorscheme filename. Format: `<system>-<name>`, where `<system>` is `base16` or `base24`.
 
 Then rebuild:
 
@@ -35,19 +37,21 @@ modules.theme = {
 
 ## 2. Finding schemes
 
-Available schemes are the YAML files in [`tinted-theming/schemes`](https://github.com/tinted-theming/schemes) — either the [`base24/`](https://github.com/tinted-theming/schemes/tree/spec-0.11/base24) directory (preferred, richer 24-slot palette) or [`base16/`](https://github.com/tinted-theming/schemes/tree/spec-0.11/base16) (16-slot, used when no base24 variant exists). Set `modules.theme.scheme` to the filename without `.yaml`; the system is auto-detected from where the file lives.
+Available schemes are the YAML files in [`tinted-theming/schemes`](https://github.com/tinted-theming/schemes) — either the [`base24/`](https://github.com/tinted-theming/schemes/tree/spec-0.11/base24) directory (richer 24-slot palette with bright accents) or [`base16/`](https://github.com/tinted-theming/schemes/tree/spec-0.11/base16) (16-slot). Set `modules.theme.scheme` to `<system>-<filename-without-yaml>`; the prefix matches the directory the YAML lives in. Most schemes have both variants (use `base24-`); some (e.g. `later-this-evening`) are base24-only.
 
 **Browse visually:**
 - [Tinted gallery](https://tinted-theming.github.io/tinted-gallery/) — previews every scheme rendered against real syntax highlighting.
 - [tinted-theming/schemes README](https://github.com/tinted-theming/schemes#schemes-list) — full list with author + polarity.
 
-**Common picks:**
-- Catppuccin family: `catppuccin-latte`, `catppuccin-frappe`, `catppuccin-macchiato`, `catppuccin-mocha`
-- Gruvbox family: `gruvbox-dark-{soft,medium,hard}`, `gruvbox-light-{soft,medium,hard}`, `gruvbox-material-{dark,light}-{soft,medium,hard}`
-- Other dark favourites: `nord`, `tokyo-night-storm`, `tokyo-night-terminal-dark`, `dracula`, `everforest`, `kanagawa`, `rose-pine`, `rose-pine-moon`, `solarized-dark`
-- Light: `rose-pine-dawn`, `solarized-light`, `tokyo-night-light`
+**Common picks** (all `base24-` prefixed unless noted):
+- Catppuccin family: `base24-catppuccin-latte`, `base24-catppuccin-frappe`, `base24-catppuccin-macchiato`, `base24-catppuccin-mocha`
+- Gruvbox family: `base24-gruvbox-dark-{soft,medium,hard}`, `base24-gruvbox-light-{soft,medium,hard}`, `base24-gruvbox-material-{dark,light}-{soft,medium,hard}`
+- Other dark favourites: `base24-nord`, `base24-tokyo-night-storm`, `base24-dracula`, `base24-everforest`, `base24-kanagawa`, `base24-rose-pine`, `base24-rose-pine-moon`, `base24-solarized-dark`
+- Light: `base24-rose-pine-dawn`, `base24-solarized-light`, `base16-default-light`
 
-> **base24 vs base16**: `modules.theme.system` auto-resolves to whichever directory contains the scheme YAML — `base24/` preferred, `base16/` as fallback. `modules.theme.system` is read-only; nvim's colourscheme call and the `stylix.base16Scheme` path both derive from it. base24 schemes get the richer 24-slot palette (extended bright accents at `base10`-`base17`); base16 schemes fall back to the base equivalents (`base17 → base0E`, etc.) so consuming code that references the extended slots doesn't break.
+> **base24 vs base16**: base24 schemes get a 24-slot palette with bright accent variants at `base10`-`base17` (e.g. tinted-vim's `@function` uses the bright-blue slot for richer rendering). base16 schemes are 16-slot. Consuming code that references extended slots (like nvim's `vim.g.stylix_palette.base17`) falls back to base equivalents on base16 schemes (`base17 → base0E`, etc.), so nothing breaks — you just get the base-variant colour where a bright variant would've been used.
+>
+> `modules.theme.system` is a read-only option derived from `scheme`'s prefix. Inspect with `nix eval '.#…modules.theme.system'`.
 
 ---
 

@@ -123,7 +123,7 @@ Hosts are now thin deltas. Example (`hosts/r2-d2/home.nix`):
 ```nix
 _: {
   imports = [ ../../profiles/work-laptop.nix ];
-  modules.theme.scheme = "catppuccin-mocha";
+  modules.theme.scheme = "base24-catppuccin-mocha";
 }
 ```
 
@@ -152,7 +152,7 @@ Darwin hosts also have `hosts/<name>/configuration.nix` (system-level) that impo
 
 A single base24 colour scheme drives every themed app. Detailed reference in [`docs/THEMING.md`](./docs/THEMING.md); summary:
 
-- **Entry point**: `modules.theme.scheme` (a base24 scheme name from `tinted-theming/schemes/base24/`, e.g. `"catppuccin-macchiato"`) + `modules.theme.polarity` (`"dark"` / `"light"`). Set per-host in `hosts/<host>/home.nix`.
+- **Entry point**: `modules.theme.scheme` (a tinted-theming scheme ID with explicit prefix, e.g. `"base24-catppuccin-macchiato"` or `"base16-default-dark"`) + `modules.theme.polarity` (`"dark"` / `"light"`). Set per-host in `hosts/<host>/home.nix`. The `<system>-` prefix is required and matches scheme IDs in the tinted-gallery / tinted-vim's colorscheme filenames.
 - **Consumption patterns**:
   1. **Stylix targets**: `stylix.targets.<x>.enable = true;` inside a module. Stylix handles the app from there. Used for bat, fzf, starship, zed, ghostty, zellij, opencode, neovim, delta (via bat's tmTheme).
   2. **Hand-templated configs**: `pkgs.replaceVars` with `config.modules.theme.semantic.<role>`. `semantic` exposes role-named `#rrggbb` strings (`primary`, `success`, `accent`, `warning`, `accentAlt`, `bg`, `fg`, …). Used for claude-statusline. See `modules/claude-code/default.nix`.
