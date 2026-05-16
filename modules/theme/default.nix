@@ -65,7 +65,7 @@ in
       readOnly = true;
       default =
         let
-          c = config.lib.stylix.colors;
+          c = config.lib.stylix.colors.withHashtag;
         in
         {
           bg = c.base00;
@@ -83,7 +83,7 @@ in
           accentAlt = c.base07;
           accentBright = c.base17;
         };
-      defaultText = "role-named hex values derived from the active base24 scheme";
+      defaultText = "role-named `#rrggbb` hex strings derived from the active base24 scheme";
       description = "Role-named scheme-agnostic colour API for hand-templated apps.";
     };
 

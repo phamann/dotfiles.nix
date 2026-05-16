@@ -9,7 +9,7 @@
 let
   inherit (lib) mkEnableOption mkIf optionalAttrs;
   inherit (config.modules) claude-code;
-  inherit (config.modules.theme) palette;
+  inherit (config.modules.theme) semantic;
   inherit (pkgs.stdenv.hostPlatform) isDarwin;
 
   mcpWrappers = import ../../lib/mcp-wrappers.nix { inherit pkgs; };
@@ -159,12 +159,12 @@ in
     };
 
     home.file.".config/claude-statusline/config.toml".source = pkgs.replaceVars ./config.toml {
-      inherit (palette)
-        blue
-        green
-        mauve
-        yellow
-        lavender
+      inherit (semantic)
+        primary
+        success
+        accent
+        warning
+        accentAlt
         ;
     };
   };
