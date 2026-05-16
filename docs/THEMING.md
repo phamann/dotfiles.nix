@@ -35,7 +35,7 @@ modules.theme = {
 
 ## 2. Finding schemes
 
-Available schemes are the YAML files in [`tinted-theming/schemes/base24/`](https://github.com/tinted-theming/schemes/tree/spec-0.11/base24). Set `modules.theme.scheme` to the filename without `.yaml`.
+Available schemes are the YAML files in [`tinted-theming/schemes`](https://github.com/tinted-theming/schemes) — either the [`base24/`](https://github.com/tinted-theming/schemes/tree/spec-0.11/base24) directory (preferred, richer 24-slot palette) or [`base16/`](https://github.com/tinted-theming/schemes/tree/spec-0.11/base16) (16-slot, used when no base24 variant exists). Set `modules.theme.scheme` to the filename without `.yaml`; the system is auto-detected from where the file lives.
 
 **Browse visually:**
 - [Tinted gallery](https://tinted-theming.github.io/tinted-gallery/) — previews every scheme rendered against real syntax highlighting.
@@ -47,7 +47,7 @@ Available schemes are the YAML files in [`tinted-theming/schemes/base24/`](https
 - Other dark favourites: `nord`, `tokyo-night-storm`, `tokyo-night-terminal-dark`, `dracula`, `everforest`, `kanagawa`, `rose-pine`, `rose-pine-moon`, `solarized-dark`
 - Light: `rose-pine-dawn`, `solarized-light`, `tokyo-night-light`
 
-> **base24 vs base16**: the scheme path is hardcoded to `base24/`. Most schemes have both variants, but a few are base16-only — setting `scheme = "<base16-only>"` would fail to evaluate. Stick to schemes that appear under `base24/` in the upstream repo.
+> **base24 vs base16**: `modules.theme.system` auto-resolves to whichever directory contains the scheme YAML — `base24/` preferred, `base16/` as fallback. `modules.theme.system` is read-only; nvim's colourscheme call and the `stylix.base16Scheme` path both derive from it. base24 schemes get the richer 24-slot palette (extended bright accents at `base10`-`base17`); base16 schemes fall back to the base equivalents (`base17 → base0E`, etc.) so consuming code that references the extended slots doesn't break.
 
 ---
 

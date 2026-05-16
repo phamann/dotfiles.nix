@@ -24,10 +24,32 @@ in
       type = types.str;
       default = "catppuccin-mocha";
       description = ''
-        Base24 scheme name (without `.yaml`) from `tinted-theming/schemes`'s
-        `base24/` directory. Browse available schemes:
+        Scheme name (without `.yaml`) from `tinted-theming/schemes`. The
+        `system` option resolves which subdirectory the file lives in
+        (`base24/` preferred over `base16/`). Browse available schemes:
           ls ${inputs.tinted-schemes}/base24 | sed 's/\.yaml$//'
-        Or in the browser: https://tinted-theming.github.io/base16-gallery
+          ls ${inputs.tinted-schemes}/base16 | sed 's/\.yaml$//'
+        Or in the browser: https://tinted-theming.github.io/tinted-gallery
+      '';
+    };
+
+    system = mkOption {
+      type = types.enum [
+        "base16"
+        "base24"
+      ];
+      readOnly = true;
+      default =
+        if builtins.pathExists "${inputs.tinted-schemes}/base24/${cfg.scheme}.yaml" then
+          "base24"
+        else if builtins.pathExists "${inputs.tinted-schemes}/base16/${cfg.scheme}.yaml" then
+          "base16"
+        else
+          throw "modules.theme.scheme: '${cfg.scheme}' not found in tinted-theming/schemes (looked in base24/ and base16/)";
+      defaultText = "Inferred from `scheme` — `base24` preferred, falls back to `base16`.";
+      description = ''
+        Resolved scheme system. Inferred from which subdirectory of
+        `tinted-theming/schemes` contains the scheme file. Read-only.
       '';
     };
 
@@ -65,7 +87,9 @@ in
 
           accent = c.base0E;
           accentAlt = c.base07;
-          accentBright = c.base17;
+          # base24-only slot. base16 schemes fall back to base0E (the
+          # non-bright magenta/mauve).
+          accentBright = c.base17 or c.base0E;
         };
       defaultText = "role-named `#rrggbb` hex strings derived from the active base24 scheme";
       description = "Role-named scheme-agnostic colour API for hand-templated apps.";
@@ -75,7 +99,7 @@ in
   config = mkIf cfg.enable {
     stylix = {
       enable = true;
-      base16Scheme = "${inputs.tinted-schemes}/base24/${cfg.scheme}.yaml";
+      base16Scheme = "${inputs.tinted-schemes}/${cfg.system}/${cfg.scheme}.yaml";
       inherit (cfg) polarity;
       autoEnable = false;
       fonts.monospace = {

@@ -36,39 +36,25 @@ in
         # groups and treesitter captures.
         extraLuaConfig =
           let
-            inherit (config.lib.stylix.colors.withHashtag)
-              base00
-              base01
-              base02
-              base03
-              base04
-              base05
-              base06
-              base07
-              base08
-              base09
-              base0A
-              base0B
-              base0C
-              base0D
-              base0E
-              base0F
-              base10
-              base11
-              base12
-              base13
-              base14
-              base15
-              base16
-              base17
-              ;
+            c = config.lib.stylix.colors.withHashtag;
+            # base16 schemes don't define base10-base17; fall back to the
+            # nearest base16 slot so vim.g.stylix_palette.base1X always
+            # resolves regardless of the active scheme system.
+            base10 = c.base10 or c.base00;
+            base11 = c.base11 or c.base01;
+            base12 = c.base12 or c.base08;
+            base13 = c.base13 or c.base09;
+            base14 = c.base14 or c.base0B;
+            base15 = c.base15 or c.base0C;
+            base16 = c.base16 or c.base0D;
+            base17 = c.base17 or c.base0E;
           in
           ''
             vim.g.stylix_palette = {
-              base00 = "${base00}", base01 = "${base01}", base02 = "${base02}", base03 = "${base03}",
-              base04 = "${base04}", base05 = "${base05}", base06 = "${base06}", base07 = "${base07}",
-              base08 = "${base08}", base09 = "${base09}", base0A = "${base0A}", base0B = "${base0B}",
-              base0C = "${base0C}", base0D = "${base0D}", base0E = "${base0E}", base0F = "${base0F}",
+              base00 = "${c.base00}", base01 = "${c.base01}", base02 = "${c.base02}", base03 = "${c.base03}",
+              base04 = "${c.base04}", base05 = "${c.base05}", base06 = "${c.base06}", base07 = "${c.base07}",
+              base08 = "${c.base08}", base09 = "${c.base09}", base0A = "${c.base0A}", base0B = "${c.base0B}",
+              base0C = "${c.base0C}", base0D = "${c.base0D}", base0E = "${c.base0E}", base0F = "${c.base0F}",
               base10 = "${base10}", base11 = "${base11}", base12 = "${base12}", base13 = "${base13}",
               base14 = "${base14}", base15 = "${base15}", base16 = "${base16}", base17 = "${base17}",
             }
@@ -76,7 +62,7 @@ in
             require("plugin-manager")
             require("mappings")
             require("autocmds")
-            vim.cmd.colorscheme("base24-${config.modules.theme.scheme}")
+            vim.cmd.colorscheme("${config.modules.theme.system}-${config.modules.theme.scheme}")
           '';
       };
     }
