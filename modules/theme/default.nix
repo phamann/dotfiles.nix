@@ -20,6 +20,18 @@ let
   parts = builtins.match "(base16|base24)-([a-z0-9._-]+)" cfg.scheme;
   system = builtins.elemAt parts 0;
   bareScheme = builtins.elemAt parts 1;
+
+  # Resolve the scheme YAML: prefer a local override in
+  # `modules/theme/schemes/<system>/<bare>.yaml` over the upstream input.
+  # Lets custom themes (e.g. base24-ocean as base16-ocean extended) live
+  # in-repo alongside their corresponding `colors/<system>-<bare>.vim`
+  # for tinted-vim.
+  localYaml = ./schemes + "/${system}/${bareScheme}.yaml";
+  schemeYaml =
+    if builtins.pathExists localYaml then
+      localYaml
+    else
+      "${inputs.tinted-schemes}/${system}/${bareScheme}.yaml";
 in
 {
   imports = [ inputs.stylix.homeModules.stylix ];
@@ -104,13 +116,22 @@ in
   config = mkIf cfg.enable {
     stylix = {
       enable = true;
-      base16Scheme = "${inputs.tinted-schemes}/${system}/${bareScheme}.yaml";
+      base16Scheme = schemeYaml;
       inherit (cfg) polarity;
       autoEnable = false;
       fonts.monospace = {
         package = pkgs.nerd-fonts.jetbrains-mono;
         name = "JetBrainsMono Nerd Font Mono";
       };
+    };
+
+    # Local tinted-vim colourscheme files (modules/theme/schemes/colors/)
+    # land under ~/.config/nvim/colors, which is searched before lazy's
+    # plugin paths — local files shadow tinted-vim's upstream colours
+    # for the same name. Pair each YAML with a matching .vim file.
+    xdg.configFile."nvim/colors" = {
+      source = ./schemes/colors;
+      recursive = true;
     };
   };
 }

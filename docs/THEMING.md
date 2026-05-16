@@ -133,7 +133,29 @@ programs.<app>.options.syntax-theme = "base16-stylix";
 
 ---
 
-## 5. nvim-specific
+## 5. Custom schemes
+
+For schemes that don't exist upstream (or that you want to override locally — e.g. a base24 promotion of `base16-ocean` that upstream's `base24-ocean` isn't), drop two files into `modules/theme/schemes/`:
+
+```
+modules/theme/schemes/
+├── base24/
+│   └── ocean.yaml              # YAML, Stylix reads this for the palette
+└── colors/
+    └── base24-ocean.vim        # tinted-vim colorscheme file, nvim reads this
+```
+
+The YAML follows the [tinted-theming scheme spec](https://github.com/tinted-theming/home/blob/main/specs/) — same shape as files in `inputs.tinted-schemes`. The `.vim` is rendered from [tinted-vim's template](https://github.com/tinted-theming/tinted-vim/blob/main/templates/tinted-vim.mustache) with the palette substituted; easiest path is to grab an existing `base24-<X>.vim` from tinted-vim and search/replace the `s:gui*` hex values.
+
+**Local wins over upstream.** If both files match the same scheme name (e.g. you have a local `base24-ocean.yaml` AND tinted-theming has one), the local override is used for both Stylix and nvim. To use the upstream version instead, either rename your local files or remove them.
+
+**Both files are required.** A YAML without a matching `.vim` leaves nvim's `colorscheme(...)` call broken; a `.vim` without a YAML leaves Stylix without colours for the rest of the system.
+
+Once added, set `modules.theme.scheme = "<system>-<name>"` like any other scheme — the override is automatic.
+
+---
+
+## 6. nvim-specific
 
 nvim is the most invasive consumer. The full base24 palette is templated into `init.lua` as `vim.g.stylix_palette` at build time, so lua overrides can reference scheme slots directly:
 
@@ -146,7 +168,7 @@ See `modules/nvim/config/lua/autocmds.lua` and the barbecue/lualine plugin specs
 
 ---
 
-## 6. Caveats
+## 7. Caveats
 
 - **`stylix.autoEnable = false`**: every target opts in explicitly. A future Stylix release adding a target won't surprise-theme an app we hand-template.
 - **Scheme switch requires a rebuild**: `modules.theme.scheme` evaluates at nix build time. There's no runtime hot-reload — deliberate trade-off for reproducibility. Run `make <host>` after the change.
