@@ -76,7 +76,7 @@ in
     stylix = {
       enable = true;
       base16Scheme = "${inputs.tinted-schemes}/base24/${cfg.scheme}.yaml";
-      polarity = cfg.polarity;
+      inherit (cfg) polarity;
       autoEnable = false;
       fonts.monospace = {
         package = pkgs.nerd-fonts.jetbrains-mono;
