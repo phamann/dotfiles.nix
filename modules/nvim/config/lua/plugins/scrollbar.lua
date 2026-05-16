@@ -2,26 +2,21 @@ return {
     "petertriho/nvim-scrollbar",
     event = "BufReadPost",
     config = function()
-        local scrollbar = require("scrollbar")
-        -- local colors = require('github-theme.lib.color')
-        -- local colors = require("material.colors")
-        -- local colors = require(vim.g.active_color_scheme .. ".colors").setup()
-        -- local colors = require(vim.g.active_color_scheme .. ".colors")
-        local colors = require("catppuccin.palettes").get_palette(vim.env.CATPPUCCIN_FLAVOUR or "frappe")
-        scrollbar.setup({
-            handle = {color = colors.bg_highlight},
+        local p = vim.g.stylix_palette
+        require("scrollbar").setup({
+            handle = { color = p.base02 },
             excluded_filetypes = {
                 "prompt", "TelescopePrompt", "noice", "notify", "NvimTree",
-                "NeoTree"
+                "NeoTree",
             },
             marks = {
-                Search = {color = colors.orange},
-                Error = {color = colors.error},
-                Warn = {color = colors.warning},
-                Info = {color = colors.info},
-                Hint = {color = colors.hint},
-                Misc = {color = colors.purple}
-            }
+                Search = { color = p.base09 },
+                Error  = { color = p.base08 },
+                Warn   = { color = p.base0A },
+                Info   = { color = p.base0D },
+                Hint   = { color = p.base0C },
+                Misc   = { color = p.base0E },
+            },
         })
-    end
+    end,
 }

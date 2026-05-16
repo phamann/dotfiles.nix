@@ -28,21 +28,60 @@ in
         enable = true;
         viAlias = true;
         vimAlias = true;
-        # Content of init.lua. HM merges this with whatever Stylix's neovim
-        # target adds (mini.base16 palette + setup call). The standalone
-        # init.lua file in the repo (modules/nvim/config/init.lua) is now
-        # unused — the previous \`vim.g.active_color_scheme\` line was dead
-        # code anyway (its consumers are colorscheme plugins that no longer
-        # exist, plus barbecue/styler which fall back gracefully).
-        extraLuaConfig = ''
-          require("options")
-          require("plugin-manager")
-          require("mappings")
-          require("autocmds")
-        '';
+        # init.lua content. HM appends Stylix's base16-nvim setup call after
+        # this block. We publish the full base24 palette to `vim.g.stylix_palette`
+        # up front so any later lua override can reference scheme slots
+        # directly (e.g. `p.base04`) without guessing which standard highlight
+        # group the active palette-mapper happened to assign to that slot.
+        extraLuaConfig =
+          let
+            inherit (config.lib.stylix.colors.withHashtag)
+              base00
+              base01
+              base02
+              base03
+              base04
+              base05
+              base06
+              base07
+              base08
+              base09
+              base0A
+              base0B
+              base0C
+              base0D
+              base0E
+              base0F
+              base10
+              base11
+              base12
+              base13
+              base14
+              base15
+              base16
+              base17
+              ;
+          in
+          ''
+            vim.g.stylix_palette = {
+              base00 = "${base00}", base01 = "${base01}", base02 = "${base02}", base03 = "${base03}",
+              base04 = "${base04}", base05 = "${base05}", base06 = "${base06}", base07 = "${base07}",
+              base08 = "${base08}", base09 = "${base09}", base0A = "${base0A}", base0B = "${base0B}",
+              base0C = "${base0C}", base0D = "${base0D}", base0E = "${base0E}", base0F = "${base0F}",
+              base10 = "${base10}", base11 = "${base11}", base12 = "${base12}", base13 = "${base13}",
+              base14 = "${base14}", base15 = "${base15}", base16 = "${base16}", base17 = "${base17}",
+            }
+            require("options")
+            require("plugin-manager")
+            require("mappings")
+            require("autocmds")
+          '';
       };
 
-      stylix.targets.neovim.enable = true;
+      stylix.targets.neovim = {
+        enable = true;
+        plugin = "base16-nvim";
+      };
     }
 
     # When dev is on, symlink only the subdirs/files we want live-editable.
