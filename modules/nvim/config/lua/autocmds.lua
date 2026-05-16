@@ -37,10 +37,11 @@ vim.filetype.add({
     },
 })
 
--- Override stock UI groups that base16-nvim leaves at unstyled defaults
--- or maps to a too-low-contrast slot. All overrides reference the active
--- scheme's palette via vim.g.stylix_palette (templated by nix), so they
--- follow scheme changes through `modules.theme.scheme`.
+-- UI overrides for groups tinted-vim doesn't opinionate on. All overrides
+-- reference the active scheme's palette via vim.g.stylix_palette (templated
+-- by nix), so they follow scheme changes through `modules.theme.scheme`.
+-- Treesitter/LSP captures are tinted-vim's responsibility — nothing here
+-- touches @variable, @function, @punctuation, etc.
 local function apply_ui_hl()
     local p = vim.g.stylix_palette
     local set = vim.api.nvim_set_hl
@@ -62,29 +63,13 @@ local function apply_ui_hl()
     set(0, "NeoTreeTabInactive",          { fg = p.base04, bg = p.base01 })
     set(0, "NeoTreeTabSeparatorActive",   { fg = p.base02, bg = p.base02 })
     set(0, "NeoTreeTabSeparatorInactive", { fg = p.base01, bg = p.base01 })
-
-    -- Variable identifiers in plain text colour rather than red. base16
-    -- spec puts @variable → base08 (red); base16-nvim is spec-faithful.
-    -- Aesthetic deviation: keep variable mentions recessed so operations
-    -- on them (function calls, member access) catch the eye. Covers both
-    -- treesitter captures and LSP semantic tokens.
-    set(0, "@variable",          { fg = p.base05 })
-    set(0, "@variable.builtin",  { fg = p.base05, italic = true })
-    set(0, "@lsp.type.variable", { fg = p.base05 })
-
-    -- Punctuation (. , ; ${} etc) in text colour. base16-nvim maps
-    -- @punctuation.{delimiter,special} → base0F (spec's "Deprecated /
-    -- Embedded Language Tags" slot — typically a deep red/brown), which
-    -- visually fights with the actual content. Most aesthetic themes
-    -- send punctuation to base05; brackets already land there in
-    -- base16-nvim's own mapping, so this just makes the family uniform.
-    set(0, "@punctuation.delimiter", { fg = p.base05 })
-    set(0, "@punctuation.special",   { fg = p.base05 })
 end
 vim.api.nvim_create_autocmd("ColorScheme", {
     group = vim.api.nvim_create_augroup("UIHighlights", { clear = true }),
     callback = apply_ui_hl,
 })
--- base16-nvim's setup() doesn't fire ColorScheme — defer one-shot apply
--- until after init.lua (and Stylix's appended setup) finishes.
+-- ColorScheme fires when init.lua calls `vim.cmd.colorscheme(...)` at the
+-- end, so apply_ui_hl runs after tinted-vim has set its highlights. The
+-- vim.schedule fallback is belt-and-braces for edge cases (e.g. live
+-- re-source via the BufWritePost autocmd above).
 vim.schedule(apply_ui_hl)

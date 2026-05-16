@@ -28,11 +28,12 @@ in
         enable = true;
         viAlias = true;
         vimAlias = true;
-        # init.lua content. HM appends Stylix's base16-nvim setup call after
-        # this block. We publish the full base24 palette to `vim.g.stylix_palette`
-        # up front so any later lua override can reference scheme slots
-        # directly (e.g. `p.base04`) without guessing which standard highlight
-        # group the active palette-mapper happened to assign to that slot.
+        # init.lua content. Colorscheme is `tinted-vim` (installed via lazy,
+        # see modules/nvim/config/lua/plugins/tinted-vim.lua). We publish the
+        # full base24 palette to `vim.g.stylix_palette` up front for lua
+        # overrides that need scheme slots directly (lualine theme, neo-tree
+        # tabs, etc.); tinted-vim itself handles all the standard highlight
+        # groups and treesitter captures.
         extraLuaConfig =
           let
             inherit (config.lib.stylix.colors.withHashtag)
@@ -75,12 +76,8 @@ in
             require("plugin-manager")
             require("mappings")
             require("autocmds")
+            vim.cmd.colorscheme("base16-${config.modules.theme.scheme}")
           '';
-      };
-
-      stylix.targets.neovim = {
-        enable = true;
-        plugin = "base16-nvim";
       };
     }
 
