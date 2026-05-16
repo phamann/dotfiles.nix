@@ -9,7 +9,7 @@ _: {
   # old modules/default.nix was deleted.
   #
   # Some modules need extra inputs from extraSpecialArgs to evaluate:
-  # - theme    requires `inputs.catppuccin`
+  # - theme       requires `inputs.stylix` and `inputs.tinted-schemes`
   # - claude-code requires `inputs.claude-code-nix` and `system`
   # External consumers must wire those through their own HM specialArgs.
   flake.homeManagerModules = {

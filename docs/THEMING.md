@@ -1,18 +1,17 @@
 # Theming
 
-A single Catppuccin flavour drives every themed app in this repo. Change it once per host, rebuild, and the new colours cascade everywhere.
+A single [base24](https://github.com/tinted-theming/home/blob/main/styling.md) colour scheme drives every themed app in this repo. Pick a scheme, set it on your host, rebuild, and the new colours cascade everywhere.
+
+The plumbing is [Stylix](https://github.com/nix-community/stylix) over scheme files from [tinted-theming/schemes](https://github.com/tinted-theming/schemes) (the canonical base16/base24 repo). Stylix takes a scheme YAML, derives a palette, and applies it to each opt-in target.
 
 ---
 
-## 1. Change the flavour
+## 1. Change the scheme
 
 Edit your host's `home.nix`:
 
 ```nix
-modules.theme = {
-  enable = true;
-  flavour = "frappe";  # latte | frappe | macchiato | mocha
-};
+modules.theme.scheme = "catppuccin-macchiato";
 ```
 
 Then rebuild:
@@ -21,109 +20,131 @@ Then rebuild:
 make <hostname>
 ```
 
-New shells pick up the change immediately. nvim picks it up on next launch (it reads `$CATPPUCCIN_FLAVOUR`, exported via `home.sessionVariables`).
+Restart long-running apps (ghostty, zellij) to pick up the new theme. nvim picks it up on next launch — the palette is templated into `init.lua` at build time.
+
+If you pick a *light* scheme, flip polarity too so Stylix picks the right contrast directions:
+
+```nix
+modules.theme = {
+  scheme = "gruvbox-light-medium";
+  polarity = "light";
+};
+```
 
 ---
 
-## 2. How it cascades
+## 2. Finding schemes
+
+Available schemes are the YAML files in [`tinted-theming/schemes/base24/`](https://github.com/tinted-theming/schemes/tree/spec-0.11/base24). Set `modules.theme.scheme` to the filename without `.yaml`.
+
+**Browse visually:**
+- [Tinted gallery](https://tinted-theming.github.io/tinted-gallery/) — previews every scheme rendered against real syntax highlighting.
+- [tinted-theming/schemes README](https://github.com/tinted-theming/schemes#schemes-list) — full list with author + polarity.
+
+**Common picks:**
+- Catppuccin family: `catppuccin-latte`, `catppuccin-frappe`, `catppuccin-macchiato`, `catppuccin-mocha`
+- Gruvbox family: `gruvbox-dark-{soft,medium,hard}`, `gruvbox-light-{soft,medium,hard}`, `gruvbox-material-{dark,light}-{soft,medium,hard}`
+- Other dark favourites: `nord`, `tokyo-night-storm`, `tokyo-night-terminal-dark`, `dracula`, `everforest`, `kanagawa`, `rose-pine`, `rose-pine-moon`, `solarized-dark`
+- Light: `rose-pine-dawn`, `solarized-light`, `tokyo-night-light`
+
+> **base24 vs base16**: the scheme path is hardcoded to `base24/`. Most schemes have both variants, but a few are base16-only — setting `scheme = "<base16-only>"` would fail to evaluate. Stick to schemes that appear under `base24/` in the upstream repo.
+
+---
+
+## 3. How it cascades
 
 ```mermaid
 flowchart LR
-  H[hosts/&lt;host&gt;/home.nix<br/>modules.theme.flavour] --> T[modules/theme]
-  T -->|catppuccin.flavor| U[catppuccin/nix<br/>home-manager module]
-  T -->|home.sessionVariables<br/>CATPPUCCIN_FLAVOUR| E[shell env]
-  T -->|modules.theme.palette| P[hex palette attrset]
+  H[hosts/&lt;host&gt;/home.nix<br/>modules.theme.scheme] --> T[modules/theme]
+  T -->|stylix.base16Scheme<br/>= path-to-yaml| S[Stylix]
+  T -->|modules.theme.semantic| R[role-named<br/>colour API]
 
-  U -->|catppuccin.&lt;app&gt;.enable| A1[bat / fzf / starship / delta /<br/>zed / ...]
-  E --> N[nvim<br/>lua reads vim.env.CATPPUCCIN_FLAVOUR]
-  T -->|cfg.flavour| G[ghostty / zellij / opencode<br/>via pkgs.replaceVars or string interp]
-  P --> C[claude-statusline<br/>via pkgs.replaceVars]
+  S -->|stylix.targets.&lt;x&gt;.enable| A1[bat / fzf / starship / zed /<br/>ghostty / zellij / opencode /<br/>neovim]
+  S -.->|bat tmTheme reused| D[delta<br/>syntax-theme = base16-stylix]
+  R -->|pkgs.replaceVars| C[claude-statusline]
+  T -->|nvim extraLuaConfig| V[vim.g.stylix_palette<br/>nvim plugin overrides]
 ```
 
-Three integration patterns are used:
+Two consumption patterns:
 
 | Pattern | When to use | Example modules |
 |---|---|---|
-| `catppuccin.<app>.enable = true` | Upstream [catppuccin/nix](https://github.com/catppuccin/nix) ships a module for the app | `bat`, `fzf`, `starship`, `git/delta`, `zed` |
-| `pkgs.replaceVars` with `config.modules.theme.flavour` | App takes a theme name in a raw config file | `ghostty`, `zellij` |
-| `pkgs.replaceVars` with `config.modules.theme.palette.<colour>` | App takes raw hex codes in a raw config file | `claude-code` (statusline) |
-| String interpolation in `programs.<app>.settings` | Nix-native settings, no upstream module | `opencode` |
-| `home.sessionVariables` → `vim.env.X` in lua | Out-of-store-symlinked configs (e.g. lazy.nvim) | `nvim` |
+| `stylix.targets.<x>.enable = true` | Stylix ships a target for the app | bat, fzf, starship, zed, ghostty, zellij, opencode, neovim |
+| `pkgs.replaceVars` with `modules.theme.semantic.<role>` | Hand-templated config consuming `#rrggbb` strings | claude-code (statusline) |
+
+`modules.theme.semantic` exposes a role-named view of the active palette:
+
+| Role | Slot | Use for |
+|---|---|---|
+| `bg` / `bgAlt` | base00 / base01 | editor body / recessed panel |
+| `fg` / `fgAlt` | base05 / base04 | regular text / muted text |
+| `primary` | base0D | "this is the thing" — usually blue |
+| `success` | base0B | usually green |
+| `warning` | base0A | usually yellow |
+| `error` | base08 | usually red |
+| `info` | base0C | usually cyan/teal |
+| `accent` / `accentAlt` / `accentBright` | base0E / base07 / base17 | mauve / lavender / bright variant |
+
+Use these rather than base24 slot numbers — your config stays readable after a scheme switch and the role mapping is portable across themes.
 
 ---
 
-## 3. Adding a new themed app
+## 4. Adding a new themed app
 
-### Case A — upstream catppuccin/nix module exists
+### Case A — Stylix has a target
 
-Check [`modules/home-manager/`](https://github.com/catppuccin/nix/tree/release-25.11/modules/home-manager) on the matching release branch. If your app is there:
+Browse [stylix/modules/](https://github.com/nix-community/stylix/tree/master/modules) — if your app is listed:
 
 ```nix
-# in your app's modules/<app>/default.nix
 config = mkIf cfg.enable {
   programs.<app>.enable = true;
-  catppuccin.<app>.enable = true;
+  stylix.targets.<app>.enable = true;
 };
 ```
 
-That's it. The flavour comes from `config.modules.theme.flavour` automatically.
-
-### Case B — app reads a theme name from a raw config file
-
-Use `pkgs.replaceVars` (same pattern as `modules/ghostty/`, `modules/zellij/`):
+### Case B — App's config uses raw hex values
 
 ```nix
-config = mkIf cfg.enable {
-  home.file.".config/<app>/config".source =
-    pkgs.replaceVars ./config {
-      theme = "catppuccin-${config.modules.theme.flavour}";
-    };
-};
-```
-
-In the templated config file, use `@theme@` where the theme name goes.
-
-### Case C — app's config uses raw hex values
-
-Use `config.modules.theme.palette` (same pattern as `modules/claude-code/`):
-
-```nix
-let palette = config.modules.theme.palette;
+let
+  inherit (config.modules.theme) semantic;
 in {
   home.file.".config/<app>/colors".source =
     pkgs.replaceVars ./colors {
-      inherit (palette) blue green mauve;
+      inherit (semantic) primary success accent warning;
     };
 }
 ```
 
-In the templated file, use `@blue@`, `@green@`, etc. Available keys: `rosewater flamingo pink mauve red maroon peach yellow green teal sky sapphire blue lavender text subtext1 subtext0 overlay2 overlay1 overlay0 surface2 surface1 surface0 base mantle crust`.
+In the templated file, use `@primary@`, `@success@`, etc. where the hex would go. Values are `#`-prefixed (`#rrggbb`).
 
-### Case D — Nix-managed settings attrset, no upstream module
+### Case C — App reads a syntect theme
 
-Set the theme value directly in the `programs.<app>.settings` block:
+Apps using [syntect](https://github.com/trishume/syntect) (delta, hexyl, …) can reuse the `tmTheme` Stylix generates for bat. Set the app's syntax-theme option to `"base16-stylix"`:
 
 ```nix
-programs.<app>.settings.theme = "catppuccin-${config.modules.theme.flavour}";
+programs.<app>.options.syntax-theme = "base16-stylix";
 ```
 
----
-
-## 4. What's NOT themed by `modules.theme`
-
-These modules use a different theme on purpose. Don't change them as part of a flavour swap:
-
-| Module | Active theme | Where it's set |
-|---|---|---|
-| `nvim` alt-colorschemes | Various | `lua/plugins/{onedark,tokyonight,github-theme,...}.lua` — gated by `vim.g.active_color_scheme` in `init.lua` |
-
-If you want to migrate any of these to Catppuccin, follow one of the patterns in §3.
+(See `modules/git/default.nix` for the delta example.)
 
 ---
 
-## 5. Caveats
+## 5. nvim-specific
 
-- **Don't set `catppuccin.enable = true` globally.** Upstream's `mkCatppuccinOption` defaults every per-app `catppuccin.<app>.enable` to `config.catppuccin.enable`, so flipping it on auto-enables every module — including ones that conflict with our hand-templated configs (zellij, ghostty, nvim) and ones we deliberately keep on Tokyo Night. `modules/theme/default.nix` sets `flavor`/`accent` but **not** `enable`.
-- **`catppuccin/nix` is pinned to `release-25.11`** to match the home-manager release. The `main` branch references home-manager options that don't exist on stable yet (e.g. `programs.antigravity`). When bumping home-manager, bump the catppuccin branch in lockstep.
-- **Not every app is on the release branch.** `opencode` is in `main` but not in `release-25.11`, so we set its theme directly via string interpolation. If you upgrade catppuccin/nix and your app shows up on the release branch, migrate it to Case A.
-- **nvim flavour change requires a new shell**, not just `:source`. The flavour is read from `$CATPPUCCIN_FLAVOUR` which is exported by `home.sessionVariables` via shell init. Existing nvim sessions and existing shells keep the old value.
+nvim is the most invasive consumer. The full base24 palette is templated into `init.lua` as `vim.g.stylix_palette` at build time, so lua overrides can reference scheme slots directly:
+
+```lua
+local p = vim.g.stylix_palette
+vim.api.nvim_set_hl(0, "MyGroup", { fg = p.base0D, bg = p.base00 })
+```
+
+See `modules/nvim/config/lua/autocmds.lua` and the barbecue/lualine plugin specs for palette-driven override examples. Stylix's `base16-nvim` plugin (installed via lazy with `priority = 1000` to survive lazy's rtp reset) handles the majority of standard highlight groups; the lua overrides exist only to fix the specific groups base16-nvim leaves bare or maps to a too-low-contrast slot.
+
+---
+
+## 6. Caveats
+
+- **`stylix.autoEnable = false`**: every target opts in explicitly. A future Stylix release adding a target won't surprise-theme an app we hand-template.
+- **Scheme switch requires a rebuild**: `modules.theme.scheme` evaluates at nix build time. There's no runtime hot-reload — deliberate trade-off for reproducibility. Run `make <host>` after the change.
+- **Polarity matters**: dark schemes default to `polarity = "dark"`; light schemes need `polarity = "light"`. Stylix uses this for some target's contrast-direction decisions.
+- **Long-running apps need a restart**: ghostty, zellij, nvim sessions in progress keep their old palette until relaunched.

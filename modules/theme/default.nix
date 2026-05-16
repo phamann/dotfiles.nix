@@ -11,28 +11,11 @@ let
     mkIf
     mkOption
     types
-    mapAttrs
-    importJSON
-    hasPrefix
-    removePrefix
     ;
   cfg = config.modules.theme;
-
-  isCatppuccinScheme = hasPrefix "catppuccin-" cfg.scheme;
-  inferredFlavour = if isCatppuccinScheme then removePrefix "catppuccin-" cfg.scheme else "mocha";
-
-  # Read a Catppuccin flavour palette from catppuccin/nix's bundled JSON
-  # and return a `{ <colourName> = <hex>; }` attrset.
-  paletteFor =
-    flavour:
-    mapAttrs (_: c: c.hex)
-      (importJSON "${config.catppuccin.sources.palette}/palette.json").${flavour}.colors;
 in
 {
-  imports = [
-    inputs.catppuccin.homeModules.catppuccin
-    inputs.stylix.homeModules.stylix
-  ];
+  imports = [ inputs.stylix.homeModules.stylix ];
 
   options.modules.theme = {
     enable = mkEnableOption "theme";
@@ -42,8 +25,9 @@ in
       default = "catppuccin-mocha";
       description = ''
         Base24 scheme name (without `.yaml`) from `tinted-theming/schemes`'s
-        `base24/` directory. Browse:
+        `base24/` directory. Browse available schemes:
           ls ${inputs.tinted-schemes}/base24 | sed 's/\.yaml$//'
+        Or in the browser: https://tinted-theming.github.io/base16-gallery
       '';
     };
 
@@ -86,53 +70,6 @@ in
       defaultText = "role-named `#rrggbb` hex strings derived from the active base24 scheme";
       description = "Role-named scheme-agnostic colour API for hand-templated apps.";
     };
-
-    flavour = mkOption {
-      type = types.str;
-      default = inferredFlavour;
-      defaultText = "Catppuccin flavour extracted from `scheme` (e.g. `catppuccin-mocha` → `mocha`).";
-      description = "Catppuccin flavour. Defaults from `scheme`.";
-    };
-
-    lightFlavour = mkOption {
-      type = types.enum [
-        "latte"
-        "frappe"
-        "macchiato"
-        "mocha"
-      ];
-      default = "latte";
-      description = "Catppuccin flavour for apps with a light/dark split.";
-    };
-
-    accent = mkOption {
-      type = types.enum [
-        "rosewater"
-        "flamingo"
-        "pink"
-        "mauve"
-        "red"
-        "maroon"
-        "peach"
-        "yellow"
-        "green"
-        "teal"
-        "sky"
-        "sapphire"
-        "blue"
-        "lavender"
-      ];
-      default = "mauve";
-      description = "Catppuccin accent colour.";
-    };
-
-    palette = mkOption {
-      type = types.attrsOf types.str;
-      readOnly = true;
-      default = paletteFor cfg.flavour;
-      defaultText = "Catppuccin palette for the active flavour, keyed by colour name.";
-      description = "Hex values from the active Catppuccin flavour, keyed by colour name.";
-    };
   };
 
   config = mkIf cfg.enable {
@@ -145,11 +82,6 @@ in
         package = pkgs.nerd-fonts.jetbrains-mono;
         name = "JetBrainsMono Nerd Font Mono";
       };
-    };
-
-    catppuccin = mkIf isCatppuccinScheme {
-      flavor = inferredFlavour;
-      inherit (cfg) accent;
     };
   };
 }

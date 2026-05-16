@@ -42,8 +42,6 @@
 
     claude-code-nix.url = "github:sadjow/claude-code-nix";
 
-    catppuccin.url = "github:catppuccin/nix/release-25.11";
-
     stylix = {
       url = "github:nix-community/stylix/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";

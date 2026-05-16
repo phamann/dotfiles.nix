@@ -63,8 +63,11 @@ in
         side-by-side = false;
         line-numbers = true;
         hunk-header-style = "file line-number syntax";
+        # Reuse the tmTheme Stylix generates for bat (modules/bat/default.nix
+        # enables stylix.targets.bat). delta's syntect engine reads from the
+        # same theme path, so it follows the active scheme automatically.
+        syntax-theme = "base16-stylix";
       };
     };
-    catppuccin.delta.enable = true;
   };
 }
