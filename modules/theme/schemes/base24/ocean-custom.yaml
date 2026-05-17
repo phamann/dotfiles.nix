@@ -1,0 +1,35 @@
+system: "base24"
+name: "Ocean Custom"
+slug: "ocean-custom"
+author: "Chris Kempson (base16-ocean) — base24 extension derived in CAM02-UCS"
+variant: "dark"
+# base00–base0F: original base16-ocean by Chris Kempson, with the
+#   greyscale ramp (base00–base07) shifted one slot darker so the
+#   former base10 (#222731) becomes the default bg. Original base07
+#   (#eff1f5) dropped off the bright end.
+# base10–base17: extension following base24 spec (tinted-theming/base24)
+palette:
+  base00: "#222731"  # Default Background
+  base01: "#2b303b"  # Lighter Background (status bars, line numbers)
+  base02: "#343d46"  # Selection Background
+  base03: "#4f5b66"  # Comments, Invisibles, Line Highlighting
+  base04: "#65737e"  # Dark Foreground (status bars)
+  base05: "#c0c5ce"  # Default Foreground (restored from upstream — preserves readability)
+  base06: "#c0c5ce"  # Light Foreground
+  base07: "#dfe1e8"  # Lightest Foreground
+  base08: "#bf616a"  # Variables, Diff Deleted (red)
+  base09: "#d08770"  # Integers, Constants (orange)
+  base0A: "#ebcb8b"  # Classes, Search BG (yellow)
+  base0B: "#a3be8c"  # Strings, Diff Inserted (green)
+  base0C: "#96b5b4"  # Escape chars, Regex (cyan)
+  base0D: "#8fa1b3"  # Functions, Headings (blue)
+  base0E: "#b48ead"  # Keywords (magenta)
+  base0F: "#ab7967"  # Deprecated, Embedded tags (brown)
+  base10: "#222731"  # Darker Background
+  base11: "#161b26"  # Darkest Background
+  base12: "#eb7480"  # Bright Red   (ANSI 9)
+  base13: "#ffdf90"  # Bright Yellow (ANSI 11)
+  base14: "#b9db9c"  # Bright Green (ANSI 10)
+  base15: "#aad2d1"  # Bright Cyan  (ANSI 14)
+  base16: "#a6bdd5"  # Bright Blue  (ANSI 12)
+  base17: "#d6a6ce"  # Bright Magenta (ANSI 13)
