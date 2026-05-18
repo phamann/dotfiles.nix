@@ -27,6 +27,6 @@ in
         };
       };
     };
-    catppuccin.bat.enable = true;
+    stylix.targets.bat.enable = true;
   };
 }

@@ -9,7 +9,7 @@
 let
   inherit (lib) mkEnableOption mkIf optionalAttrs;
   inherit (config.modules) claude-code;
-  inherit (config.modules.theme) palette;
+  inherit (config.modules.theme) semantic;
   inherit (pkgs.stdenv.hostPlatform) isDarwin;
 
   mcpWrappers = import ../../lib/mcp-wrappers.nix { inherit pkgs; };
@@ -154,17 +154,22 @@ in
         ## Git
         - When creating git commit messages ALWAYS use [conventional commit style](https://www.conventionalcommits.org/en/v1.0.0/#specification).
         - When creating pull requests in Github ALWAYS mark them in draft status.
+        - When interacting with Github (pull request actions, comments etc.) ALWAYS prefer using the `gh` CLI over the Github MCP or other actions.
       '';
     };
 
     home.file.".config/claude-statusline/config.toml".source = pkgs.replaceVars ./config.toml {
-      inherit (palette)
-        blue
-        green
-        mauve
-        yellow
-        lavender
+      inherit (semantic)
+        primary
+        success
+        accent
+        accentAlt
         ;
+      # cost is rendered in the `warning` palette slot (yellow) — the
+      # semantic role doesn't truly fit "warning", but yellow is the
+      # right colour for cost in a statusline. Alias locally rather than
+      # bloating `modules.theme.semantic` with a per-consumer role.
+      cost = semantic.warning;
     };
   };
 }

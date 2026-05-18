@@ -31,8 +31,9 @@ in
       ".config/zellij/layouts/compact-bottom.kdl".source = ./compact-bottom.kdl;
       ".config/zellij/config.kdl".source = pkgs.replaceVars ./config.kdl {
         layout = "${cfg.layout}";
-        theme = "catppuccin-${config.modules.theme.flavour}";
       };
     };
+
+    stylix.targets.zellij.enable = true;
   };
 }

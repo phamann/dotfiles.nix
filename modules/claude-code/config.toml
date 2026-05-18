@@ -1,16 +1,16 @@
 preset = "default"
 
 [directory]
-style = "fg:@blue@ bold"
+style = "fg:@primary@ bold"
 
 [git_branch]
-style = "fg:@green@"
+style = "fg:@success@"
 
 [model]
-style = "fg:@mauve@"
+style = "fg:@accent@"
 
 [cost]
-style = "fg:@yellow@"
+style = "fg:@cost@"
 
 [context]
-style = "fg:@lavender@"
+style = "fg:@accentAlt@"

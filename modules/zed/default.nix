@@ -57,44 +57,8 @@ in
         terminal = {
           line_height = "standard";
         };
-        language_models = {
-          ollama = {
-            api_url = "http://localhost:11434";
-            available_models = [
-              {
-                name = "devstral:24b";
-                display_name = "devstral:24b";
-                keep_alive = "10m";
-                max_tokens = 32768;
-                supports_tools = true;
-              }
-              {
-                name = "qwen2.5-coder:14b";
-                display_name = "qwen2.5-coder:14b";
-                keep_alive = "10m";
-                max_tokens = 32768;
-                supports_tools = true;
-              }
-              {
-                name = "deepseek-r1:14b";
-                display_name = "deepseek-r1:14b";
-                keep_alive = "10m";
-                max_tokens = 32768;
-                supports_tools = true;
-              }
-            ];
-          };
-        };
-        agent = {
-          enabled = true;
-          default_model = {
-            provider = "ollama";
-            model = "devstral:24b";
-          };
-        };
       };
       extensions = [
-        "catppuccin"
         "cue"
         "docker-compose"
         "dockerfile"
@@ -112,6 +76,12 @@ in
         "xml"
       ];
     };
-    catppuccin.zed.enable = true;
+    stylix.targets.zed = {
+      enable = true;
+      # Colours only — we set buffer/ui font size and family explicitly in
+      # `userSettings` above. Letting Stylix manage Zed fonts would
+      # override those to `stylix.fonts.sizes.applications` (default 12).
+      fonts.enable = false;
+    };
   };
 }

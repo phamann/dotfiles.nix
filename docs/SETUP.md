@@ -177,7 +177,7 @@ make check      # or: nix flake check
 Runs:
 
 - `eval-r2-d2`, `eval-x-wing` (on aarch64-darwin) — builds the toplevel system derivation for each Mac.
-- `eval-yoda` (on x86_64-linux) — builds yoda's activation package. Note: on aarch64-darwin this fails because catppuccin's per-app modules import TOML from x86_64-linux derivations that aarch64-darwin can't substitute. CI on Linux closes this gap (see `.github/workflows/check.yml`).
+- `eval-yoda` (on x86_64-linux) — builds yoda's activation package. CI on Linux validates this (see `.github/workflows/check.yml`).
 - `treefmt` — formatting check.
 - `pre-commit` — statix + deadnix + treefmt.
 
@@ -211,7 +211,7 @@ Each module is published as a flake output:
 imports = [ inputs.dotfiles.homeManagerModules.<name> ];
 ```
 
-19 modules total — see `flake/modules.nix`. Some need extra inputs in `extraSpecialArgs`:
+16 modules total — see `flake/modules.nix`. Some need extra inputs in `extraSpecialArgs`:
 
-- `theme` → `inputs.catppuccin`
+- `theme` → `inputs.stylix` and `inputs.tinted-schemes`
 - `claude-code` → `inputs.claude-code-nix` and `system`

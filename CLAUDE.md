@@ -61,7 +61,8 @@ Each layer has one job. Adding a host = ~10-line file importing the right profil
 - `flake-parts` — output composition
 - `darwin` (`github:nix-darwin/nix-darwin`), `home-manager`
 - `treefmt-nix`, `git-hooks` (cachix/git-hooks.nix)
-- `catppuccin`, `claude-code-nix`, `rust-overlay`, `mkAlias`
+- `stylix` + `tinted-schemes` — theming (see [Theming](#theming))
+- `claude-code-nix`, `rust-overlay`, `mkAlias`
 
 ### Profile pattern
 
@@ -122,7 +123,7 @@ Hosts are now thin deltas. Example (`hosts/r2-d2/home.nix`):
 ```nix
 _: {
   imports = [ ../../profiles/work-laptop.nix ];
-  modules.theme.flavour = "mocha";
+  modules.theme.scheme = "base24-catppuccin-mocha";
 }
 ```
 
@@ -147,6 +148,22 @@ Darwin hosts also have `hosts/<name>/configuration.nix` (system-level) that impo
 - Pre-commit is wired but NOT auto-installed because `core.hooksPath = ~/.git-hooks` is set globally; a naive `pre-commit install` would pollute every repo on the machine. To enable per-commit enforcement locally: `git config --local --unset core.hooksPath && pre-commit install` inside `nix develop`.
 - CI on GitHub Actions runs `nix flake check` on macos-14 + ubuntu-24.04 for every PR.
 
+## Theming
+
+A single base24 colour scheme drives every themed app. Detailed reference in [`docs/THEMING.md`](./docs/THEMING.md); summary:
+
+- **Entry point**: `modules.theme.scheme` (a tinted-theming scheme ID with explicit prefix, e.g. `"base24-catppuccin-macchiato"` or `"base16-default-dark"`) + `modules.theme.polarity` (`"dark"` / `"light"`). Set per-host in `hosts/<host>/home.nix`. The `<system>-` prefix is required and matches scheme IDs in the tinted-gallery / tinted-vim's colorscheme filenames.
+- **Consumption patterns**:
+  1. **Stylix targets**: `stylix.targets.<x>.enable = true;` inside a module. Stylix handles the app from there. Used for bat, fzf, starship, zed, ghostty, zellij, opencode, neovim, delta (via bat's tmTheme).
+  2. **Hand-templated configs**: `pkgs.replaceVars` with `config.modules.theme.semantic.<role>`. `semantic` exposes role-named `#rrggbb` strings (`primary`, `success`, `accent`, `warning`, `accentAlt`, `bg`, `fg`, …). Used for claude-statusline. See `modules/claude-code/default.nix`.
+  3. **nvim lua overrides**: `vim.g.stylix_palette` is the full base24 palette (`base00`–`base17`) templated into `init.lua` at build time. Reference slots directly via `p.base0X` in `nvim_set_hl` calls. Used in `modules/nvim/config/lua/autocmds.lua` (`UIHighlights` augroup) and per-plugin specs.
+
+### Theming gotchas
+
+- **Stylix's neovim plugin needs a lazy.nvim spec with `lazy = false, priority = 1000`** (see `modules/nvim/config/lua/plugins/base16.lua`). Lazy's default `performance.rtp.reset = true` clears nvim's packpath at `lazy.setup()`, so Stylix's appended `require('base16-colorscheme').setup({...})` would fail without lazy also installing the plugin into its own runtime path.
+- **base16-nvim is spec-faithful, not aesthetic.** We deliberately deviate from the base16 spec for several treesitter captures so the rendered code matches what most polished themes (catppuccin, tokyonight) actually do: `@variable` / `@lsp.type.variable` recessed to `base05`, `@punctuation.{delimiter,special}` recessed to `base05`. Barbecue's LSP context kinds are aligned to base16-nvim's *treesitter* mappings (which themselves deviate from spec for `@namespace`), not the spec table. These overrides live in `modules/nvim/config/lua/autocmds.lua` and `modules/nvim/config/lua/plugins/barbecue.lua`. Add to those when you find another spec-vs-aesthetic mismatch.
+- **Highlight group naming inconsistency**: most plugins use `PluginNameFoo` (PascalCase) but barbecue uses `plugin_name_foo` (lowercase). Always `grep` for `nvim_set_hl` in the plugin's source before writing overrides — `nvim_set_hl` succeeds for non-existent group names without complaint, so a typo or case mismatch silently does nothing.
+
 ## Foot-guns and "things that changed"
 
 These have all been deprecated/removed in earlier refactor phases — do NOT introduce them again:
@@ -158,7 +175,12 @@ These have all been deprecated/removed in earlier refactor phases — do NOT int
 - ~~`with lib;`~~ — replaced with `inherit (lib) ...;` across all modules.
 - ~~`nixfmt-classic`, `nixpkgs-fmt`~~ — replaced by `nixfmt-rfc-style`.
 - ~~`pkgs.stdenv.isDarwin`~~ — use `pkgs.stdenv.hostPlatform.isDarwin`.
+- ~~`inputs.catppuccin`~~ — removed. Theming is Stylix + `tinted-theming/schemes` (`inputs.stylix` + `inputs.tinted-schemes`).
+- ~~`modules.theme.flavour` / `lightFlavour` / `accent` / `palette`~~ — removed. Use `modules.theme.scheme` (base24 scheme name) and `modules.theme.semantic.<role>` (role-named hex API).
+- ~~`catppuccin.<app>.enable`~~ — removed. Use `stylix.targets.<app>.enable` instead.
+- ~~`home.sessionVariables.CATPPUCCIN_*`~~ — removed. nvim reads `vim.g.stylix_palette` (templated into init.lua at build time), not env vars.
+- ~~`modules/alacritty`, `modules/kitty`, `modules/tmux`~~ — deleted. zellij + ghostty cover the workflow.
 
 ## Cross-platform eval limitation
 
-yoda's `homeConfiguration` cannot fully evaluate from aarch64-darwin locally — catppuccin per-app modules import TOML/JSON from x86_64-linux derivations that aarch64-darwin can't substitute. The Linux CI job is the real validation. Locally, `make r2-d2` / `make x-wing` cover the Macs.
+yoda's `homeConfiguration` cannot fully evaluate from aarch64-darwin locally — some derivations Stylix and other inputs pull in are x86_64-linux-only and can't be substituted on darwin. The Linux CI job (`.github/workflows/check.yml`) closes this gap. Locally, `make r2-d2` / `make x-wing` cover the Macs.

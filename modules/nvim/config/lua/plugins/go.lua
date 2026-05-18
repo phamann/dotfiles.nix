@@ -8,6 +8,9 @@ return {
     config = function()
         local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
         require("go").setup({
+            -- go.nvim's codelens path calls `vim.lsp.codelens.enable`, an
+            -- nvim 0.12 API. We're on 0.11; disable until pkgs catches up.
+            lsp_codelens = false,
             lsp_cfg = {
                 capabilities = capabilities,
                 cmd = { "env", "GOMEMLIMIT=12GiB", "gopls" },

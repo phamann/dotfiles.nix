@@ -1,11 +1,5 @@
 _: {
-  imports = [
-    ../../profiles/dev-laptop.nix
-    ../../modules/alacritty
-  ];
+  imports = [ ../../profiles/dev-laptop.nix ];
 
-  modules = {
-    alacritty.enable = true;
-    theme.flavour = "frappe";
-  };
+  modules.theme.scheme = "base24-catppuccin-frappe";
 }

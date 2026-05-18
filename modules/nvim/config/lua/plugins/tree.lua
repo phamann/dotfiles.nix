@@ -31,7 +31,14 @@ return {
             enable_diagnostics = true,
 
             default_component_configs = {
-                name = { use_git_status_colors = true },
+                name = {
+                    use_git_status_colors = true,
+                    -- Apply the NeoTreeFileNameOpened highlight (defined in
+                    -- autocmds.lua's UIHighlights group) to files that are
+                    -- currently open as buffers — gives a visual scan of
+                    -- "what am I editing" from the tree.
+                    highlight_opened_files = true,
+                },
                 git_status = {
                     symbols = {
                         -- Change type

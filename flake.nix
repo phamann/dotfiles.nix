@@ -42,7 +42,18 @@
 
     claude-code-nix.url = "github:sadjow/claude-code-nix";
 
-    catppuccin.url = "github:catppuccin/nix/release-25.11";
+    stylix = {
+      url = "github:nix-community/stylix/release-25.11";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # Tinted-theming canonical base16/base24 scheme repo. Consumed as a
+    # source tree (not a flake) — we point stylix.base16Scheme at
+    # `${inputs.tinted-schemes}/base24/<scheme>.yaml`.
+    tinted-schemes = {
+      url = "github:tinted-theming/schemes";
+      flake = false;
+    };
   };
 
   outputs =

@@ -19,6 +19,7 @@ let
               home = "/Users/${user}";
             };
           }
+          inputs.stylix.darwinModules.stylix
           inputs.home-manager.darwinModules.home-manager
           {
             home-manager = {

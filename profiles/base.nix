@@ -12,7 +12,6 @@
     ../modules/ssh
     ../modules/starship
     ../modules/theme
-    ../modules/tmux
     ../modules/zsh
   ];
 
@@ -34,7 +33,6 @@
     ssh.enable = true;
     starship.enable = true;
     theme.enable = true; # flavour set by the host
-    tmux.enable = true;
     zsh.enable = true;
   };
 }

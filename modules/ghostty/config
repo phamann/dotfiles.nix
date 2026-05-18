@@ -1,8 +1,0 @@
-font-family = "JetBrainsMonoNL NF"
-font-family = "Symbols Nerd Font"
-font-size = 16
-font-feature = -calt, -liga, -dlig
-adjust-cell-height = 8%
-theme = light:@lightTheme@,dark:@theme@
-window-padding-x = 6
-fullscreen = true

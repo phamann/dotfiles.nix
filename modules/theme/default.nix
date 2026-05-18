@@ -1,5 +1,6 @@
 {
   inputs,
+  pkgs,
   lib,
   config,
   ...
@@ -10,96 +11,127 @@ let
     mkIf
     mkOption
     types
-    mapAttrs
-    importJSON
     ;
   cfg = config.modules.theme;
 
-  # Read the active flavour's hex palette straight from catppuccin/nix's
-  # palette source. Same JSON the upstream per-app modules consume.
-  paletteFor =
-    flavour:
-    mapAttrs (_: c: c.hex)
-      (importJSON "${config.catppuccin.sources.palette}/palette.json").${flavour}.colors;
+  # Extract `<system>` and `<bare>` from cfg.scheme. The regex shape is
+  # validated by `types.strMatching` on the option itself (below), so by
+  # the time we reach this binding `parts` is guaranteed non-null.
+  parts = builtins.match "(base16|base24)-([a-z0-9._-]+)" cfg.scheme;
+  system = builtins.elemAt parts 0;
+  bareScheme = builtins.elemAt parts 1;
+
+  # Resolve the scheme YAML: prefer a local override in
+  # `modules/theme/schemes/<system>/<bare>.yaml` over the upstream input.
+  # Lets custom themes (e.g. base24-ocean as base16-ocean extended) live
+  # in-repo alongside their corresponding `colors/<system>-<bare>.vim`
+  # for tinted-vim.
+  localYaml = ./schemes + "/${system}/${bareScheme}.yaml";
+  schemeYaml =
+    if builtins.pathExists localYaml then
+      localYaml
+    else
+      "${inputs.tinted-schemes}/${system}/${bareScheme}.yaml";
 in
 {
-  imports = [ inputs.catppuccin.homeModules.catppuccin ];
+  imports = [ inputs.stylix.homeModules.stylix ];
 
   options.modules.theme = {
     enable = mkEnableOption "theme";
 
-    flavour = mkOption {
-      type = types.enum [
-        "latte"
-        "frappe"
-        "macchiato"
-        "mocha"
-      ];
-      default = "frappe";
-      description = "Primary (dark) Catppuccin flavour.";
+    scheme = mkOption {
+      type = types.strMatching "(base16|base24)-[a-z0-9._-]+";
+      default = "base24-catppuccin-mocha";
+      example = "base16-default-dark";
+      description = ''
+        tinted-theming scheme ID — the value matches scheme IDs in the
+        gallery and tinted-vim's colorscheme filenames exactly. Format:
+        `<system>-<name>` where `<system>` is `base16` or `base24`.
+
+        Browse available schemes:
+          ls ${inputs.tinted-schemes}/base24 | sed 's/\.yaml$//'
+          ls ${inputs.tinted-schemes}/base16 | sed 's/\.yaml$//'
+        Or in the browser: https://tinted-theming.github.io/tinted-gallery
+
+        base24 schemes get a richer 24-slot palette (extended bright
+        accents at base10-base17); base16 schemes are 16-slot and the
+        extended slots fall back to their base counterparts.
+      '';
     };
 
-    lightFlavour = mkOption {
+    system = mkOption {
       type = types.enum [
-        "latte"
-        "frappe"
-        "macchiato"
-        "mocha"
+        "base16"
+        "base24"
       ];
-      default = "latte";
-      description = "Flavour for apps that support a light/dark split (e.g. ghostty, zed).";
+      readOnly = true;
+      default = system;
+      defaultText = "Parsed from the prefix of `scheme`.";
+      description = "Resolved scheme system (base16 or base24). Read-only.";
     };
 
-    accent = mkOption {
+    polarity = mkOption {
       type = types.enum [
-        "rosewater"
-        "flamingo"
-        "pink"
-        "mauve"
-        "red"
-        "maroon"
-        "peach"
-        "yellow"
-        "green"
-        "teal"
-        "sky"
-        "sapphire"
-        "blue"
-        "lavender"
+        "dark"
+        "light"
+        "either"
       ];
-      default = "mauve";
-      description = "Global Catppuccin accent colour.";
+      default = "dark";
+      description = "Polarity passed to Stylix.";
     };
 
-    palette = mkOption {
+    # Role-named colour API derived from the active base24 scheme. Apps
+    # consume `config.modules.theme.semantic.<role>` instead of palette
+    # names or base24 slot indices.
+    semantic = mkOption {
       type = types.attrsOf types.str;
       readOnly = true;
-      default = paletteFor cfg.flavour;
-      defaultText = "catppuccin palette for the active flavour, keyed by colour name (e.g. blue, mauve, base)";
-      description = ''
-        Hex values from the active Catppuccin flavour, keyed by colour name.
-        Use as `config.modules.theme.palette.<name>` when templating raw config
-        files (e.g. via `pkgs.replaceVars`) for apps that aren't covered by an
-        upstream catppuccin/nix module.
-      '';
+      default =
+        let
+          c = config.lib.stylix.colors.withHashtag;
+        in
+        {
+          bg = c.base00;
+          fg = c.base05;
+          bgAlt = c.base01;
+          fgAlt = c.base04;
+
+          primary = c.base0D;
+          success = c.base0B;
+          warning = c.base0A;
+          error = c.base08;
+          info = c.base0C;
+
+          accent = c.base0E;
+          accentAlt = c.base07;
+          # base24-only slot. base16 schemes fall back to base0E (the
+          # non-bright magenta/mauve).
+          accentBright = c.base17 or c.base0E;
+        };
+      defaultText = "role-named `#rrggbb` hex strings derived from the active base24 scheme";
+      description = "Role-named scheme-agnostic colour API for hand-templated apps.";
     };
   };
 
   config = mkIf cfg.enable {
-    # Note: deliberately NOT setting `catppuccin.enable = true`. Upstream
-    # auto-enables EVERY per-app catppuccin module when the global flag is on,
-    # which conflicts with apps we theme by hand (zellij, ghostty, nvim) and
-    # with apps we deliberately keep on a different theme (alacritty/kitty/tmux
-    # use tokyo-night). Per-app modules are opted-in inside each app's module.
-    catppuccin = {
-      flavor = cfg.flavour;
-      inherit (cfg) accent;
+    stylix = {
+      enable = true;
+      base16Scheme = schemeYaml;
+      inherit (cfg) polarity;
+      autoEnable = false;
+      fonts.monospace = {
+        package = pkgs.nerd-fonts.jetbrains-mono;
+        name = "JetBrainsMono Nerd Font Mono";
+      };
     };
 
-    home.sessionVariables = {
-      CATPPUCCIN_FLAVOUR = cfg.flavour;
-      CATPPUCCIN_LIGHT_FLAVOUR = cfg.lightFlavour;
-      CATPPUCCIN_ACCENT = cfg.accent;
+    # Local tinted-vim colourscheme files (modules/theme/schemes/colors/)
+    # land under ~/.config/nvim/colors, which is searched before lazy's
+    # plugin paths — local files shadow tinted-vim's upstream colours
+    # for the same name. Pair each YAML with a matching .vim file.
+    xdg.configFile."nvim/colors" = {
+      source = ./schemes/colors;
+      recursive = true;
     };
   };
 }
