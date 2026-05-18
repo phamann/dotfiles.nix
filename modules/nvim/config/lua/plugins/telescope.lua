@@ -37,6 +37,33 @@ return {
         require('telescope').load_extension("changed_files")
 
         vim.g.telescope_changed_files_base_branch = "main"
+
+        -- Telescope styling — recessed popup with invisible borders and a
+        -- distinct prompt surface, accent-coloured titles. Palette-driven
+        -- via vim.g.stylix_palette so it follows scheme changes.
+        local function apply_hl()
+            local p = vim.g.stylix_palette
+            local set = vim.api.nvim_set_hl
+            -- Popup body: mantle bg (recessed from editor), default text fg.
+            set(0, "TelescopeNormal",        { fg = p.base05, bg = p.base01 })
+            -- Borders match their pane bg so the popup reads as borderless.
+            set(0, "TelescopeBorder",        { fg = p.base01, bg = p.base01 })
+            set(0, "TelescopePromptBorder",  { fg = p.base02, bg = p.base02 })
+            -- Prompt input has its own slightly-lighter surface for contrast.
+            set(0, "TelescopePromptNormal",  { fg = p.base05, bg = p.base02 })
+            -- Titles in accent (orange/peach) — picks the eye for "what am I searching?".
+            set(0, "TelescopePromptTitle",   { fg = p.base09, bg = p.base02 })
+            set(0, "TelescopePreviewTitle",  { fg = p.base09, bg = p.base01 })
+            set(0, "TelescopeResultsTitle",  { fg = p.base09, bg = p.base01 })
+            -- Selected row + matched substring in fuzzy results.
+            set(0, "TelescopeSelection",     { fg = p.base05, bg = p.base02, bold = true })
+            set(0, "TelescopeMatching",      { fg = p.base09, bold = true })
+        end
+        vim.api.nvim_create_autocmd("ColorScheme", {
+            group = vim.api.nvim_create_augroup("TelescopeHighlights", { clear = true }),
+            callback = apply_hl,
+        })
+        vim.schedule(apply_hl)
     end,
     keys = {
         {

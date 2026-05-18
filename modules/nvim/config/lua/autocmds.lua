@@ -63,6 +63,10 @@ local function apply_ui_hl()
     set(0, "NeoTreeTabInactive",          { fg = p.base04, bg = p.base01 })
     set(0, "NeoTreeTabSeparatorActive",   { fg = p.base02, bg = p.base02 })
     set(0, "NeoTreeTabSeparatorInactive", { fg = p.base01, bg = p.base01 })
+    -- Open / modified files in the file tree pop in the accent colour so
+    -- you can scan the panel and see "what am I currently editing."
+    set(0, "NeoTreeFileNameOpened",       { fg = p.base09 })
+    set(0, "NeoTreeModified",             { fg = p.base09 })
 end
 vim.api.nvim_create_autocmd("ColorScheme", {
     group = vim.api.nvim_create_augroup("UIHighlights", { clear = true }),
