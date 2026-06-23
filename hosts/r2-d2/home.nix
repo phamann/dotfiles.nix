@@ -22,6 +22,6 @@ _: {
   # modules.theme.scheme = "base16-ocean"; # # *
   # modules.theme.scheme = "base24-one-dark";
   # modules.theme.scheme = "base24-pnevma";
-  # modules.theme.scheme = "base24-ocean"; # # *
-  modules.theme.scheme = "base24-ocean-custom"; # # *
+  modules.theme.scheme = "base24-ocean"; # # *
+  # modules.theme.scheme = "base24-ocean-custom"; # # *
 }
