@@ -22,7 +22,7 @@ in
       bun
       eas-cli
       nodejs_22
-      nodePackages.fixjson
+      fixjson
       typescript
       typescript-go
       typescript-language-server
