@@ -1,5 +1,11 @@
 _: {
-  imports = [ ../../profiles/work-laptop.nix ];
+  imports = [
+    ../../profiles/work-laptop.nix
+    ../../modules/keyboard-remap
+  ];
+
+  # EVO75 external keyboard swaps ` and § at the HID level (see module).
+  modules.keyboard-remap.enable = true;
 
   # modules.theme.scheme = "base24-catppuccin-frappe";
   # modules.theme.scheme = "base24-catppuccin-macchiato";
