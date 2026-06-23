@@ -17,7 +17,7 @@ in
     # ~/.config/nvim/lua and ~/.config/nvim/lazy-lock.json are out-of-store
     # symlinks to the repo path, so editing lua files takes effect on the
     # next nvim launch without a rebuild. ~/.config/nvim/init.lua is always
-    # owned by home-manager (see programs.neovim.extraLuaConfig below); it
+    # owned by home-manager (see programs.neovim.initLua below); it
     # gets Stylix's mini.base16 setup injected into it at build time.
     dev = mkEnableOption "live-symlinked nvim config";
   };
@@ -28,13 +28,18 @@ in
         enable = true;
         viAlias = true;
         vimAlias = true;
+        # 26.05 flipped these defaults to false; stateVersion stays < 26.05 so
+        # the legacy default would warn on every rebuild. Pin to current
+        # behaviour explicitly to silence it (set false to drop the providers).
+        withRuby = true;
+        withPython3 = true;
         # init.lua content. Colorscheme is `tinted-vim` (installed via lazy,
         # see modules/nvim/config/lua/plugins/tinted-vim.lua). We publish the
         # full base24 palette to `vim.g.stylix_palette` up front for lua
         # overrides that need scheme slots directly (lualine theme, neo-tree
         # tabs, etc.); tinted-vim itself handles all the standard highlight
         # groups and treesitter captures.
-        extraLuaConfig =
+        initLua =
           let
             c = config.lib.stylix.colors.withHashtag;
             # base16 schemes don't define base10-base17; fall back to the
@@ -68,7 +73,7 @@ in
     }
 
     # When dev is on, symlink only the subdirs/files we want live-editable.
-    # `init.lua` is HM-managed (see extraLuaConfig above) — narrowing the
+    # `init.lua` is HM-managed (see initLua above) — narrowing the
     # symlink scope is what lets that coexist without claim conflicts.
     (mkIf cfg.dev {
       xdg.configFile = {

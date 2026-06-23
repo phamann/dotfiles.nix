@@ -70,8 +70,8 @@ in
         };
       };
 
-      # Aligned with claude-code's memory.text rather than a divergent subset.
-      rules = ''
+      # Aligned with claude-code's context rather than a divergent subset.
+      context = ''
         # Working relationship
         - No sycophancy.
         - Be direct, matter-of-fact, and concise.

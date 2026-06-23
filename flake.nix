@@ -2,7 +2,7 @@
   description = "Patrick Hamann's dotfiles and host configurations";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-25.11-darwin";
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-26.05-darwin";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
 
     flake-parts = {
@@ -21,13 +21,16 @@
     };
 
     darwin = {
-      url = "github:nix-darwin/nix-darwin/nix-darwin-25.11";
+      url = "github:nix-darwin/nix-darwin/nix-darwin-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.11";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      # Matches the nixpkgs release tier. useGlobalPkgs = true (flake/hosts.nix)
+      # makes HM reuse the system nixpkgs, so HM's module code must track the
+      # same release branch to avoid cross-tier assertion failures.
+      url = "github:nix-community/home-manager/release-26.05";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     mkAlias = {
@@ -43,7 +46,7 @@
     claude-code-nix.url = "github:sadjow/claude-code-nix";
 
     stylix = {
-      url = "github:nix-community/stylix/release-25.11";
+      url = "github:nix-community/stylix/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

@@ -7,7 +7,16 @@ _: {
     enable = true;
     onActivation = {
       autoUpdate = false;
-      cleanup = "zap";
+      # nix-darwin 26.05 still emits the legacy `--force-cleanup` flag, which
+      # Homebrew (>= ~5.x) renamed to `--cleanup`, breaking `brew bundle`
+      # during activation. Keep cleanup = "none" so nix-darwin adds no cleanup
+      # flag, and supply the modern equivalent of "zap" via extraFlags. Revert
+      # to cleanup = "zap" once nix-darwin's 26.05 branch is fixed.
+      cleanup = "none";
+      extraFlags = [
+        "--cleanup"
+        "--zap"
+      ];
       upgrade = false;
     };
 

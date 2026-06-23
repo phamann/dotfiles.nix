@@ -15,24 +15,27 @@ in
 
       enableDefaultConfig = false;
 
-      matchBlocks = {
+      # HM 26.05 replaced matchBlocks (camelCase) with settings, a freeform
+      # attrset keyed by Host pattern using upstream ssh_config(5) directive
+      # names. Booleans render as yes/no; SetEnv takes an attrset.
+      settings = {
         "*" = {
-          setEnv = {
+          SetEnv = {
             TERM = "xterm-256color";
           };
-          controlMaster = "no";
-          controlPath = "~/.ssh/master-%r@%n:%p";
-          controlPersist = "30m";
-          forwardAgent = true;
-          addKeysToAgent = "yes";
-          identityFile = "~/.ssh/id_ed25519";
+          ControlMaster = "no";
+          ControlPath = "~/.ssh/master-%r@%n:%p";
+          ControlPersist = "30m";
+          ForwardAgent = true;
+          AddKeysToAgent = "yes";
+          IdentityFile = "~/.ssh/id_ed25519";
         };
 
         "github.com" = {
-          hostname = "ssh.github.com";
-          user = "git";
-          port = 443;
-          forwardAgent = true;
+          HostName = "ssh.github.com";
+          User = "git";
+          Port = 443;
+          ForwardAgent = true;
         };
       };
     };
