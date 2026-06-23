@@ -16,7 +16,6 @@ in
       argocd
       conftest
       k3d
-      k9s
       kubeconform
       kubectl
       kubectx

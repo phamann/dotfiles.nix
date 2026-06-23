@@ -6,6 +6,7 @@
     ./base.nix
     ../modules/claude-code
     ../modules/ghostty
+    ../modules/k9s
     ../modules/opencode
     ../modules/zed
     ../modules/zellij
@@ -14,6 +15,7 @@
   modules = {
     claude-code.enable = true;
     ghostty.enable = true;
+    k9s.enable = true;
     opencode.enable = true;
     zed.enable = true;
     zellij.enable = true;

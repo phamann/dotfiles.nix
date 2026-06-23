@@ -15,7 +15,7 @@ in
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
       # docker
-      docker
+      docker_29
       docker-compose
 
       # node / typescript
