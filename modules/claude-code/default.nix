@@ -33,7 +33,7 @@ in
 
       settings = {
         includeCoAuthoredBy = true;
-        model = "claude-opus-4-7[1m]";
+        model = "claude-opus-4-8[1m]";
         mcpServers = {
           context7 = {
             command = "${mcpWrappers.context7}";
