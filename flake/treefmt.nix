@@ -12,7 +12,7 @@
         # RFC 166 nixfmt — the official Nix formatter since nixfmt v1.0.0.
         programs.nixfmt = {
           enable = true;
-          package = pkgs.nixfmt-rfc-style;
+          package = pkgs.nixfmt;
         };
 
         settings.global.excludes = [

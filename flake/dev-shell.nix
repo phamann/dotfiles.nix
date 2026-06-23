@@ -12,7 +12,7 @@ _: {
         # is free — same store paths.
         packages = with pkgs; [
           nixd # nix LSP
-          nixfmt-rfc-style # RFC 166 formatter
+          nixfmt # RFC 166 formatter
           statix # anti-pattern linter
           deadnix # dead-code linter
         ];

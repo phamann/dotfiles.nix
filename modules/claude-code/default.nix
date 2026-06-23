@@ -136,8 +136,8 @@ in
         };
       };
 
-      # User memory/instructions
-      memory.text = ''
+      # User memory/instructions (CLAUDE.md)
+      context = ''
         # Working relationship
         - No sycophancy.
         - Be direct, matter-of-fact, and concise.

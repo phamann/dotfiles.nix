@@ -11,7 +11,7 @@
 
         settings.hooks = {
           # Delegate Nix formatting to treefmt — single source of truth with
-          # `nix fmt`. Uses the same treefmt build, same nixfmt-rfc-style,
+          # `nix fmt`. Uses the same treefmt build, same nixfmt,
           # same exclude list (see flake/treefmt.nix).
           treefmt = {
             enable = true;

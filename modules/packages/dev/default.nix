@@ -60,7 +60,7 @@ in
       # nix
       nil
       nixd
-      nixfmt-rfc-style
+      nixfmt
       statix
 
       # cloud CLIs
