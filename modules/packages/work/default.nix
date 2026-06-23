@@ -13,10 +13,14 @@ in
 
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
+      buildkite-cli
       caddy
       grafana-alloy
       haproxy
       ngrok
+      nsc
+      opentofu
+      spacectl
     ];
   };
 }
