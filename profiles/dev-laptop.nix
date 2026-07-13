@@ -32,5 +32,10 @@
 
   # Docker runtime on macOS dev laptops. Works on linux too, but this
   # profile is darwin-laptop-shaped in practice.
-  home.packages = [ pkgs.unstable.colima ];
+  #
+  # Pinned to stable nixpkgs: the unstable colima (0.10.3 → lima-full 2.1.4)
+  # has no cached darwin build and fails to compile from source (cctools ld
+  # crashes linking lima's CGO). Stable's 0.10.1 substitutes from the cache.
+  # Move back to `pkgs.unstable.colima` once that upstream build is fixed.
+  home.packages = [ pkgs.colima ];
 }
