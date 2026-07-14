@@ -34,6 +34,9 @@ in
       settings = {
         includeCoAuthoredBy = true;
         model = "claude-opus-4-8[1m]";
+        # Persist the fullscreen renderer (flicker-free output, mouse support,
+        # auto-copy selection) so the startup opt-in prompt stops appearing.
+        tui = "fullscreen";
         mcpServers = {
           context7 = {
             command = "${mcpWrappers.context7}";

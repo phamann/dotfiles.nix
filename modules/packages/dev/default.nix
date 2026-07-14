@@ -23,7 +23,11 @@ in
       eas-cli
       nodejs_22
       fixjson
-      typescript
+      # typescript-go ships both `tsgo` and a `tsc` alias; the latter collides
+      # with classic typescript's `tsc` in home-manager's buildEnv. lowPrio on
+      # classic typescript lets typescript-go win `tsc` (the native compiler),
+      # while classic's `tsserver` (no collision) stays on PATH for the LSP.
+      (lib.lowPrio typescript)
       typescript-go
       typescript-language-server
       yarn

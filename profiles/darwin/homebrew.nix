@@ -40,6 +40,7 @@ _: {
       "ghostty"
       "lm-studio"
       "nordvpn"
+      "notion"
       "notion-calendar"
       "macdown"
       "obsidian"
