@@ -49,6 +49,15 @@ in
               "chrome-devtools-mcp@latest"
             ];
           };
+          # Grafana Cloud (remote HTTP transport). Auth is handled via OAuth on
+          # first connect; the header selects our stack. No local process spawned.
+          grafana = {
+            type = "http";
+            url = "https://mcp.grafana.com/mcp";
+            headers = {
+              "X-Grafana-URL" = "https://pineapples.grafana.net";
+            };
+          };
         };
         permissions = {
           additionalDirectories = [
@@ -94,6 +103,9 @@ in
             "mcp__linear__list_issues"
             "mcp__linear__get_issue"
             "mcp__linear__list_comments"
+            # Bare server name allows all Grafana MCP tools (MCP rules don't
+            # support a __* glob; the server name alone matches every tool).
+            "mcp__grafana"
           ];
         };
         enabledPlugins = {
