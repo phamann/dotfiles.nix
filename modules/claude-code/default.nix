@@ -58,6 +58,12 @@ in
               "X-Grafana-URL" = "https://pineapples.grafana.net";
             };
           };
+          # LaunchDarkly (remote HTTP transport). Auth is handled via OAuth on
+          # first connect. No local process spawned.
+          launchdarkly = {
+            type = "http";
+            url = "https://mcp.launchdarkly.com/mcp/launchdarkly";
+          };
         };
         permissions = {
           additionalDirectories = [
@@ -106,6 +112,7 @@ in
             # Bare server name allows all Grafana MCP tools (MCP rules don't
             # support a __* glob; the server name alone matches every tool).
             "mcp__grafana"
+            "mcp__launchdarkly"
           ];
         };
         enabledPlugins = {
