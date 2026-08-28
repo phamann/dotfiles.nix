@@ -8,6 +8,8 @@
     ../modules/ghostty
     ../modules/k9s
     ../modules/opencode
+    ../modules/omp
+    ../modules/pi
     ../modules/zed
     ../modules/zellij
   ];
@@ -17,6 +19,8 @@
     ghostty.enable = true;
     k9s.enable = true;
     opencode.enable = true;
+    omp.enable = true;
+    pi.enable = true;
     zed.enable = true;
     zellij.enable = true;
 

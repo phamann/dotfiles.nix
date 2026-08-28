@@ -22,6 +22,7 @@ _: {
     gpg = ../modules/gpg;
     nvim = ../modules/nvim;
     opencode = ../modules/opencode;
+    omp = ../modules/omp;
     packages = ../modules/packages;
     ssh = ../modules/ssh;
     starship = ../modules/starship;

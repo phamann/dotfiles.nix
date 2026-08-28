@@ -45,6 +45,8 @@
 
     claude-code-nix.url = "github:sadjow/claude-code-nix";
 
+    omp.url = "github:can1357/oh-my-pi";
+
     stylix = {
       url = "github:nix-community/stylix/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
