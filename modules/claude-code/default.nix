@@ -8,7 +8,7 @@
 }:
 let
   inherit (lib) mkEnableOption mkIf optionalAttrs;
-  inherit (config.modules) claude-code;
+  cfg = config.modules.claude-code;
   inherit (config.modules.theme) semantic;
   inherit (pkgs.stdenv.hostPlatform) isDarwin;
 
@@ -26,14 +26,14 @@ in
     enable = mkEnableOption "claude-code";
   };
 
-  config = mkIf claude-code.enable {
+  config = mkIf cfg.enable {
     programs.claude-code = {
       enable = true;
       package = claudeWithToken;
 
       settings = {
         includeCoAuthoredBy = true;
-        model = "claude-opus-4-8[1m]";
+        model = "claude-opus-5";
         # Persist the fullscreen renderer (flicker-free output, mouse support,
         # auto-copy selection) so the startup opt-in prompt stops appearing.
         tui = "fullscreen";
@@ -138,20 +138,8 @@ in
         };
       }
       // optionalAttrs isDarwin {
-        # macOS-specific: osascript for notifications, claude-statusline
-        # binary installed via the system Homebrew (configuration.nix).
-        hooks = {
-          Stop = [
-            {
-              hooks = [
-                {
-                  type = "command";
-                  command = "osascript -e 'display notification \"Claude has finished\" with title \"Claude Code\"'";
-                }
-              ];
-            }
-          ];
-        };
+        # macOS-specific: claude-statusline binary installed via the system
+        # Homebrew (configuration.nix).
         statusLine = {
           type = "command";
           command = "/opt/homebrew/bin/claude-statusline prompt";
