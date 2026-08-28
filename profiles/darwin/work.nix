@@ -17,7 +17,7 @@ _: {
     ];
     brews = [
       "postgresql@17"
-      "redis"
+      "valkey"
       "memcached"
     ];
   };
