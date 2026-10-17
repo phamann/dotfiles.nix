@@ -15,9 +15,19 @@ _: {
       upgrade = false;
     };
 
+    # `trusted` defaults to false for taps (Homebrew 6.0.0 turned on
+    # HOMEBREW_REQUIRE_TAP_TRUST). Fully-qualified brews below carry their
+    # own trust, but a bare-named brew from these taps would abort
+    # activation and a cask would be skipped silently — so trust the taps.
     taps = [
-      { name = "terrastruct/tap"; }
-      { name = "felipeelias/tap"; }
+      {
+        name = "terrastruct/tap";
+        trusted = true;
+      }
+      {
+        name = "felipeelias/tap";
+        trusted = true;
+      }
     ];
 
     brews = [
@@ -37,7 +47,6 @@ _: {
       "nordvpn"
       "notion"
       "notion-calendar"
-      "macdown"
       "obsidian"
       "raycast"
       "signal"

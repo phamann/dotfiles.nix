@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+_: {
   # macOS system defaults shared across every Mac. Homebrew config is in
   # the sibling homebrew.nix; desktop.nix is the aggregator that pulls
   # both together.
@@ -53,8 +52,6 @@
       CustomSystemPreferences = { };
     };
   };
-
-  environment.systemPackages = with pkgs; [ unstable.tailscale ];
 
   environment.systemPath = [
     "/opt/homebrew/bin"
