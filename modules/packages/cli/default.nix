@@ -20,13 +20,6 @@ in
         # nix
         cachix
 
-        # zsh plugins
-        zsh-autosuggestions
-        zsh-fzf-tab
-        zsh-history-substring-search
-        zsh-syntax-highlighting
-        zsh-z
-
         # core CLI utilities
         coreutils
         dig
@@ -37,15 +30,12 @@ in
         htop
         jq
         just
-        keychain
         parallel
-        pinentry-curses
         poppler-utils
         ripgrep
         tree
         wireguard-tools
         yq-go
-        zoxide
 
         # secrets
         _1password-cli

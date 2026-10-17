@@ -25,7 +25,6 @@ in
       deno
       eas-cli
       nodejs_22
-      fixjson
       # typescript-go ships both `tsgo` and a `tsc` alias; the latter collides
       # with classic typescript's `tsc` in home-manager's buildEnv. lowPrio on
       # classic typescript lets typescript-go win `tsc` (the native compiler),
@@ -54,9 +53,6 @@ in
       python313
 
       # lua
-      lua
-      lua54Packages.luacheck
-      luaformatter
 
       # java
       maven
@@ -65,7 +61,6 @@ in
       sourcekit-lsp
 
       # nix
-      nil
       nixd
       nixfmt
       statix

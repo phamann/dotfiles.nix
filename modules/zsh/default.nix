@@ -17,11 +17,6 @@ in
 {
   options.modules.zsh = {
     enable = mkEnableOption "zsh";
-    # NB: the pre-Phase-1 form was `mkEnableOption { type = ...; default = true; }`
-    # which silently set this to `false` because mkEnableOption ignores its
-    # attrset arg and unconditionally defaults to false. Audit before flipping —
-    # the keychain block in initContent has effectively been dead code.
-    keychain = mkEnableOption "keychain --eval for SSH key persistence";
   };
 
   config = mkIf zsh.enable (mkMerge [
@@ -67,6 +62,9 @@ in
         enableCompletion = true;
         dotDir = "${config.home.homeDirectory}/.config/zsh";
         autosuggestion.enable = true;
+        # zsh-syntax-highlighting was in home.packages but never sourced, so
+        # it did nothing. This is the supported way to get the same feature.
+        syntaxHighlighting.enable = true;
         shellAliases = {
           diff = "diff -u";
           tree = "tree --dirsfirst --noreport -ACF";
@@ -230,7 +228,6 @@ in
 
           # Load tools
           source ${pkgs.grc}/etc/grc.zsh
-          ${if zsh.keychain then "eval $(keychain --eval --quiet ~/.ssh/id_rsa)" else ""}
         '';
       };
     }
