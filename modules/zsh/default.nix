@@ -58,6 +58,10 @@ in
         "${config.home.homeDirectory}/.npm-global/bin"
       ];
 
+      # Supported integration instead of a hand-rolled `eval "$(zoxide init
+      # zsh)"` — enableZshIntegration defaults true and emits the same hook.
+      programs.zoxide.enable = true;
+
       programs.zsh = {
         enable = true;
         enableCompletion = true;
@@ -91,7 +95,7 @@ in
         };
         historySubstringSearch.enable = true;
         initContent = mkOrder 550 ''
-          if [[ -z "$ZELLIJ" ]] && [[ "$(uname -s)" != "Darwin" ]]; then
+          if [[ -z "$ZELLIJ" ]] && [[ "$(uname -s)" != "Darwin" ]] && command -v zellij >/dev/null; then
               zellij attach -c work
 
               if [[ "$ZELLIJ_AUTO_EXIT" == "true" ]]; then
@@ -226,10 +230,7 @@ in
 
           # Load tools
           source ${pkgs.grc}/etc/grc.zsh
-          eval "$(zoxide init zsh)"
           ${if zsh.keychain then "eval $(keychain --eval --quiet ~/.ssh/id_rsa)" else ""}
-          eval "$(direnv hook zsh)"
-          eval "$(starship init zsh)"
         '';
       };
     }
