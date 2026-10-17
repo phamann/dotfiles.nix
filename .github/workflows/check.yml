@@ -23,17 +23,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@main
+        uses: DeterminateSystems/nix-installer-action@v23
 
-      # We don't run `nix flake check` directly because it evaluates EVERY
-      # flake output regardless of the runner's system — including the
-      # cross-platform homeConfigurations / darwinConfigurations. The
-      # catppuccin per-app modules (starship, fzf, etc.) use IFD: at
-      # eval time they need to substitute or build a derivation for the
+      # We don't run `nix flake check` directly because it evaluates the
+      # cross-platform homeConfigurations / darwinConfigurations: at eval
+      # time these need to substitute or build derivations for the
       # configuration's target system. macOS can't substitute the
       # x86_64-linux derivations yoda needs, and Linux can't substitute
-      # the aarch64-darwin ones the Macs need. The eval fails before any
-      # check runs.
+      # the aarch64-darwin ones the Macs need.
+      #
+      # (Modern nix does skip incompatible `checks.<system>` attrs on its
+      # own, so this may now be redundant — verify on both runners before
+      # collapsing this into a plain `nix flake check`.)
       #
       # Instead, target only the checks for the runner's own system.
 
@@ -62,7 +63,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Inspect flake.lock
-        uses: DeterminateSystems/flake-checker-action@main
+        uses: DeterminateSystems/flake-checker-action@v14
         with:
           # Don't fail PRs on staleness — just publish a summary report.
           fail-mode: false
