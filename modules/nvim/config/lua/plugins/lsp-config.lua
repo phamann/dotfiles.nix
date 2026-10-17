@@ -50,7 +50,6 @@ return {
     "neovim/nvim-lspconfig",
     dependencies = {
         "hrsh7th/nvim-cmp",
-        { "williamboman/nvim-lsp-installer", config = true },
         { "j-hui/fidget.nvim",               config = true },
         {
           'mrcjkb/rustaceanvim',
@@ -147,16 +146,13 @@ return {
             server = {
                 on_attach = function(_, bufnr)
                     shared_on_attach(_, bufnr)
-                    -- Hover actions
-                    vim.keymap.set("n", "<C-space>",
-                        rt.hover_actions.hover_actions,
-                        { buffer = bufnr })
-                    -- Code action groups
-                    vim.keymap.set("n", "<Leader>a",
-                        rt.code_action_group.code_action_group,
-                        { buffer = bufnr })
-                    vim.keymap.set('n', '<leader>rr', "<Cmd>RustRunnables<CR>",
-                        bufopts)
+                    -- rustaceanvim exposes these through :RustLsp; the old
+                    -- `rt.*` calls were rust-tools.nvim leftovers and `rt`
+                    -- has been nil since that plugin was dropped.
+                    local opts = { noremap = true, silent = true, buffer = bufnr }
+                    vim.keymap.set("n", "<C-space>", "<Cmd>RustLsp hover actions<CR>", opts)
+                    vim.keymap.set("n", "<Leader>a", "<Cmd>RustLsp codeAction<CR>", opts)
+                    vim.keymap.set("n", "<leader>rr", "<Cmd>RustLsp runnables<CR>", opts)
                 end,
                 default_settings = {
                     ["rust-analyzer"] = {

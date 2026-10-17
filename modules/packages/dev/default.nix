@@ -20,6 +20,9 @@ in
 
       # node / typescript
       bun
+      # Build dependency for nvim's peek.nvim (`deno task build:fast`), which
+      # otherwise fails its lazy.nvim build step silently.
+      deno
       eas-cli
       nodejs_22
       fixjson
