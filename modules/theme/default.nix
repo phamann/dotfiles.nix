@@ -123,6 +123,14 @@ in
         package = pkgs.nerd-fonts.jetbrains-mono;
         name = "JetBrainsMono Nerd Font Mono";
       };
+
+      # `autoEnable = false` switches off every stylix target, and
+      # font-packages is one of them — its whole job is to put
+      # `fonts.<role>.package` into home.packages. Without this the font
+      # declared above is referenced by name from ghostty and zed but never
+      # actually installed; ghostty masks it by bundling JetBrains Mono, zed
+      # and yoda silently fall back.
+      targets.font-packages.enable = true;
     };
 
     # Local tinted-vim colourscheme files (modules/theme/schemes/colors/)
