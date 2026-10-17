@@ -82,7 +82,11 @@ in
       tfswitch
 
       # diagrams
-      d2
+      # 0.9.0 bundles the TALA layout engine (`d2 --layout=tala`), which
+      # replaces the archived terrastruct/tap tala brew. Stable is still
+      # 0.7.1, which predates the bundling — drop back to `d2` once stable
+      # catches up.
+      unstable.d2
       graphviz
 
       # generic build tools / formatters / scanners

@@ -21,17 +21,12 @@ _: {
     # activation and a cask would be skipped silently — so trust the taps.
     taps = [
       {
-        name = "terrastruct/tap";
-        trusted = true;
-      }
-      {
         name = "felipeelias/tap";
         trusted = true;
       }
     ];
 
     brews = [
-      { name = "terrastruct/tap/tala"; }
       { name = "felipeelias/tap/claude-statusline"; }
     ];
 
