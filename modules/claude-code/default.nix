@@ -12,8 +12,6 @@ let
   inherit (config.modules.theme) semantic;
   inherit (pkgs.stdenv.hostPlatform) isDarwin;
 
-  mcpWrappers = import ../../lib/mcp-wrappers.nix { inherit pkgs; };
-
   # Wrapper that injects GitHub token once at claude launch; inherited by all child processes
   claudeWithToken = pkgs.writeShellScriptBin "claude" ''
     export GITHUB_PERSONAL_ACCESS_TOKEN="$(${pkgs._1password-cli}/bin/op read 'op://Private/github-pat/password' 2>/dev/null)"
@@ -38,10 +36,6 @@ in
         # auto-copy selection) so the startup opt-in prompt stops appearing.
         tui = "fullscreen";
         mcpServers = {
-          context7 = {
-            command = "${mcpWrappers.context7}";
-            args = [ ];
-          };
           "chrome-devtools" = {
             command = "npx";
             args = [
