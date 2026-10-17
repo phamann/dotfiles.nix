@@ -63,7 +63,7 @@ flowchart LR
   T -->|stylix.base16Scheme<br/>= path-to-yaml| S[Stylix]
   T -->|modules.theme.semantic| R[role-named<br/>colour API]
 
-  S -->|stylix.targets.&lt;x&gt;.enable| A1[bat / fzf / starship / zed /<br/>ghostty / zellij / neovim]
+  S -->|stylix.targets.&lt;x&gt;.enable| A1[bat / fzf / starship / zed /<br/>ghostty / zellij / k9s]
   S -.->|bat tmTheme reused| D[delta<br/>syntax-theme = base16-stylix]
   R -->|pkgs.replaceVars| C[claude-statusline]
   T -->|nvim extraLuaConfig| V[vim.g.stylix_palette<br/>nvim plugin overrides]
@@ -73,7 +73,7 @@ Two consumption patterns:
 
 | Pattern | When to use | Example modules |
 |---|---|---|
-| `stylix.targets.<x>.enable = true` | Stylix ships a target for the app | bat, fzf, starship, zed, ghostty, zellij, neovim |
+| `stylix.targets.<x>.enable = true` | Stylix ships a target for the app | bat, fzf, starship, zed, ghostty, zellij, k9s |
 | `pkgs.replaceVars` with `modules.theme.semantic.<role>` | Hand-templated config consuming `#rrggbb` strings | claude-code (statusline) |
 
 `modules.theme.semantic` exposes a role-named view of the active palette:
@@ -164,7 +164,7 @@ local p = vim.g.stylix_palette
 vim.api.nvim_set_hl(0, "MyGroup", { fg = p.base0D, bg = p.base00 })
 ```
 
-See `modules/nvim/config/lua/autocmds.lua` and the barbecue/lualine plugin specs for palette-driven override examples. Stylix's `base16-nvim` plugin (installed via lazy with `priority = 1000` to survive lazy's rtp reset) handles the majority of standard highlight groups; the lua overrides exist only to fix the specific groups base16-nvim leaves bare or maps to a too-low-contrast slot.
+See `modules/nvim/config/lua/autocmds.lua` and the barbecue/lualine plugin specs for palette-driven override examples. nvim is **not** a stylix target: the colourscheme comes from `tinted-theming/tinted-vim` (installed via lazy with `lazy = false, priority = 1000` so it is on the runtime path before `init.lua` calls `vim.cmd.colorscheme`), and it handles the majority of standard highlight groups. The lua overrides exist only to fix the specific groups tinted-vim leaves bare or maps to a too-low-contrast slot.
 
 ---
 

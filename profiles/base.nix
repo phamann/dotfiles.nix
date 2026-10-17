@@ -32,7 +32,7 @@
     packages.cli.enable = true;
     ssh.enable = true;
     starship.enable = true;
-    theme.enable = true; # flavour set by the host
+    theme.enable = true; # scheme set by the host
     zsh.enable = true;
   };
 }

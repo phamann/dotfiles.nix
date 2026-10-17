@@ -146,7 +146,7 @@ in
       }
       // optionalAttrs isDarwin {
         # macOS-specific: claude-statusline binary installed via the system
-        # Homebrew (configuration.nix).
+        # Homebrew (profiles/darwin/homebrew.nix).
         statusLine = {
           type = "command";
           command = "/opt/homebrew/bin/claude-statusline prompt";

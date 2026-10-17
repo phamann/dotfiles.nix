@@ -17,8 +17,9 @@ in
     # ~/.config/nvim/lua and ~/.config/nvim/lazy-lock.json are out-of-store
     # symlinks to the repo path, so editing lua files takes effect on the
     # next nvim launch without a rebuild. ~/.config/nvim/init.lua is always
-    # owned by home-manager (see programs.neovim.initLua below); it
-    # gets Stylix's mini.base16 setup injected into it at build time.
+    # owned by home-manager (see programs.neovim.initLua below); it gets
+    # the base24 palette templated into it as `vim.g.stylix_palette` at
+    # build time, and ends with the vim.cmd.colorscheme call.
     dev = mkEnableOption "live-symlinked nvim config";
   };
 
