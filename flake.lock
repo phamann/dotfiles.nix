@@ -348,26 +348,6 @@
         "type": "github"
       }
     },
-    "mkAlias": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1769601837,
-        "narHash": "sha256-YUvxBEwXu1LSYC+7g6inBizqgdjKnLugUTXtpSfayxI=",
-        "owner": "reckenrode",
-        "repo": "mkAlias",
-        "rev": "2819af65d73ba3a2021d1a86f68cbd1746016910",
-        "type": "github"
-      },
-      "original": {
-        "owner": "reckenrode",
-        "repo": "mkAlias",
-        "type": "github"
-      }
-    },
     "nix-bun": {
       "inputs": {
         "nixpkgs": [
@@ -524,7 +504,6 @@
         "flake-parts": "flake-parts",
         "git-hooks": "git-hooks",
         "home-manager": "home-manager",
-        "mkAlias": "mkAlias",
         "nixpkgs": "nixpkgs_2",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "omp": "omp",

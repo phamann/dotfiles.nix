@@ -43,5 +43,5 @@ theme "stylix"
 copy_on_select false
 
 env {
- TERM "alacritty"
+ TERM "xterm-256color"
 }

@@ -57,12 +57,13 @@ Each layer has one job. Adding a host = ~10-line file importing the right profil
 
 ### Flake inputs
 
-- `nixpkgs` (25.11-darwin) + `nixpkgs-unstable` (accessible as `pkgs.unstable.*` via overlay)
+- `nixpkgs` (26.05-darwin) + `nixpkgs-unstable` (accessible as `pkgs.unstable.*` via overlay)
 - `flake-parts` — output composition
-- `darwin` (`github:nix-darwin/nix-darwin`), `home-manager`
+- `darwin` (`nix-darwin-26.05`), `home-manager` (`release-26.05`) — both pinned to the
+  nixpkgs release tier; `useGlobalPkgs = true` means HM must track the same branch
 - `treefmt-nix`, `git-hooks` (cachix/git-hooks.nix)
-- `stylix` + `tinted-schemes` — theming (see [Theming](#theming))
-- `claude-code-nix`, `rust-overlay`, `mkAlias`
+- `stylix` (`release-26.05`) + `tinted-schemes` — theming (see [Theming](#theming))
+- `claude-code-nix`, `omp` (oh-my-pi), `rust-overlay`, `mkAlias`
 
 ### Profile pattern
 

@@ -14,11 +14,7 @@ r2-d2: ## Rebuild r2-d2 (work Mac, aarch64-darwin)
 
 .PHONY: yoda
 yoda: ## Rebuild yoda (home-manager only, x86_64-linux)
-	sudo home-manager switch --flake ~/.config/nixpkgs#phamann@yoda
-
-.PHONY: jetpac
-jetpac: ## Rebuild jetpac (legacy; flake target not currently defined)
-	sudo home-manager switch --flake ~/.config/nixpkgs#phamann@jetpac
+	home-manager switch --flake ~/.config/nixpkgs#phamann@yoda
 
 # Flake hygiene.
 

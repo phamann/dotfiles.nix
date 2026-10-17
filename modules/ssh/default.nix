@@ -11,8 +11,6 @@ in
     programs.ssh = {
       enable = true;
 
-      includes = [ "jetpac.conf" ];
-
       enableDefaultConfig = false;
 
       # HM 26.05 replaced matchBlocks (camelCase) with settings, a freeform
