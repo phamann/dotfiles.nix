@@ -65,6 +65,12 @@ in
             url = "https://mcp.launchdarkly.com/mcp/launchdarkly";
           };
         };
+        # Blocks the remote incident.io MCP endpoint; the local plugin-provided
+        # server is used instead. Added via the Claude Code UI and ported here
+        # so activation no longer reverts it.
+        deniedMcpServers = [
+          { serverUrl = "https://mcp.incident.io/*"; }
+        ];
         permissions = {
           additionalDirectories = [
             "/Users/phamann/Projects/core"
@@ -113,6 +119,7 @@ in
             # support a __* glob; the server name alone matches every tool).
             "mcp__grafana"
             "mcp__launchdarkly"
+            "mcp__incident_io__*"
           ];
         };
         enabledPlugins = {
@@ -148,12 +155,6 @@ in
 
       # User memory/instructions (CLAUDE.md)
       context = ''
-        # Working relationship
-        - No sycophancy.
-        - Be direct, matter-of-fact, and concise.
-        - Be critical; challenge my reasoning.
-        - Don't include timeline estimates in plans.
-
         # Tooling
 
         ## General
@@ -167,6 +168,16 @@ in
         - When interacting with Github (pull request actions, comments etc.) ALWAYS prefer using the `gh` CLI over the Github MCP or other actions.
       '';
     };
+
+    # Claude Code rewrites ~/.claude/settings.json at runtime (model switches,
+    # plugin toggles, MCP denials), replacing HM's symlink with a real file.
+    # Without `force`, the next activation tries to back that file up and
+    # aborts as soon as a .hm-backup from a previous run is already there.
+    #
+    # Nix owns this file: runtime edits to it are discarded on rebuild, so
+    # port anything worth keeping into `settings` above. Same reasoning as
+    # the pi-tool-display config in modules/pi.
+    home.file."${config.home.homeDirectory}/.claude/settings.json".force = true;
 
     home.file.".config/claude-statusline/config.toml".source = pkgs.replaceVars ./config.toml {
       inherit (semantic)
