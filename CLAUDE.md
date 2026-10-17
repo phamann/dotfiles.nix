@@ -154,7 +154,7 @@ A single base24 colour scheme drives every themed app. Detailed reference in [`d
 
 - **Entry point**: `modules.theme.scheme` (a tinted-theming scheme ID with explicit prefix, e.g. `"base24-catppuccin-macchiato"` or `"base16-default-dark"`) + `modules.theme.polarity` (`"dark"` / `"light"`). Set per-host in `hosts/<host>/home.nix`. The `<system>-` prefix is required and matches scheme IDs in the tinted-gallery / tinted-vim's colorscheme filenames.
 - **Consumption patterns**:
-  1. **Stylix targets**: `stylix.targets.<x>.enable = true;` inside a module. Stylix handles the app from there. Used for bat, fzf, starship, zed, ghostty, zellij, opencode, neovim, delta (via bat's tmTheme).
+  1. **Stylix targets**: `stylix.targets.<x>.enable = true;` inside a module. Stylix handles the app from there. Used for bat, fzf, starship, zed, ghostty, zellij, neovim, delta (via bat's tmTheme).
   2. **Hand-templated configs**: `pkgs.replaceVars` with `config.modules.theme.semantic.<role>`. `semantic` exposes role-named `#rrggbb` strings (`primary`, `success`, `accent`, `warning`, `accentAlt`, `bg`, `fg`, …). Used for claude-statusline. See `modules/claude-code/default.nix`.
   3. **nvim lua overrides**: `vim.g.stylix_palette` is the full base24 palette (`base00`–`base17`) templated into `init.lua` at build time. Reference slots directly via `p.base0X` in `nvim_set_hl` calls. Used in `modules/nvim/config/lua/autocmds.lua` (`UIHighlights` augroup) and per-plugin specs.
 
@@ -180,6 +180,7 @@ These have all been deprecated/removed in earlier refactor phases — do NOT int
 - ~~`catppuccin.<app>.enable`~~ — removed. Use `stylix.targets.<app>.enable` instead.
 - ~~`home.sessionVariables.CATPPUCCIN_*`~~ — removed. nvim reads `vim.g.stylix_palette` (templated into init.lua at build time), not env vars.
 - ~~`modules/alacritty`, `modules/kitty`, `modules/tmux`~~ — deleted. zellij + ghostty cover the workflow.
+- ~~`modules/opencode`~~ — deleted (2026-10-17) following an upstream OpenCode security breach. Do not reintroduce the module or the `opencode` flake output.
 
 ## Cross-platform eval limitation
 

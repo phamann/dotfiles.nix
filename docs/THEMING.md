@@ -63,7 +63,7 @@ flowchart LR
   T -->|stylix.base16Scheme<br/>= path-to-yaml| S[Stylix]
   T -->|modules.theme.semantic| R[role-named<br/>colour API]
 
-  S -->|stylix.targets.&lt;x&gt;.enable| A1[bat / fzf / starship / zed /<br/>ghostty / zellij / opencode /<br/>neovim]
+  S -->|stylix.targets.&lt;x&gt;.enable| A1[bat / fzf / starship / zed /<br/>ghostty / zellij / neovim]
   S -.->|bat tmTheme reused| D[delta<br/>syntax-theme = base16-stylix]
   R -->|pkgs.replaceVars| C[claude-statusline]
   T -->|nvim extraLuaConfig| V[vim.g.stylix_palette<br/>nvim plugin overrides]
@@ -73,7 +73,7 @@ Two consumption patterns:
 
 | Pattern | When to use | Example modules |
 |---|---|---|
-| `stylix.targets.<x>.enable = true` | Stylix ships a target for the app | bat, fzf, starship, zed, ghostty, zellij, opencode, neovim |
+| `stylix.targets.<x>.enable = true` | Stylix ships a target for the app | bat, fzf, starship, zed, ghostty, zellij, neovim |
 | `pkgs.replaceVars` with `modules.theme.semantic.<role>` | Hand-templated config consuming `#rrggbb` strings | claude-code (statusline) |
 
 `modules.theme.semantic` exposes a role-named view of the active palette:

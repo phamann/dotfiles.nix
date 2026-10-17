@@ -7,7 +7,6 @@
     ../modules/claude-code
     ../modules/ghostty
     ../modules/k9s
-    ../modules/opencode
     ../modules/omp
     ../modules/pi
     ../modules/zed
@@ -18,7 +17,6 @@
     claude-code.enable = true;
     ghostty.enable = true;
     k9s.enable = true;
-    opencode.enable = true;
     omp.enable = true;
     pi.enable = true;
     zed.enable = true;

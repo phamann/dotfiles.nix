@@ -21,7 +21,6 @@ _: {
     git = ../modules/git;
     gpg = ../modules/gpg;
     nvim = ../modules/nvim;
-    opencode = ../modules/opencode;
     omp = ../modules/omp;
     packages = ../modules/packages;
     ssh = ../modules/ssh;
