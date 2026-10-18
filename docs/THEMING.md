@@ -141,11 +141,28 @@ For schemes that don't exist upstream (or that you want to override locally — 
 modules/theme/schemes/
 ├── base24/
 │   └── ocean.yaml              # YAML, Stylix reads this for the palette
-└── colors/
-    └── base24-ocean.vim        # tinted-vim colorscheme file, nvim reads this
+├── colors/
+│   └── base24-ocean.vim        # tinted-vim colorscheme file, nvim reads this
+├── specs/                      # OKLCh source of truth for generated schemes
+│   └── slate-frappe.py
+└── tools/                      # generator + reviewer (see below)
+    ├── mkscheme.py
+    ├── review.py
+    └── tinted-vim.template.vim
 ```
 
-The YAML follows the [tinted-theming scheme spec](https://github.com/tinted-theming/home/blob/main/specs/) — same shape as files in `inputs.tinted-schemes`. The `.vim` is rendered from [tinted-vim's template](https://github.com/tinted-theming/tinted-vim/blob/main/templates/tinted-vim.mustache) with the palette substituted; easiest path is to grab an existing `base24-<X>.vim` from tinted-vim and search/replace the `s:gui*` hex values.
+The YAML follows the [tinted-theming scheme spec](https://github.com/tinted-theming/home/blob/main/specs/) — same shape as files in `inputs.tinted-schemes`. The `.vim` is rendered from [tinted-vim's template](https://github.com/tinted-theming/tinted-vim/blob/main/templates/tinted-vim.mustache) with the palette substituted.
+
+**Prefer generating both files over hand-writing them.** Keeping 24 hex values consistent across two files by hand is how they drift apart. Write an OKLCh spec instead and let the generator emit the pair:
+
+```bash
+python3 modules/theme/schemes/tools/mkscheme.py modules/theme/schemes/specs/<slug>.py
+python3 modules/theme/schemes/tools/review.py base24/<slug>.yaml   # contrast, colour-vision, ANSI checks
+```
+
+Generated files carry a `GENERATED` header and must not be edited directly — change the spec and re-run. `mkscheme.py --check` verifies they still match. `specs/slate-frappe.py` is the commented worked example, and `.claude/skills/theme-authoring/SKILL.md` has the method, the target bands and the traps.
+
+Hand-written schemes are still fine for a one-off (`ocean-custom.yaml` predates the generator) — the loader does not care how the files were produced.
 
 **Local wins over upstream.** If both files match the same scheme name (e.g. you have a local `base24-ocean.yaml` AND tinted-theming has one), the local override is used for both Stylix and nvim. To use the upstream version instead, either rename your local files or remove them.
 

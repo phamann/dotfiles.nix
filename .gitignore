@@ -3,3 +3,7 @@
 # nix-build / darwin-rebuild output symlink
 result
 result-*
+
+# Python bytecode from modules/theme/schemes/tools
+__pycache__/
+*.pyc
