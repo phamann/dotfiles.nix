@@ -28,6 +28,44 @@ Roles the machine serves:
 
 ---
 
+## Order of operations — start here
+
+The two halves of this document are **not** independent, and the repo work
+comes first: `nixos-anywhere --flake .#yoda` can only install a configuration
+that already exists. So the sequence is:
+
+| #   | Step                                        | Where         | Blocks on |
+| --- | ------------------------------------------- | ------------- | --------- |
+| 1   | Fit the new NVMe                            | NUC, physical | —         |
+| 2   | BIOS: Secure Boot off, USB first in boot order | NUC, physical | 1      |
+| 3   | Flash the installer USB                     | Mac           | —         |
+| 4   | Make the repo changes (Part 1, D1–D11)      | Mac           | —         |
+| 5   | `git add` the new files                     | Mac           | 4         |
+| 6   | Boot the NUC from USB, set a password, note the IP | NUC, physical | 1,2,3 |
+| 7   | Run `nixos-anywhere`                        | Mac → NUC     | 4,5,6     |
+| 8   | Commit the generated `hardware-configuration.nix`, push | Mac | 7    |
+| 9   | Update docs + the host-identification note  | Mac           | 8         |
+
+Steps 3 and 4 are independent — flash the USB while the repo work is in
+flight, or vice versa. Everything else is strictly ordered.
+
+Three things that will bite if you skip them:
+
+- **Step 5 is not optional.** Nix flakes only see files that git knows about.
+  A brand-new `hosts/yoda/configuration.nix` that is untracked is *invisible*
+  to `nix build` / `nixos-anywhere`, and you get a baffling "path does not
+  exist" or "attribute 'yoda' missing". `git add` is enough — you don't have
+  to commit.
+- **Commit the placeholder `hardware-configuration.nix` (D7) before step 7.**
+  The flake has to evaluate before nixos-anywhere can build the disko script,
+  and it can't evaluate with a missing import. `--generate-hardware-config`
+  then overwrites the placeholder with the real thing during the run.
+- **You cannot verify any of this on the Mac.** `nix flake check` on darwin
+  skips `checks.x86_64-linux.*`. Push the branch and let the ubuntu-24.04 CI
+  job build it, or accept that step 7 is where you find out.
+
+---
+
 ## Part 1 — repo changes
 
 ### Layer diagram after the change
@@ -532,7 +570,7 @@ install declaratively from your Mac with **nixos-anywhere**:
 1. Boot the NUC from a NixOS installer USB (or `nixos-images`' installer,
    which has sshd on by default).
 2. From the Mac:
-   `nix run github:nix-community/nixos-anywhere -- --flake .#yoda --target-host root@192.168.1.40`.
+   `nix run github:nix-community/nixos-anywhere -- --flake .#yoda --target-host nixos@192.168.1.40`.
 3. nixos-anywhere runs disko (partition + format from `disk-config.nix`),
    installs the closure, and reboots.
 
@@ -566,24 +604,45 @@ Power on, `F2`. Set:
 Easiest path — the stock minimal ISO:
 
 ```bash
-# On the Mac
-curl -LO https://channels.nixos.org/nixos-26.05/latest-nixos-minimal-x86_64-linux.iso
+# On the Mac. -L follows the redirect to releases.nixos.org; the channel
+# alias currently resolves to nixos-minimal-26.05.11985.26f4107e47e3.
+curl -L -o nixos-minimal.iso \
+  https://channels.nixos.org/nixos-26.05/latest-nixos-minimal-x86_64-linux.iso
+
 diskutil list                      # identify the USB, e.g. /dev/disk4
 diskutil unmountDisk /dev/disk4
-sudo dd if=latest-nixos-minimal-x86_64-linux.iso of=/dev/rdisk4 bs=4m status=progress
+# NOTE the `r` in /dev/rdisk4 — the raw device is ~10x faster than /dev/disk4.
+# Check the number twice: dd will happily overwrite the wrong disk.
+sudo dd if=nixos-minimal.iso of=/dev/rdisk4 bs=4m status=progress
+diskutil eject /dev/disk4
 ```
 
-The minimal ISO ships **no root password**, so on the NUC's console you must
-set one before nixos-anywhere can connect:
+macOS will pop up "The disk you inserted was not readable by this computer"
+when it finishes — that's expected, the ISO isn't an HFS/APFS filesystem.
+Click Ignore, don't Initialize.
+
+Then on the NUC's console, after booting from the USB:
 
 ```
-# on the NUC console, after boot
-passwd            # set a throwaway password
-systemctl start sshd
-ip addr           # confirm it picked up 192.168.1.40
+# sshd is already running on the installer — you only need a password.
+passwd                # sets the password for the `nixos` user
+ip addr               # note the address it picked up
 ```
 
-Then connect with `--env-password` (below).
+The installer auto-logs-in as the `nixos` user, which has passwordless sudo —
+that's what nixos-anywhere needs, so target `nixos@<ip>`, not `root@<ip>`.
+nixos-anywhere detects it is already on an installer (via
+`VARIANT_ID=installer` in `/etc/os-release`, NixOS 23.05+) and **skips the
+kexec phase automatically** — there's nothing to configure for that.
+
+Sanity-check the hop from the Mac before going further:
+
+```bash
+ssh nixos@192.168.1.40 -- lsblk     # confirms SSH works AND shows the disks
+```
+
+That `lsblk` output is what you check the disko device path against (gotcha 2
+below).
 
 Nicer alternative — `nix-community/nixos-images`' installer image has **sshd
 enabled by default** and prints a random root password (and a QR code) at
@@ -632,10 +691,10 @@ it catches ESP sizing and mountpoint mistakes before they're destructive.
 ```bash
 cd ~/.config/nixpkgs
 
-SSHPASS='<the installer root password>' \
+SSHPASS='<the password you set with passwd>' \
 nix run github:nix-community/nixos-anywhere -- \
   --flake .#yoda \
-  --target-host root@192.168.1.40 \
+  --target-host nixos@192.168.1.40 \
   --env-password \
   --build-on remote \
   --generate-hardware-config nixos-generate-config ./hosts/yoda/hardware-configuration.nix \
