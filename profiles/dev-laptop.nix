@@ -39,5 +39,9 @@
   # has no cached darwin build and fails to compile from source (cctools ld
   # crashes linking lima's CGO). Stable's 0.10.1 substitutes from the cache.
   # Move back to `pkgs.unstable.colima` once that upstream build is fixed.
-  home.packages = [ pkgs.colima ];
+  home.packages = [
+    pkgs.colima
+    # Terminal markdown reader (replaces the disabled macdown cask for viewing).
+    pkgs.glow
+  ];
 }
