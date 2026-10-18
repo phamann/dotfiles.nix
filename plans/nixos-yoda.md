@@ -655,7 +655,14 @@ Power on, `F2`. Set:
 
 #### 1. Build the installer USB
 
-Easiest path — the stock minimal ISO:
+Easiest path — the stock minimal ISO.
+
+**USB size:** the 26.05 minimal ISO is 1.62 GiB, so a 2 GB stick is the
+technical minimum (~250 MB spare) and 4 GB is the comfortable one. Capacity
+is the only requirement — `dd` overwrites the partition table, so whatever
+the stick is currently formatted as doesn't matter. Don't grab the
+*graphical* ISO: roughly double the size, and pointless here since
+nixos-anywhere drives the install over SSH.
 
 ```bash
 # On the Mac. -L follows the redirect to releases.nixos.org; the channel
