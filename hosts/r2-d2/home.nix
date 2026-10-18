@@ -7,7 +7,18 @@ _: {
   # EVO75 external keyboard swaps ` and § at the HID level (see module).
   modules.keyboard-remap.enable = true;
 
-  modules.theme.scheme = "base24-catppuccin-frappe";
+  # Locally generated — see .claude/skills/theme-authoring/SKILL.md and
+  # modules/theme/schemes/specs/slate-frappe.py for how it was derived.
+  modules.theme.scheme = "base24-slate-frappe";
+
+  # modules.theme.scheme = "base24-catppuccin-frappe";
+  # modules.theme.scheme = "base16-cerulean-signal-dark";
+  # modules.theme.scheme = "base16-tokyo-city-dark";
+  # modules.theme.scheme = "base24-ayu-mirage";
+  # modules.theme.scheme = "base24-github-dark-dimmed";
+  # modules.theme.scheme = "base16-penumbra-dark-contrast-plus";
+  # modules.theme.scheme = "base24-github-dark";
+
   # modules.theme.scheme = "base24-catppuccin-macchiato";
   # modules.theme.scheme = "base24-catppuccin-mocha";
   # modules.theme.scheme = "base24-tokyo-night-moon";
