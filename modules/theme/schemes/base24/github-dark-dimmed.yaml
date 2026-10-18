@@ -1,0 +1,38 @@
+system: "base24"
+name: "Github Dark Dimmed"
+slug: "github-dark-dimmed"
+author: "Tinted Theming (https://github.com/tinted-theming), GitHub Primer primitives v11.10.0"
+variant: "dark"
+# Shadows upstream `base24/github-dark-dimmed.yaml`, whose generator emits the
+# *same* greyscale ramp for github-dark, -dark-dimmed and -dark-high-contrast
+# (base00 "#0d1117" — GitHub Dark's near-black canvas) and only varies the
+# accents. That makes the upstream base24 "dimmed" not actually dimmed.
+#
+# The accents (base08–base0F, base12–base17) are upstream's, unchanged. The
+# greyscale ramp is taken from the tinted8 scheme of the same name, which does
+# carry Primer's real dark-dimmed `ui.*` tokens.
+palette:
+  base00: "#212830"  # Default Background        (tinted8 ui.global.background.normal)
+  base01: "#262c36"  # Lighter Background        (tinted8 ui.chrome.background.normal)
+  base02: "#3d444d"  # Selection Background      (tinted8 ui.border.normal)
+  base03: "#656c76"  # Comments, Invisibles      (tinted8 ui.gutter.foreground)
+  base04: "#9198a1"  # Dark Foreground           (tinted8 ui.global.foreground.dark)
+  base05: "#d1d7e0"  # Default Foreground        (tinted8 ui.global.foreground.normal)
+  base06: "#f0f6fc"  # Light Foreground          (tinted8 palette.white)
+  base07: "#cdd9e5"  # Lightest Foreground       (tinted8 palette.white-bright)
+  base08: "#f47067"  # Variables, Diff Deleted (red)
+  base09: "#f69d50"  # Integers, Constants (orange)
+  base0A: "#c69026"  # Classes, Search BG (yellow)
+  base0B: "#57ab5a"  # Strings, Diff Inserted (green)
+  base0C: "#39c5cf"  # Escape chars, Regex (cyan)
+  base0D: "#539bf5"  # Functions, Headings (blue)
+  base0E: "#b083f0"  # Keywords (magenta)
+  base0F: "#ff938a"  # Deprecated, Embedded tags
+  base10: "#1c2128"  # Darker Background         (Primer dark-dimmed canvas.inset)
+  base11: "#14181d"  # Darkest Background        (one further step down from base10)
+  base12: "#ff938a"  # Bright Red     (ANSI 9)
+  base13: "#daaa3f"  # Bright Yellow  (ANSI 11)
+  base14: "#6bc46d"  # Bright Green   (ANSI 10)
+  base15: "#56d4dd"  # Bright Cyan    (ANSI 14)
+  base16: "#6cb6ff"  # Bright Blue    (ANSI 12)
+  base17: "#dcbdfb"  # Bright Magenta (ANSI 13)
