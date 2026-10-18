@@ -117,7 +117,21 @@ disko = {
 # Per-model hardware quirks. No NUC10 module upstream (only 5i5ryb,
 # 7i3bnb, 8i7beh, 12wshi7) — we use the generic Intel + SSD modules.
 nixos-hardware.url = "github:NixOS/nixos-hardware";
+
+# Determinate Nix, to match the Macs (which run it via the .pkg installer,
+# with `nix.enable = false` in profiles/darwin/system.nix telling nix-darwin
+# to keep its hands off the daemon).
+#
+# DELIBERATELY NOT `inputs.nixpkgs.follows` — unlike every other input in
+# this flake. Upstream specifically warns that following nixpkgs here causes
+# FlakeHub Cache misses, because the artifacts are built against their
+# pinned nixpkgs. Overriding it means rebuilding Nix itself from source.
+determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/3";
 ```
+
+Note that input is a **FlakeHub** URL, not a `github:` one — it's the only
+such input in the flake, and `nix flake update` will reach flakehub.com for
+it.
 
 **Why a second nixpkgs and not just reuse the existing one?** Mechanically
 the darwin branch _would_ build a NixOS system — it's the same release, same
@@ -192,6 +206,7 @@ mkNixos =
     modules = [
       (../hosts + "/${host}/configuration.nix")
       inputs.disko.nixosModules.disko
+      inputs.determinate.nixosModules.default
       inputs.home-manager.nixosModules.home-manager
       {
         nixpkgs = {
@@ -246,8 +261,16 @@ gets, with nothing host-specific.
   # Baseline for any NixOS host in this repo. Hardware, disks and hostname
   # live in hosts/<name>/; role packages live in profiles/nixos/<role>.nix.
 
+  # NOTE: with inputs.determinate.nixosModules.default in the module list
+  # (flake/hosts.nix), everything below still applies — the Determinate
+  # module redirects NixOS's generated nix.conf to /etc/nix/nix.custom.conf,
+  # which determinate-nixd's own /etc/nix/nix.conf includes. It does NOT
+  # take `nix.settings` away from you. It does set `nix.package` itself, so
+  # don't set that here.
   nix = {
     settings = {
+      # Redundant under Determinate Nix (flakes are on by default) but kept
+      # so the config still does the right thing if determinate is removed.
       experimental-features = [
         "nix-command"
         "flakes"
@@ -312,6 +335,37 @@ gets, with nothing host-specific.
   environment.systemPackages = [ pkgs.git ];
 }
 ```
+
+### D4b — what the Determinate NixOS module actually does
+
+Upstream's README documents the NixOS install (`nixosModules.default`) but
+not its options, so this is read from `modules/nixos.nix` in the determinate
+repo:
+
+- `determinate.enable` **defaults to `true`** — importing the module is
+  enough, there's no enable flag to set. (Contrast nix-darwin, which needs
+  `determinateNix.enable = true`.)
+- Sets `nix.package` to Determinate's Nix build. **Don't set `nix.package`
+  yourself** — that's the one option that would collide.
+- Retargets `environment.etc."nix/nix.conf"` to `nix/nix.custom.conf`, which
+  determinate-nixd's own `/etc/nix/nix.conf` includes. **This is why
+  `nix.settings` keeps working** — your settings land in the custom file
+  rather than being ignored.
+- Replaces the `nix-daemon.service` `ExecStart` with `determinate-nixd`, and
+  adds a `determinate-nixd.socket` unit.
+- Repoints the `nixpkgs` flake registry entry at FlakeHub's `nixpkgs-weekly`
+  (at `mkOverride 750`, so a local `nix.registry.nixpkgs.flake` still wins).
+  Worth knowing: a bare `nix shell nixpkgs#foo` on yoda resolves differently
+  than on a stock NixOS box.
+- `nix.gc` is **untouched** by this module, so the stock NixOS GC timer in
+  `base.nix` still runs. Determinate Nix also has its own GC behaviour; if
+  they turn out to overlap, drop the `nix.gc` block rather than fighting it.
+
+There is **no `nix.enable = false`** on the NixOS side. That setting is
+nix-darwin/home-manager only — on the Macs it exists because Determinate is
+installed out-of-band by the `.pkg` installer and nix-darwin must not fight
+it. On NixOS the module *is* the install, and it needs the stock nix module
+active to generate the config it redirects.
 
 ### D5 — `profiles/nixos/server.nix` (new)
 
@@ -757,6 +811,14 @@ Subsequent rebuilds, from the Mac: `make yoda-remote`.
    router, or set a static address in `profiles/nixos/base.nix`.
 5. **`profiles/headless-server.nix` auto-attaches zellij on login** for
    non-darwin hosts. That stays correct on NixOS.
+6. **Determinate Nix changes nothing about the install procedure.** Flashing
+   the USB is `curl` + `dd` and never touches Nix. The installer ISO runs
+   stock upstream Nix, and that's what builds the closure — Determinate only
+   becomes the daemon on the *installed* system, on first boot. The one
+   practical difference is that yoda will pull Nix itself from FlakeHub Cache
+   rather than cache.nixos.org during the install, so it needs working
+   outbound HTTPS to flakehub.com (it will have it — it's on your LAN with
+   DHCP).
 
 ### Deferred / optional
 
