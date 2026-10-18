@@ -674,7 +674,13 @@ diskutil list                      # identify the USB, e.g. /dev/disk4
 diskutil unmountDisk /dev/disk4
 # NOTE the `r` in /dev/rdisk4 — the raw device is ~10x faster than /dev/disk4.
 # Check the number twice: dd will happily overwrite the wrong disk.
-sudo dd if=nixos-minimal.iso of=/dev/rdisk4 bs=4m status=progress
+#
+# bs=4M is UPPERCASE: modules/packages/cli puts GNU coreutils on PATH, so
+# `dd` here is GNU dd 9.11, not macOS's BSD /bin/dd. BSD takes a lowercase
+# `bs=4m` and has no status=progress (Ctrl-T instead); GNU takes uppercase
+# and rejects `4m` with "dd: invalid number: '4m'". Mixing the two flavours
+# is the easiest mistake to make on a Nix-managed Mac.
+sudo dd if=nixos-minimal.iso of=/dev/rdisk4 bs=4M status=progress
 diskutil eject /dev/disk4
 ```
 
