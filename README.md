@@ -26,13 +26,14 @@ Adding a new host = a 5–20 line file importing the right profile.
 | ------ | -------------- | ----------------- | ---------------- |
 | x-wing | aarch64-darwin | nix-darwin + HM   | dev-laptop       |
 | r2-d2  | aarch64-darwin | nix-darwin + HM   | work-laptop      |
-| yoda   | x86_64-linux   | standalone HM     | headless-server  |
+| yoda   | x86_64-linux   | NixOS + HM        | headless-server  |
 
 ## Folder structure
 
 - `flake.nix` + `flake/` — composition (flake-parts modules: hosts, checks, treefmt, dev-shell, git-hooks, module publishing)
 - `profiles/` — role bundles imported by HM hosts
 - `profiles/darwin/` — system-level role bundles imported by nix-darwin hosts
+- `profiles/nixos/` — system-level role bundles imported by NixOS hosts
 - `modules/<name>/` — individual home-manager modules (each exposes `modules.<name>.enable`)
 - `hosts/<name>/` — thin per-host deltas (hostname + profile imports + overrides)
 - `lib/` — plain Nix helpers (not modules)

@@ -5,6 +5,12 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-26.05-darwin";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
 
+    # NixOS hosts (yoda) track the nixos-<release> channel, NOT the darwin
+    # one above. `nixpkgs-26.05-darwin` only advances when the darwin Hydra
+    # jobset is green; it is never gated on the NixOS installer / systemd /
+    # kernel tests. Same release tier, different gate.
+    nixpkgs-nixos.url = "github:nixos/nixpkgs/nixos-26.05";
+
     flake-parts = {
       url = "github:hercules-ci/flake-parts";
       inputs.nixpkgs-lib.follows = "nixpkgs";
@@ -37,6 +43,26 @@
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Declarative disk partitioning for yoda. Also consumed by
+    # nixos-anywhere at install time (see plans/nixos-yoda.md).
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs-nixos";
+    };
+
+    # Per-model hardware quirks. No NUC10 module exists upstream, so yoda
+    # uses the generic Intel microcode + SSD fstrim modules.
+    nixos-hardware.url = "github:NixOS/nixos-hardware";
+
+    # Determinate Nix on yoda, matching the Macs (which install it via the
+    # .pkg and set `nix.enable = false` in profiles/darwin/system.nix so
+    # nix-darwin leaves the daemon alone).
+    #
+    # DELIBERATELY NOT `inputs.nixpkgs.follows`, unlike every other input
+    # here: upstream warns that following nixpkgs causes FlakeHub Cache
+    # misses, which means rebuilding Nix itself from source.
+    determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/3";
 
     claude-code-nix.url = "github:sadjow/claude-code-nix";
 
@@ -77,33 +103,16 @@
         { system, ... }:
         {
           # Custom pkgs for every flake-module that consumes `{ pkgs, ... }`.
-          # Same overlays as the pre-flake-parts pkgsForSystem helper:
-          # `pkgs.unstable.*` for unstable channel access, rust-overlay for
-          # toolchain pinning, and aarch64-darwin checkPhase skips.
+          # The overlay list lives in lib/overlays.nix because mkNixos
+          # (flake/hosts.nix) needs the same one and can't reuse these pkgs
+          # — yoda builds from `nixpkgs-nixos`, not `nixpkgs`.
           _module.args.pkgs = import inputs.nixpkgs {
             inherit system;
             config.allowUnfree = true;
-            overlays = [
-              (_: _: {
-                unstable = import inputs.nixpkgs-unstable {
-                  inherit system;
-                  config.allowUnfree = true;
-                };
-              })
-              inputs.rust-overlay.overlays.default
-              (_: prev: {
-                coredns = prev.coredns.overrideAttrs (_: {
-                  doCheck = false;
-                  doInstallCheck = false;
-                });
-                open-policy-agent = prev.open-policy-agent.overrideAttrs (_: {
-                  doCheck = false;
-                });
-                direnv = prev.direnv.overrideAttrs (_: {
-                  doCheck = false;
-                });
-              })
-            ];
+            overlays = import ./lib/overlays.nix {
+              inherit inputs;
+              inherit (inputs.nixpkgs) lib;
+            } system;
           };
         };
     };

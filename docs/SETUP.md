@@ -118,7 +118,17 @@ Run the appropriate target for this machine:
 |---------|--------|----------------|
 | x-wing  | macOS  | `make x-wing`  |
 | r2-d2   | macOS  | `make r2-d2`   |
-| yoda    | Linux  | `make yoda`    |
+| yoda    | NixOS  | `make yoda`    |
+
+**yoda does not follow steps 5–7 above.** It is NixOS, not a Linux box with
+Nix installed on top, so there is no Determinate installer run and no
+`home-manager switch`. It is provisioned from scratch with `nixos-anywhere`,
+which installs the whole system — partitioning included — in one command from
+a Mac. See [`plans/nixos-yoda.md`](../plans/nixos-yoda.md) for the runbook.
+
+Once it is up, `make yoda` on the box itself, or `make yoda-remote` from a
+Mac (which builds on yoda, since an aarch64-darwin Mac cannot build
+x86_64-linux).
 
 ```zsh
 make <hostname>
@@ -177,7 +187,15 @@ make check      # or: nix flake check
 Runs:
 
 - `eval-r2-d2`, `eval-x-wing` (on aarch64-darwin) — builds the toplevel system derivation for each Mac.
-- `eval-yoda` (on x86_64-linux) — builds yoda's activation package. CI on Linux validates this (see `.github/workflows/check.yml`).
+- `eval-yoda` (on x86_64-linux) — builds yoda's full NixOS system closure (kernel, systemd, docker, home-manager), not just an activation package. CI on Linux validates this (see `.github/workflows/check.yml`).
+
+From a Mac you can still catch module-system errors without a Linux builder:
+
+```zsh
+nix build --dry-run .#nixosConfigurations.yoda.config.system.build.toplevel
+```
+
+That evaluates the whole configuration and fails on deprecated options and broken assertions; it just can't do the actual build.
 - `treefmt` — formatting check.
 - `pre-commit` — statix + deadnix + treefmt.
 
