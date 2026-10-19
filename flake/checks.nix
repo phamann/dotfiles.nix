@@ -17,7 +17,11 @@
           eval-x-wing = self.darwinConfigurations.x-wing.config.system.build.toplevel;
         }
         // lib.optionalAttrs (system == "x86_64-linux") {
-          eval-yoda = self.homeConfigurations."phamann@yoda".activationPackage;
+          # Full NixOS system closure since yoda moved off standalone HM —
+          # kernel, systemd, docker and the HM generation, not just an
+          # activation package. Slower than it was, but download-bound
+          # rather than compile-bound: it all substitutes.
+          eval-yoda = self.nixosConfigurations.yoda.config.system.build.toplevel;
         };
     };
 }

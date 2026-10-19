@@ -13,8 +13,17 @@ r2-d2: ## Rebuild r2-d2 (work Mac, aarch64-darwin)
 	sudo darwin-rebuild switch --flake ~/.config/nixpkgs#r2-d2
 
 .PHONY: yoda
-yoda: ## Rebuild yoda (home-manager only, x86_64-linux)
-	home-manager switch --flake ~/.config/nixpkgs#phamann@yoda
+yoda: ## Rebuild yoda (NixOS, x86_64-linux) — run ON yoda
+	sudo nixos-rebuild switch --flake ~/.config/nixpkgs#yoda
+
+# Build happens ON yoda: an aarch64-darwin Mac cannot build x86_64-linux
+# derivations, and nix-darwin's linux-builder only provides aarch64-linux.
+.PHONY: yoda-remote
+yoda-remote: ## Rebuild yoda from a Mac, building on yoda itself
+	nixos-rebuild switch --flake ~/.config/nixpkgs#yoda \
+		--target-host phamann@192.168.1.40 \
+		--build-host phamann@192.168.1.40 \
+		--sudo
 
 # Flake hygiene.
 
