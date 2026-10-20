@@ -136,6 +136,15 @@ in
               repo = "obra/superpowers-marketplace";
             };
           };
+          # Trail of Bits security/engineering plugins. The attr name must match
+          # the `name` field in the repo's .claude-plugin/marketplace.json, since
+          # that is the suffix used in `enabledPlugins` (`<plugin>@trailofbits`).
+          trailofbits = {
+            source = {
+              source = "github";
+              repo = "trailofbits/skills";
+            };
+          };
         };
       }
       // optionalAttrs isDarwin {
