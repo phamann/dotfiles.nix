@@ -7,3 +7,9 @@ result-*
 # Python bytecode from modules/theme/schemes/tools
 __pycache__/
 *.pyc
+
+# Nested git worktrees created by Claude Code
+.claude/worktrees/
+
+# Installer images downloaded for provisioning yoda
+*.iso
