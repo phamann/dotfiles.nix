@@ -102,6 +102,13 @@ in
       yamllint
 
       unstable.cue
+
+      # Config/data languages. go-jsonnet is the maintained Go rewrite and
+      # the binary set the jsonnet ecosystem (tanka, grizzly, mixins) expects;
+      # it provides `jsonnetfmt`, `jsonnet`, `jsonnet-lint` and `jsonnet-deps`.
+      # Do NOT also add `pkgs.jsonnet` (the older C++ build) — it ships the
+      # same binary names and collides in home-manager's buildEnv.
+      go-jsonnet
     ];
   };
 }
