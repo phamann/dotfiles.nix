@@ -7,6 +7,7 @@
     ../modules/fzf
     ../modules/git
     ../modules/gpg
+    ../modules/nix
     ../modules/nvim
     ../modules/packages
     ../modules/ssh
@@ -28,6 +29,7 @@
     fzf.enable = true;
     git.enable = true;
     gpg.enable = true;
+    nix.enable = true;
     nvim.enable = true;
     packages.cli.enable = true;
     ssh.enable = true;
