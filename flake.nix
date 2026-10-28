@@ -75,6 +75,28 @@
 
       perSystem =
         { system, ... }:
+        let
+          # viceroy carries `#![cfg_attr(not(debug_assertions), deny(warnings))]`,
+          # so every warning is an error in a release build. The nixpkgs-unstable
+          # rustc 1.98.1 -> 1.99.0 bump deprecated `std::u32::MAX`, which cranelift's
+          # `entity_impl!` macro still expands to — breaking viceroy, and with it
+          # `unstable.fastly`, which wraps viceroy on its PATH.
+          #
+          # Upstream fixed this the same way in NixOS/nixpkgs#576484, but the fix is
+          # only on master; the nixpkgs-unstable channel has not advanced past it yet.
+          #
+          # DELETE THIS once the channel catches up. `--replace-fail` makes the build
+          # fail loudly when the line is already gone, which is the signal to do so —
+          # the override costs a full local wasmtime/cranelift build (no cache hit).
+          overlay-viceroy-deny-warnings = _: prev: {
+            viceroy = prev.viceroy.overrideAttrs (_: {
+              postPatch = ''
+                substituteInPlace src/lib.rs \
+                  --replace-fail '#![cfg_attr(not(debug_assertions), deny(warnings))]' ""
+              '';
+            });
+          };
+        in
         {
           # Custom pkgs for every flake-module that consumes `{ pkgs, ... }`.
           # Same overlays as the pre-flake-parts pkgsForSystem helper:
@@ -88,6 +110,7 @@
                 unstable = import inputs.nixpkgs-unstable {
                   inherit system;
                   config.allowUnfree = true;
+                  overlays = [ overlay-viceroy-deny-warnings ];
                 };
               })
               inputs.rust-overlay.overlays.default
