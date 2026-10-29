@@ -31,7 +31,7 @@ in
 
       settings = {
         includeCoAuthoredBy = true;
-        model = "claude-opus-5";
+        model = "claude-opus-5-5";
         # Persist the fullscreen renderer (flicker-free output, mouse support,
         # auto-copy selection) so the startup opt-in prompt stops appearing.
         tui = "fullscreen";
