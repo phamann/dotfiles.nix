@@ -33,8 +33,13 @@ let
     pane size=1 borderless=true {
         plugin location="file:${zjstatus}/bin/zjstatus.wasm" {
             format_left  "{mode}{tabs}"
-            format_right ""
+            format_right "{datetime}"
             format_space "#[bg=${bgAlt}]"
+
+            // The wasm sandbox can't read the system timezone, so it's set here.
+            datetime          "#[bg=${bgAlt},fg=${fgAlt}] {format} "
+            datetime_format   "%a %d %b %H:%M"
+            datetime_timezone "${cfg.timezone}"
 
             // pane_frames is off globally; let zellij own frames.
             hide_frame_for_single_pane "false"
@@ -85,6 +90,11 @@ in
         "compact-bottom"
       ];
       default = "compact-top";
+    };
+    timezone = mkOption {
+      type = types.str;
+      default = "Europe/London";
+      description = "IANA timezone for the zjstatus clock (chrono-tz name).";
     };
   };
   config = mkIf cfg.enable {
