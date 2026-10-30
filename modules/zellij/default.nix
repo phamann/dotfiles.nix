@@ -8,6 +8,7 @@
 }:
 let
   inherit (lib)
+    concatMapStringsSep
     concatStringsSep
     mkEnableOption
     mkIf
@@ -27,6 +28,39 @@ let
 
   zjstatus = inputs.zjstatus.packages.${system}.default;
 
+  # zjstatus renders {name} as the InputMode debug name ("Normal",
+  # "EnterSearch") with no case option, so spell out every mode in the
+  # uppercase form compact-bar used ("NORMAL", "ENTERSEARCH").
+  modeColours = {
+    normal = success;
+    locked = error;
+  };
+  modeFormats = concatMapStringsSep "\n" (
+    mode:
+    let
+      label = lib.toUpper (lib.replaceStrings [ "_" ] [ "" ] mode);
+      colour = modeColours.${mode} or warning;
+    in
+    ''mode_${mode} "#[bg=${bgAlt},fg=${colour},bold] ${label} "''
+  ) inputModes;
+  # zjstatus's mode_<name> config suffixes.
+  inputModes = [
+    "normal"
+    "locked"
+    "resize"
+    "pane"
+    "tab"
+    "scroll"
+    "enter_search"
+    "search"
+    "rename_tab"
+    "rename_pane"
+    "session"
+    "move"
+    "prompt"
+    "tmux"
+  ];
+
   # Every segment paints its own background so the bar reads as one band
   # in bgAlt, like compact-bar did. Options: https://github.com/dj95/zjstatus/wiki
   bar = ''
@@ -44,10 +78,7 @@ let
             // pane_frames is off globally; let zellij own frames.
             hide_frame_for_single_pane "false"
 
-            mode_normal          "#[bg=${bgAlt},fg=${success},bold] {name} "
-            mode_locked          "#[bg=${bgAlt},fg=${error},bold] {name} "
-            mode_tmux            "#[bg=${bgAlt},fg=${warning},bold] {name} "
-            mode_default_to_mode "tmux"
+            ${modeFormats}
 
             tab_normal   "#[bg=${bgAlt},fg=${fgAlt}] {name} "
             tab_active   "#[bg=${primary},fg=${bg},bold] {name} {floating_indicator}{fullscreen_indicator}{sync_indicator}"
