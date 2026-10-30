@@ -11,6 +11,7 @@ _: {
   # Some modules need extra inputs from extraSpecialArgs to evaluate:
   # - theme       requires `inputs.stylix` and `inputs.tinted-schemes`
   # - claude-code requires `inputs.claude-code-nix` and `system`
+  # - rex         requires `inputs.rex`
   # External consumers must wire those through their own HM specialArgs.
   flake.homeManagerModules = {
     bat = ../modules/bat;
@@ -23,6 +24,7 @@ _: {
     nvim = ../modules/nvim;
     omp = ../modules/omp;
     packages = ../modules/packages;
+    rex = ../modules/rex;
     ssh = ../modules/ssh;
     starship = ../modules/starship;
     theme = ../modules/theme;

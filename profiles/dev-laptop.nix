@@ -9,6 +9,7 @@
     ../modules/k9s
     ../modules/omp
     ../modules/pi
+    ../modules/rex
     ../modules/zed
     ../modules/zellij
   ];
@@ -19,6 +20,7 @@
     k9s.enable = true;
     omp.enable = true;
     pi.enable = true;
+    rex.enable = true;
     zed.enable = true;
     zellij.enable = true;
 

@@ -66,6 +66,17 @@
       url = "github:tinted-theming/schemes";
       flake = false;
     };
+
+    # Rex terminal multiplexer (prebuilt, proprietary). On macOS the Rex app
+    # bundles and runs the server; this input supplies the `rex` CLI, its
+    # terminfo entry and ssh guard, and the HM module that writes init.lua.
+    # `preview` is the channel the Rex Beta app's bundled server tracks
+    # (`rex server status` commit == preview's sources.json commit), and
+    # `stable` has no releases yet. Keep the CLI on the app's channel.
+    rex = {
+      url = "https://pkgs.superlogical.com/rex/nix/preview.tar.gz";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
