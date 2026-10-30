@@ -45,7 +45,9 @@ plugins {
 // on_force_close "quit"
 
 simplified_ui true
-pane_frames false
+// Frames are drawn in the background colour (modules/zellij/default.nix),
+// so this only adds a 1-cell gutter around each pane.
+pane_frames true
 default_layout "@layout@"
 
 ui {
