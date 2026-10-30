@@ -109,8 +109,24 @@ let
                   ]
               )}
           }
+          ${workspaceTab}
       }
     '';
+
+  # First tab of a new session: main pane (65%) on the left, two stacked
+  # panes on the right. Tabs opened later fall back to default_tab_template
+  # (bar + one pane).
+  workspaceTab = ''
+    tab focus=true {
+        pane split_direction="vertical" {
+            pane size="65%" focus=true
+            pane split_direction="horizontal" {
+                pane
+                pane
+            }
+        }
+    }
+  '';
 in
 {
   options.modules.zellij = {
