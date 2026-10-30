@@ -42,6 +42,18 @@
 
     omp.url = "github:can1357/oh-my-pi";
 
+    # zellij status bar plugin (replaces the built-in compact-bar, whose
+    # " Zellij " prefix and swap-layout indicator are hardcoded). Built from
+    # source with crane — there's no binary cache, so the first build compiles
+    # a wasm32-wasip1 Rust toolchain build.
+    zjstatus = {
+      url = "github:dj95/zjstatus";
+      inputs = {
+        nixpkgs.follows = "nixpkgs-unstable";
+        rust-overlay.follows = "rust-overlay";
+      };
+    };
+
     stylix = {
       url = "github:nix-community/stylix/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
