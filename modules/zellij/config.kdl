@@ -9,6 +9,19 @@ keybinds {
         // "Zoom" the focused pane, as tmux's prefix+z (default is Ctrl p, f).
         // Alt x shadows zsh's execute-named-cmd.
         bind "Alt z" "Alt x" { ToggleFocusFullscreen; }
+        // New floating shell at a set size. There's no global default for
+        // floating pane size; Alt f (show/hide) still creates zellij's
+        // built-in size when no floating pane exists.
+        bind "Alt w" {
+            Run "zsh" {
+                floating true
+                close_on_exit true
+                width "80%"
+                height "80%"
+                x "10%"
+                y "10%"
+            }
+        }
 
         // Not bound by default (digits only switch tabs inside Tab mode).
         // Without these, Alt+digit falls through to zsh as a repeat count.
