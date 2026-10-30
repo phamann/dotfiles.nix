@@ -1,9 +1,23 @@
-_: {
+{ config, ... }:
+{
   # incident.io work laptop. Inherits everything dev-laptop has, plus the
   # work packages sub-module and incident.io engineering env.
   imports = [ ./dev-laptop.nix ];
 
-  modules.packages.work.enable = true;
+  modules = {
+    packages.work.enable = true;
+
+    zellij.tabs = [
+      {
+        name = "core";
+        cwd = "${config.home.homeDirectory}/Projects/core";
+      }
+      {
+        name = "nixpkgs";
+        cwd = "${config.home.homeDirectory}/.config/nixpkgs";
+      }
+    ];
+  };
 
   home = {
     # incident.io engineering env. Pre-Phase-4 these lived in modules/zsh

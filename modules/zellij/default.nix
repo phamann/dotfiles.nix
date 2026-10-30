@@ -109,24 +109,29 @@ let
                   ]
               )}
           }
-          ${workspaceTab}
+          ${concatStringsSep "\n" (lib.imap0 mkTab cfg.tabs)}
       }
     '';
 
-  # First tab of a new session: main pane (65%) on the left, two stacked
-  # panes on the right. Tabs opened later fall back to default_tab_template
-  # (bar + one pane).
-  workspaceTab = ''
-    tab focus=true {
-        pane split_direction="vertical" {
-            pane size="65%" focus=true
-            pane split_direction="horizontal" {
-                pane
-                pane
-            }
-        }
-    }
-  '';
+  # Startup tabs: main pane (65%) on the left, two stacked panes on the
+  # right. Tabs opened later fall back to default_tab_template (bar + one
+  # pane).
+  mkTab =
+    i: tab:
+    let
+      attr = key: value: lib.optionalString (value != null) ''${key}="${value}"'';
+    in
+    ''
+      tab ${attr "name" tab.name} ${attr "cwd" tab.cwd} focus=${lib.boolToString (i == 0)} {
+          pane split_direction="vertical" {
+              pane size="65%" focus=true
+              pane split_direction="horizontal" {
+                  pane
+                  pane
+              }
+          }
+      }
+    '';
 in
 {
   options.modules.zellij = {
@@ -142,6 +147,25 @@ in
       type = types.str;
       default = "Europe/London";
       description = "IANA timezone for the zjstatus clock (chrono-tz name).";
+    };
+    tabs = mkOption {
+      type = types.listOf (
+        types.submodule {
+          options = {
+            name = mkOption {
+              type = types.nullOr types.str;
+              default = null;
+            };
+            cwd = mkOption {
+              type = types.nullOr types.str;
+              default = null;
+              description = "Absolute starting directory for every pane in the tab.";
+            };
+          };
+        }
+      );
+      default = [ { } ];
+      description = "Tabs opened at session start, each with the 65/35 three-pane workspace.";
     };
   };
   config = mkIf cfg.enable {
