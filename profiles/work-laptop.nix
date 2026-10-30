@@ -1,4 +1,17 @@
 { config, ... }:
+let
+  # Main pane runs Claude's agent view, filtered to sessions under the tab's
+  # directory (new agents dispatched from it start there too).
+  agentsTab = name: cwd: {
+    inherit name cwd;
+    command = [
+      "claude"
+      "agents"
+      "--cwd"
+      cwd
+    ];
+  };
+in
 {
   # incident.io work laptop. Inherits everything dev-laptop has, plus the
   # work packages sub-module and incident.io engineering env.
@@ -8,14 +21,8 @@
     packages.work.enable = true;
 
     zellij.tabs = [
-      {
-        name = "core";
-        cwd = "${config.home.homeDirectory}/Projects/core";
-      }
-      {
-        name = "nixpkgs";
-        cwd = "${config.home.homeDirectory}/.config/nixpkgs";
-      }
+      (agentsTab "core" "${config.home.homeDirectory}/Projects/core")
+      (agentsTab "nixpkgs" "${config.home.homeDirectory}/.config/nixpkgs")
     ];
   };
 

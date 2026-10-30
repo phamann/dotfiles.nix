@@ -120,11 +120,19 @@ let
     i: tab:
     let
       attr = key: value: lib.optionalString (value != null) ''${key}="${value}"'';
+      # KDL strings accept JSON escaping, so toJSON quotes args safely.
+      mainPane =
+        if tab.command == null then
+          ''pane size="65%" focus=true''
+        else
+          ''pane size="65%" focus=true command=${builtins.toJSON (lib.head tab.command)} { args ${
+            concatMapStringsSep " " builtins.toJSON (lib.tail tab.command)
+          }; }'';
     in
     ''
       tab ${attr "name" tab.name} ${attr "cwd" tab.cwd} focus=${lib.boolToString (i == 0)} {
           pane split_direction="vertical" {
-              pane size="65%" focus=true
+              ${mainPane}
               pane split_direction="horizontal" {
                   pane
                   pane
@@ -160,6 +168,15 @@ in
               type = types.nullOr types.str;
               default = null;
               description = "Absolute starting directory for every pane in the tab.";
+            };
+            command = mkOption {
+              type = types.nullOr (types.nonEmptyListOf types.str);
+              default = null;
+              example = [
+                "claude"
+                "agents"
+              ];
+              description = "Program + args the main pane runs instead of a shell.";
             };
           };
         }
