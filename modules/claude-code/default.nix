@@ -127,6 +127,7 @@ in
           "typescript-lsp@claude-plugins-official" = true;
           "gopls-lsp@claude-plugins-official" = true;
           "rust-analyzer-lsp@claude-plugins-official" = true;
+          "incident-io@claude-plugins-official" = true;
           "superpowers@superpowers-marketplace" = true;
         };
         extraKnownMarketplaces = {
