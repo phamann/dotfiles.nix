@@ -35,6 +35,10 @@ in
         # Persist the fullscreen renderer (flicker-free output, mouse support,
         # auto-copy selection) so the startup opt-in prompt stops appearing.
         tui = "fullscreen";
+        # Cap response prose at a readable measure (typographic ideal is
+        # ~66 chars; monospace + the reply marker/list indents push it to 80).
+        # Tables and code blocks still use the full pane width.
+        maxProseWidth = 80;
         mcpServers = {
           "chrome-devtools" = {
             command = "npx";
