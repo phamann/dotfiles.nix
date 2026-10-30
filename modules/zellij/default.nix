@@ -201,25 +201,25 @@ in
     # Themes zellij's own UI (frames, prompts); zjstatus is coloured above.
     stylix.targets.zellij.enable = true;
 
-    # Pane frames are on purely as padding: drawing them in the terminal
-    # background makes the border (and title) invisible, leaving a 1-cell
-    # gutter around each pane. frame_highlight (PANE/RESIZE/MOVE modes) stays
-    # visible so you can see which pane a mode will act on. Stylix defines no
+    # Pane frames are on for padding: drawn in bgAlt (the status bar band)
+    # they read as a faint line with a 1-cell gutter around each pane.
+    # frame_highlight (PANE/RESIZE/MOVE modes) keeps Stylix's colour so you
+    # can see which pane a mode will act on. Stylix defines no
     # frame_unselected, so it's declared in full here.
     programs.zellij.themes.stylix.themes.default =
       let
-        invisible = {
-          base = bg;
+        faint = {
+          base = bgAlt;
           background = bg;
-          emphasis_0 = bg;
-          emphasis_1 = bg;
-          emphasis_2 = bg;
-          emphasis_3 = bg;
+          emphasis_0 = bgAlt;
+          emphasis_1 = bgAlt;
+          emphasis_2 = bgAlt;
+          emphasis_3 = bgAlt;
         };
       in
       {
-        frame_selected = lib.mapAttrs (_: lib.mkForce) invisible;
-        frame_unselected = invisible;
+        frame_selected = lib.mapAttrs (_: lib.mkForce) faint;
+        frame_unselected = faint;
       };
   };
 }
