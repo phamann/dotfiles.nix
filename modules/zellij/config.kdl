@@ -7,7 +7,8 @@ keybinds {
         // Key names are case-sensitive: "Alt T" would only match Alt+Shift+t.
         bind "Alt t" { NewTab; }
         // "Zoom" the focused pane, as tmux's prefix+z (default is Ctrl p, f).
-        bind "Alt z" { ToggleFocusFullscreen; }
+        // Alt x shadows zsh's execute-named-cmd.
+        bind "Alt z" "Alt x" { ToggleFocusFullscreen; }
 
         // Not bound by default (digits only switch tabs inside Tab mode).
         // Without these, Alt+digit falls through to zsh as a repeat count.
