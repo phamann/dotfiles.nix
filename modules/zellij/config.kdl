@@ -3,12 +3,14 @@ default_mode "normal"
 copy_command "pbcopy"
 
 keybinds {
-    normal {
-        bind "Alt T" { NewTab; }
-    }
-    // Not bound by default (digits only switch tabs inside Tab mode). Without
-    // these, Alt+digit falls through to zsh as a repeat-count prefix.
     shared_except "locked" {
+        // Key names are case-sensitive: "Alt T" would only match Alt+Shift+t.
+        bind "Alt t" { NewTab; }
+        // "Zoom" the focused pane, as tmux's prefix+z (default is Ctrl p, f).
+        bind "Alt z" { ToggleFocusFullscreen; }
+
+        // Not bound by default (digits only switch tabs inside Tab mode).
+        // Without these, Alt+digit falls through to zsh as a repeat count.
         bind "Alt 1" { GoToTab 1; }
         bind "Alt 2" { GoToTab 2; }
         bind "Alt 3" { GoToTab 3; }
