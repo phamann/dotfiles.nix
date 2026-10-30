@@ -34,11 +34,12 @@ ui {
     }
 }
 
-// Active theme. The "stylix" theme file is written to
-// ~/.config/zellij/themes/stylix.kdl by Stylix (modules/theme/default.nix
-// sets stylix.base16Scheme; modules/zellij sets stylix.targets.zellij.enable).
-// The name stays "stylix" regardless of which base24 scheme is active.
-theme "stylix"
+// Active theme. Stylix writes ~/.config/zellij/themes/stylix.kdl
+// (modules/theme/default.nix sets stylix.base16Scheme; modules/zellij sets
+// stylix.targets.zellij.enable), but the theme *inside* that file is named
+// "default" — zellij resolves themes by node name, not filename. An unknown
+// name silently falls back to the built-in palette (black bars).
+theme "default"
 
 copy_on_select false
 
