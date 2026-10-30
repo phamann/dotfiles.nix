@@ -30,6 +30,10 @@ in
         adjust-cell-height = "8%";
         window-padding-x = 6;
         fullscreen = true;
+        # Left Option sends Alt (zellij/nvim/shell bindings). The unset default
+        # is only "true" on U.S. layouts; on British, right Option must stay
+        # macOS-native because ⌥3 types `#` and ⌥2 types `€`.
+        macos-option-as-alt = "left";
       };
     };
 
