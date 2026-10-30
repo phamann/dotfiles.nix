@@ -18,6 +18,13 @@ keybinds {
         bind "Alt 7" { GoToTab 7; }
         bind "Alt 8" { GoToTab 8; }
         bind "Alt 9" { GoToTab 9; }
+
+        // Trial: mirror the default Alt+arrow focus binds on Ctrl+Alt, since
+        // Raycast owns Alt+arrow system-wide for window snapping.
+        bind "Ctrl Alt Left" { MoveFocusOrTab "Left"; }
+        bind "Ctrl Alt Right" { MoveFocusOrTab "Right"; }
+        bind "Ctrl Alt Up" { MoveFocus "Up"; }
+        bind "Ctrl Alt Down" { MoveFocus "Down"; }
     }
 }
 
