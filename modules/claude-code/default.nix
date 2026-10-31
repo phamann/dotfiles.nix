@@ -42,21 +42,6 @@ in
             "--isolated"
           ];
         };
-        # Grafana Cloud (remote HTTP transport). Auth is handled via OAuth on
-        # first connect; the header selects our stack. No local process spawned.
-        grafana = {
-          type = "http";
-          url = "https://mcp.grafana.com/mcp";
-          headers = {
-            "X-Grafana-URL" = "https://pineapples.grafana.net";
-          };
-        };
-        # LaunchDarkly (remote HTTP transport). Auth is handled via OAuth on
-        # first connect. No local process spawned.
-        launchdarkly = {
-          type = "http";
-          url = "https://mcp.launchdarkly.com/mcp/launchdarkly";
-        };
       };
 
       settings = {
@@ -119,10 +104,10 @@ in
             "mcp__linear__list_issues"
             "mcp__linear__get_issue"
             "mcp__linear__list_comments"
-            # Bare server name allows all Grafana MCP tools (MCP rules don't
-            # support a __* glob; the server name alone matches every tool).
-            "mcp__plugin_claude-code-home-manager_grafana"
-            "mcp__plugin_claude-code-home-manager_launchdarkly"
+            # Grafana and LaunchDarkly come from claude.ai connectors. A bare
+            # server name matches every tool (MCP rules don't support __*).
+            "mcp__claude_ai_Grafana_Cloud"
+            "mcp__claude_ai_LaunchDarkly"
             "mcp__incident_io__*"
           ];
         };
