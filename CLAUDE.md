@@ -147,7 +147,7 @@ Darwin hosts also have `hosts/<name>/configuration.nix` (system-level) that impo
 - Always `nix fmt` (or commit and let pre-commit catch it).
 - `nix flake check` is the gate — it must pass before pushing.
 - Pre-commit is wired but NOT auto-installed because `core.hooksPath = ~/.git-hooks` is set globally; a naive `pre-commit install` would pollute every repo on the machine. To enable per-commit enforcement locally: `git config --local --unset core.hooksPath && pre-commit install` inside `nix develop`.
-- CI on GitHub Actions runs `nix flake check` on macos-14 + ubuntu-24.04 for every PR.
+- CI on GitHub Actions runs `nix flake check` on macos-15 + ubuntu-24.04 for every PR.
 
 ## Theming
 

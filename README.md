@@ -60,7 +60,7 @@ See [docs/SETUP.md §9](docs/SETUP.md) for the full dev workflow including the p
 
 ## CI
 
-GitHub Actions runs `nix flake check` on `macos-14` and `ubuntu-24.04` for every push to main and every PR. The Linux runner is the only place yoda's `homeConfiguration` evaluates fully end-to-end (catppuccin per-app modules use IFD that can't be substituted from aarch64-darwin).
+GitHub Actions runs `nix flake check` on `macos-15` and `ubuntu-24.04` for every push to main and every PR. The Linux runner is the only place yoda's `homeConfiguration` evaluates fully end-to-end (catppuccin per-app modules use IFD that can't be substituted from aarch64-darwin).
 
 A separate lockfile job runs `DeterminateSystems/flake-checker-action` in report-only mode.
 
