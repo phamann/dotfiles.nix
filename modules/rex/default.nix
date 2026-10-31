@@ -88,12 +88,13 @@ in
     # after a Rex upgrade if `rex skill status` reports them as outdated.
     (mkIf config.programs.claude-code.enable {
       programs.claude-code = {
+        mcpServers.superlogical = {
+          type = "http";
+          url = "https://www.superlogical.com/rex/community-mcp";
+        };
         settings = {
-          mcpServers.superlogical = {
-            type = "http";
-            url = "https://www.superlogical.com/rex/community-mcp";
-          };
-          permissions.allow = [ "mcp__superlogical" ];
+          # HM's generated plugin namespaces the server's tools.
+          permissions.allow = [ "mcp__plugin_claude-code-home-manager_superlogical" ];
           # Tells each session which Rex session and terminal it runs in.
           hooks.SessionStart = [
             {

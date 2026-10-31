@@ -29,6 +29,36 @@ in
       enable = true;
       package = claudeWithToken;
 
+      # Claude Code ignores `mcpServers` in settings.json. HM instead bundles
+      # these into a generated `claude-code-home-manager` plugin loaded via
+      # `--plugin-dir`, so tools are named
+      # `mcp__plugin_claude-code-home-manager_<server>__<tool>` (see the
+      # permission rules below).
+      mcpServers = {
+        "chrome-devtools" = {
+          command = "bunx";
+          args = [
+            "chrome-devtools-mcp@latest"
+            "--isolated"
+          ];
+        };
+        # Grafana Cloud (remote HTTP transport). Auth is handled via OAuth on
+        # first connect; the header selects our stack. No local process spawned.
+        grafana = {
+          type = "http";
+          url = "https://mcp.grafana.com/mcp";
+          headers = {
+            "X-Grafana-URL" = "https://pineapples.grafana.net";
+          };
+        };
+        # LaunchDarkly (remote HTTP transport). Auth is handled via OAuth on
+        # first connect. No local process spawned.
+        launchdarkly = {
+          type = "http";
+          url = "https://mcp.launchdarkly.com/mcp/launchdarkly";
+        };
+      };
+
       settings = {
         includeCoAuthoredBy = true;
         model = "claude-opus-5-5";
@@ -39,30 +69,6 @@ in
         # ~66 chars; monospace + the reply marker/list indents push it to 80).
         # Tables and code blocks still use the full pane width.
         maxProseWidth = 80;
-        mcpServers = {
-          "chrome-devtools" = {
-            command = "npx";
-            args = [
-              "-y"
-              "chrome-devtools-mcp@latest"
-            ];
-          };
-          # Grafana Cloud (remote HTTP transport). Auth is handled via OAuth on
-          # first connect; the header selects our stack. No local process spawned.
-          grafana = {
-            type = "http";
-            url = "https://mcp.grafana.com/mcp";
-            headers = {
-              "X-Grafana-URL" = "https://pineapples.grafana.net";
-            };
-          };
-          # LaunchDarkly (remote HTTP transport). Auth is handled via OAuth on
-          # first connect. No local process spawned.
-          launchdarkly = {
-            type = "http";
-            url = "https://mcp.launchdarkly.com/mcp/launchdarkly";
-          };
-        };
         # Blocks the remote incident.io MCP endpoint; the local plugin-provided
         # server is used instead. Added via the Claude Code UI and ported here
         # so activation no longer reverts it.
@@ -115,8 +121,8 @@ in
             "mcp__linear__list_comments"
             # Bare server name allows all Grafana MCP tools (MCP rules don't
             # support a __* glob; the server name alone matches every tool).
-            "mcp__grafana"
-            "mcp__launchdarkly"
+            "mcp__plugin_claude-code-home-manager_grafana"
+            "mcp__plugin_claude-code-home-manager_launchdarkly"
             "mcp__incident_io__*"
           ];
         };
