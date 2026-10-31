@@ -14,6 +14,8 @@ let
   cfg = config.modules.rex;
   rex = lib.getExe config.programs.rex.package;
   inherit (config.modules.theme) scheme;
+  # Rex defaults this on; `rex skill setup` turns it off.
+  sessionNaming = "--feature-session-naming=false";
 
   # Ghostty-format theme generated from the active stylix scheme. Rex has no
   # theme setting in init.lua — the Mac app keeps themes in its own defaults
@@ -80,20 +82,17 @@ in
       '';
     }
 
-    # Claude Code integration. `rex skill setup` can't do this itself: it
-    # edits ~/.claude/settings.json in place, which is a read-only nix store
-    # symlink here. The hook and skill mirror what `rex skill setup` writes
-    # (Rex 2026-10, `--feature-session-naming=false`); re-run
-    # `rex skill setup --project --agent claude` in a scratch dir and diff
-    # after a Rex upgrade if `rex skill status` reports them as outdated.
+    # Claude Code integration: what `rex skill setup` would install, which
+    # can't write to the nix-managed ~/.claude/settings.json itself.
     (mkIf config.programs.claude-code.enable {
       programs.claude-code = {
         mcpServers.superlogical = {
           type = "http";
           url = "https://www.superlogical.com/rex/community-mcp";
         };
+
         settings = {
-          # HM's generated plugin namespaces the server's tools.
+          # HM serves mcpServers from a generated plugin, hence the prefix.
           permissions.allow = [ "mcp__plugin_claude-code-home-manager_superlogical" ];
           # Tells each session which Rex session and terminal it runs in.
           hooks.SessionStart = [
@@ -101,7 +100,7 @@ in
               hooks = [
                 {
                   type = "command";
-                  command = "/bin/sh -c 'rex __internal session-start --agent claude --feature-session-naming=false 2>/dev/null || true'";
+                  command = "${rex} __internal session-start --agent claude ${sessionNaming} 2>/dev/null || true";
                   timeout = 5;
                 }
               ];
@@ -113,21 +112,10 @@ in
           ---
           name: rex
           description: Use the rex CLI to manage Rex sessions, open tabs, arrange panes, run commands, inspect terminal output, and control connected Rex apps.
-          metadata:
-            rex-stub: "2"
           ---
-          <!-- Installed by "rex skill setup". Remove it with "rex skill remove". -->
-
-          Run `rex __internal skill --feature-session-naming=false` and follow the guide it prints. The guide comes from
-          the installed Rex CLI, so it describes the commands available in that version.
-
-          If the command fails, the installed Rex version predates the guide. Start with
-          `rex whoami --json`, then use `rex --help` and `rex COMMAND --help`.
+          Run `rex __internal skill ${sessionNaming}` and follow the guide it prints.
         '';
       };
-
-      # `rex skill setup` already wrote a real file here; take it over.
-      home.file."${config.programs.claude-code.configDir}/skills/rex/SKILL.md".force = true;
     })
   ]);
 }
