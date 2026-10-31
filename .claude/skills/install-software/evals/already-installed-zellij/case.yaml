@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: already-installed-zellij
+expected_outcome: |
+  Detects zellij is already declared (modules/zellij, enabled in dev-laptop and headless-server profiles) and stops without editing files, reporting where it lives and offering to change its version/source.

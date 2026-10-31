@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: hm-module-btop
+expected_outcome: |
+  Creates modules/btop using programs.btop with stylix.targets.btop enabled, imports and enables it in a profile with a stated reason, registers it in flake/modules.nix, and passes make check.
