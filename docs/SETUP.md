@@ -199,7 +199,7 @@ Otherwise, hooks run via `nix flake check` and CI.
 
 ### CI
 
-`.github/workflows/check.yml` runs `nix flake check` on macos-14 and ubuntu-24.04 for every push to main and every PR. yoda's full evaluation happens on the Linux runner.
+`.github/workflows/check.yml` runs `nix flake check` on macos-15 and ubuntu-24.04 for every push to main and every PR. yoda's full evaluation happens on the Linux runner.
 
 A separate `lockfile` job runs `DeterminateSystems/flake-checker-action` in report-only mode to surface stale inputs as a PR summary.
 

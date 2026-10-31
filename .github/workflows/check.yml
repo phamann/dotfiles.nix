@@ -17,7 +17,7 @@ jobs:
       fail-fast: false
       matrix:
         os:
-          - macos-14 # aarch64-darwin (Apple silicon) — r2-d2 + x-wing
+          - macos-15 # aarch64-darwin (Apple silicon) — r2-d2 + x-wing
           - ubuntu-24.04 # x86_64-linux — yoda
     runs-on: ${{ matrix.os }}
     steps:
@@ -39,7 +39,7 @@ jobs:
       # Instead, target only the checks for the runner's own system.
 
       - name: Build aarch64-darwin checks
-        if: matrix.os == 'macos-14'
+        if: matrix.os == 'macos-15'
         run: |
           nix build \
             .#checks.aarch64-darwin.eval-r2-d2 \
