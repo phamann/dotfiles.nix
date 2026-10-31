@@ -36,3 +36,33 @@ rex.action({
   end,
 })
 rex.bind("alt+w", "float_shell")
+
+-- New shell to the right of the focused pane, taking a third of its width.
+-- `ratio` is the share kept by the left side. Unlike the app's pane.split,
+-- new_split doesn't inherit the directory, so take the foreground process's
+-- (the `pwd` method relies on OSC 7, which our shells don't send).
+rex.action({
+  name = "split_right_third",
+  title = "Split Right (1/3)",
+  category = "Pane",
+  run = function(ctx)
+    local options = {}
+    local proc = rex.block.call("com.superlogical.terminal", "process", { block_id = ctx.block_id })
+    if proc and proc.foreground and proc.foreground.cwd then
+      options.cwd = proc.foreground.cwd
+    end
+    local r, err = rex.session.new_split({
+      anchor_id = ctx.block_id,
+      direction = "horizontal",
+      side = "after",
+      ratio = 2 / 3,
+      layout = rex.layout.block({ flavor = "com.superlogical.terminal.shell", options = options }),
+      focus = true,
+    })
+    if err ~= nil then
+      error(err, 0)
+    end
+    return r
+  end,
+})
+rex.bind("alt+v", "split_right_third")
