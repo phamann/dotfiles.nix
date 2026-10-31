@@ -1,4 +1,4 @@
 schema_version: "1.1"
 name: npm-cli-vercel
 expected_outcome: |
-  Does not use npm -g; finds the Vercel CLI in nixpkgs (or builds it if absent), adds it to the appropriate modules/packages bucket in alphabetical order with stable/unstable chosen on evidence, and passes make check.
+  Does not use npm -g; establishes the Vercel CLI is not in nixpkgs, installs it through the most declarative remaining channel (cask or derivation) with the trade-off explained, and passes make check.
