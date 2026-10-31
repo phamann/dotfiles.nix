@@ -62,6 +62,12 @@ in
             type = "http";
             url = "https://mcp.launchdarkly.com/mcp/launchdarkly";
           };
+          # Superlogical Rex community MCP (remote HTTP transport). No local
+          # process spawned.
+          superlogical = {
+            type = "http";
+            url = "https://www.superlogical.com/rex/community-mcp";
+          };
         };
         # Blocks the remote incident.io MCP endpoint; the local plugin-provided
         # server is used instead. Added via the Claude Code UI and ported here
