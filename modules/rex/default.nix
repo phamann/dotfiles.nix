@@ -1,5 +1,6 @@
 {
   inputs,
+  pkgs,
   lib,
   config,
   ...
@@ -12,6 +13,7 @@ let
     mkMerge
     ;
   cfg = config.modules.rex;
+  inherit (pkgs.stdenv.hostPlatform) isDarwin;
   rex = lib.getExe config.programs.rex.package;
   inherit (config.modules.theme) scheme;
   # Rex defaults this on; `rex skill setup` turns it off.
@@ -81,6 +83,17 @@ in
         fi
       '';
     }
+
+    # The app evens out every split it makes from a key press, which undoes
+    # the ratio custom actions such as init.lua's split_right_third ask for.
+    # This is the palette's "Disable Autobalance Splits" toggle. Not
+    # targets.darwin.defaults: that runs `defaults import`, which would
+    # replace the app's whole domain (themes, fonts, server settings).
+    (mkIf isDarwin {
+      home.activation.rexDisableAutobalance = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+        run /usr/bin/defaults write com.superlogical.rex Workspace.balancesSplitsOnCreation -bool false
+      '';
+    })
 
     # Claude Code integration: what `rex skill setup` would install, which
     # can't write to the nix-managed ~/.claude/settings.json itself.
