@@ -49,6 +49,8 @@ _: {
       "spotify"
       "superwhisper"
       "tailscale-app"
+      # Beta channel for Thaw 3.x (the stable `thaw` cask is still 2.x).
+      "thaw@beta"
       "tldraw"
       "vlc"
       "zed"
