@@ -49,7 +49,6 @@ _: {
       "spotify"
       "superwhisper"
       "tailscale-app"
-      "thaw"
       "tldraw"
       "vlc"
       "zed"
