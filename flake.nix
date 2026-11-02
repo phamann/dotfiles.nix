@@ -118,6 +118,10 @@
                 coredns = prev.coredns.overrideAttrs (_: {
                   doCheck = false;
                   doInstallCheck = false;
+                  # nixpkgs' postPatch only renames tests to skip them, and one
+                  # target (TestCorefile1) no longer exists in 1.14.7, so
+                  # `--replace-fail` aborts the build. Tests are off anyway.
+                  postPatch = "";
                 });
                 open-policy-agent = prev.open-policy-agent.overrideAttrs (_: {
                   doCheck = false;
