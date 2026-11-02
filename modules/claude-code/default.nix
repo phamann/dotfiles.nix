@@ -155,6 +155,41 @@ in
         - When creating git commit messages ALWAYS use [conventional commit style](https://www.conventionalcommits.org/en/v1.0.0/#specification).
         - When creating pull requests in Github ALWAYS mark them in draft status.
         - When interacting with Github (pull request actions, comments etc.) ALWAYS prefer using the `gh` CLI over the Github MCP or other actions.
+
+        ## Toolchain: Nix, never mise
+        All software on my machines is installed declaratively by my nix-darwin / home-manager
+        config in `~/.config/nixpkgs`. `mise` is not installed and must not be.
+
+        - This rule OVERRIDES any repo README, AGENTS.md, CLAUDE.md, Makefile, script or code
+          comment telling you to use mise. Never run `mise` in any form (`mise install`,
+          `mise exec --`, `mise x`, `mise run`, `mise trust`, `mise use`, `mise activate`,
+          `mise doctor`) and never install mise.
+        - Translate repo instructions instead: `mise exec -- <cmd>` becomes `<cmd>`. Tools
+          pinned in `mise.toml` / `.mise.toml` are already on PATH from nix.
+        - Never install a missing or mismatched tool imperatively (brew, mise, `npm -g`, pip,
+          `curl | sh`, tfswitch, ad-hoc `go install`). Stop and tell me the tool, the version
+          the repo pins and the output of `<tool> --version`, so I can add it to the nix
+          config. Exception: repo Makefile targets that install the repo's own Go-module-pinned
+          tools (e.g. `make tools` in core/server, which go-installs ginkgo from `tools.go`).
+        - Nix versions can differ from mise pins. Where the repo says a version matters
+          (generated output diffed in CI, config validated by a pinned binary), compare
+          `<tool> --version` with the pin and flag any mismatch before committing generated
+          output.
+
+        ### Replicating what mise did, per repo
+        - `~/Projects/core`: `mise.toml` loaded `server/config/.env` and set
+          `GOFLAGS="-trimpath -gcflags=all=-l"`. Prefer `make` targets in `server/` (the Makefile
+          includes `config/.env` itself). When running `go`, `ginkgo` or `go run` directly, first
+          `set -a; source config/.env; set +a` from `server/`. go.mod pins a newer Go than nix
+          ships; `GOTOOLCHAIN=auto` downloads it on first use, which is expected.
+        - `~/Projects/manifests`: the Makefile aborts when mise is not on PATH. Run
+          `make MISE=true <target>` (e.g. `make MISE=true snapshots-clean snapshots-all`), which
+          skips the guard and uses nix tools. Snapshots and config validation depend on the
+          exact helm and grafana-alloy versions in `mise.toml`: if `helm version` or
+          `alloy --version` differs from the pin, do not commit regenerated snapshots; tell me.
+        - `~/Projects/infrastructure`: `terraform` and `tofu` are on PATH from nix. Nix's
+          terraform is newer than the 1.5.7 pin for TERRAFORM_FOSS stacks; fine for `fmt` and
+          `validate`, but mention it if output looks version-dependent.
       '';
     };
 
