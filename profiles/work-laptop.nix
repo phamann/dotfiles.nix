@@ -26,6 +26,18 @@ in
     ];
   };
 
+  # incident.io's prerelease skills plugin. The marketplace repo is private
+  # to incident.io, so it lives here rather than in modules/claude-code.
+  # Equivalent to `/plugin install incident-io@incident-io-skills-prerelease`;
+  # these attrsets merge with the module's enabledPlugins/extraKnownMarketplaces.
+  programs.claude-code.settings = {
+    enabledPlugins."incident-io@incident-io-skills-prerelease" = true;
+    extraKnownMarketplaces.incident-io-skills-prerelease.source = {
+      source = "github";
+      repo = "incident-io/skills-prerelease";
+    };
+  };
+
   home = {
     # incident.io engineering env. Pre-Phase-4 these lived in modules/zsh
     # behind a `modules.zsh.work` flag; the profile owns them directly now.
