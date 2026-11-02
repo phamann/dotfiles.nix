@@ -33,6 +33,8 @@ in
       # Pinned to the versions core's CI uses, not nixpkgs': see ../pinned.nix.
       pinned.golangci-lint
       pinned.pandoc
+      # hiPrio: overrides the shared cli bucket's nixpkgs yq-go on this host only.
+      (lib.hiPrio pinned.yq)
     ];
   };
 }

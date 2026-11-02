@@ -3,7 +3,8 @@
 # changes CI-visible output and nixpkgs doesn't carry that version:
 #
 #   helm           manifests/mise.toml            snapshot rendering is diffed in CI
-#   pandoc         core/Dockerfile                post-mortem export output
+#   yq             manifests/mise.toml, core/mise.toml   snapshot YAML formatting
+#   pandoc        core/Dockerfile                post-mortem export output
 #   golangci-lint  core/.buildkite/docker/Dockerfile.tools   lint findings
 #
 # Deliberately NOT pinned: grafana-alloy. manifests pins 1.14.2, but that
@@ -35,10 +36,13 @@ let
       install,
       versionArgs ? "--version",
       mainProgram ? pname,
+      # For assets that are a bare binary rather than an archive; `install`
+      # then reads "$src" directly.
+      dontUnpack ? false,
       meta,
     }:
     stdenvNoCC.mkDerivation {
-      inherit pname version;
+      inherit pname version dontUnpack;
       src = fetchurl { inherit url hash; };
 
       nativeBuildInputs = [ unzip ];
@@ -70,8 +74,9 @@ let
     };
 in
 {
-  # nixpkgs has 3.20.x; a newer helm renders some block scalars differently
-  # (e.g. loki's `config.yaml: |2` becomes `|`), failing manifests' CI diff.
+  # nixpkgs has 3.20.x. As of 2026-11 its snapshot output is identical, but
+  # manifests' AGENTS.md warns helm versions change snapshot whitespace and
+  # CI renders with this exact version, so match it.
   helm = mkPinned rec {
     pname = "helm";
     version = "3.15.4";
@@ -83,6 +88,23 @@ in
       description = "Kubernetes package manager (upstream release binary)";
       homepage = "https://helm.sh";
       license = lib.licenses.asl20;
+    };
+  };
+
+  # nixpkgs has 4.53.x, which re-serialises block scalars differently (loki's
+  # `config.yaml: |2` becomes `|` plus a blank line), so regenerated manifests
+  # snapshots fail CI's diff. Verified: 4.44.3 regenerates them with no diff.
+  yq = mkPinned rec {
+    pname = "yq";
+    version = "4.44.3";
+    url = "https://github.com/mikefarah/yq/releases/download/v${version}/yq_darwin_arm64";
+    hash = "sha256-VZpZTvem68W4Gme3cX+zrM7dJm2Pp9g1Laf+yeRj9Is=";
+    dontUnpack = true;
+    install = ''install -Dm755 "$src" "$out/bin/yq"'';
+    meta = {
+      description = "Portable command-line YAML processor (upstream release binary)";
+      homepage = "https://mikefarah.gitbook.io/yq";
+      license = lib.licenses.mit;
     };
   };
 
