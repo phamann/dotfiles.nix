@@ -3,6 +3,8 @@
 # changes CI-visible output and nixpkgs doesn't carry that version:
 #
 #   helm           manifests/mise.toml            snapshot rendering is diffed in CI
+#   pandoc         core/Dockerfile                post-mortem export output
+#   golangci-lint  core/.buildkite/docker/Dockerfile.tools   lint findings
 #
 # Not a module: the package buckets `callPackage` this file and pick entries.
 # aarch64-darwin only, because these sit in buckets only the Macs enable.
@@ -75,6 +77,40 @@ in
       description = "Kubernetes package manager (upstream release binary)";
       homepage = "https://helm.sh";
       license = lib.licenses.asl20;
+    };
+  };
+
+  # nixpkgs has 3.7.x; core's Dockerfiles pin 3.8.3 and server/lib/pandoc
+  # tests compare its output.
+  pandoc = mkPinned rec {
+    pname = "pandoc";
+    version = "3.8.3";
+    url = "https://github.com/jgm/pandoc/releases/download/${version}/pandoc-${version}-arm64-macOS.zip";
+    hash = "sha256-Pq6zvRCYKuy6XddhWHRaT4Ba+zmrcqUZu6JTPJjOAC0=";
+    install = ''
+      mkdir -p "$out"
+      cp -R pandoc-${version}-arm64/bin pandoc-${version}-arm64/share "$out/"
+    '';
+    meta = {
+      description = "Universal document converter (upstream release binary)";
+      homepage = "https://pandoc.org";
+      license = lib.licenses.gpl2Plus;
+    };
+  };
+
+  # nixpkgs has 2.12.x (stable) / 2.15.x (unstable); core's CI image pins 2.13.0
+  # and lint findings change between releases.
+  golangci-lint = mkPinned rec {
+    pname = "golangci-lint";
+    version = "2.13.0";
+    url = "https://github.com/golangci/golangci-lint/releases/download/v${version}/golangci-lint-${version}-darwin-arm64.tar.gz";
+    hash = "sha256-curmcAl5eOYbeKdzolwnQ5411UCU/Zhs7l7usl1xRP0=";
+    install = ''install -Dm755 golangci-lint-${version}-darwin-arm64/golangci-lint "$out/bin/golangci-lint"'';
+    versionArgs = "version";
+    meta = {
+      description = "Fast linters runner for Go (upstream release binary)";
+      homepage = "https://golangci-lint.run";
+      license = lib.licenses.gpl3Only;
     };
   };
 }

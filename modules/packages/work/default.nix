@@ -7,6 +7,7 @@
 let
   inherit (lib) mkEnableOption mkIf;
   cfg = config.modules.packages.work;
+  pinned = pkgs.callPackage ../pinned.nix { };
 in
 {
   options.modules.packages.work.enable = mkEnableOption "incident.io infrastructure tooling";
@@ -24,6 +25,10 @@ in
       nsc
       opentofu
       spacectl
+
+      # Pinned to the versions core's CI uses, not nixpkgs': see ../pinned.nix.
+      pinned.golangci-lint
+      pinned.pandoc
     ];
   };
 }
