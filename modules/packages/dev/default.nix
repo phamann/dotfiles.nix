@@ -51,6 +51,7 @@ in
 
       # python
       python313
+      uv
 
       # lua
 
