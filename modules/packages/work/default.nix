@@ -25,6 +25,9 @@ in
       nsc
       opentofu
       spacectl
+      # pandoc's PDF engine for core's post-mortem export. core pins 0.15.1
+      # (mise.toml + Dockerfile); stable is 0.14.x, unstable matches.
+      unstable.typst
 
       # Pinned to the versions core's CI uses, not nixpkgs': see ../pinned.nix.
       pinned.golangci-lint
