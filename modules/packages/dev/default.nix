@@ -55,6 +55,11 @@ in
 
       # lua
 
+      # ruby (shadows macOS's /usr/bin/ruby 2.6). manifests pins 3.4.9 for its
+      # scripts/capacity/*.rb helpers; stable matches exactly. hiPrio so its
+      # `bundle` (Bundler) wins over gotools' unrelated `bundle` in buildEnv.
+      (lib.hiPrio ruby_3_4)
+
       # java
       maven
 
