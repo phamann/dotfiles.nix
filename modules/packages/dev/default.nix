@@ -38,8 +38,12 @@ in
       gofumpt
       goimports-reviser
       gotools
-      unstable.go
-      unstable.gopls
+      # core's go.mod needs go >= 1.27.1, but nixpkgs' default `go` is still
+      # 1.26.x; without this, GOTOOLCHAIN=auto silently downloads 1.27 outside
+      # nix. gopls is rebuilt with the same Go so it can load 1.27 modules.
+      # Drop back to `unstable.go` / `unstable.gopls` once the default is 1.27.
+      unstable.go_1_27
+      (unstable.gopls.override { buildGoLatestModule = unstable.buildGo127Module; })
 
       # rust
       cargo-nextest

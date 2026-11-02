@@ -180,8 +180,8 @@ in
         - `~/Projects/core`: `mise.toml` loaded `server/config/.env` and set
           `GOFLAGS="-trimpath -gcflags=all=-l"`. Prefer `make` targets in `server/` (the Makefile
           includes `config/.env` itself). When running `go`, `ginkgo` or `go run` directly, first
-          `set -a; source config/.env; set +a` from `server/`. go.mod pins a newer Go than nix
-          ships; `GOTOOLCHAIN=auto` downloads it on first use, which is expected.
+          `set -a; source config/.env; set +a` from `server/`. nix ships the Go that go.mod
+          needs; if `go version` shows a toolchain download, nix is behind: tell me.
         - `~/Projects/manifests`: the Makefile aborts when mise is not on PATH. Run
           `make MISE=true <target>` (e.g. `make MISE=true snapshots-clean snapshots-all`), which
           skips the guard and uses nix tools. Snapshot rendering depends on the exact helm
