@@ -184,9 +184,12 @@ in
           ships; `GOTOOLCHAIN=auto` downloads it on first use, which is expected.
         - `~/Projects/manifests`: the Makefile aborts when mise is not on PATH. Run
           `make MISE=true <target>` (e.g. `make MISE=true snapshots-clean snapshots-all`), which
-          skips the guard and uses nix tools. Snapshots and config validation depend on the
-          exact helm and grafana-alloy versions in `mise.toml`: if `helm version` or
-          `alloy --version` differs from the pin, do not commit regenerated snapshots; tell me.
+          skips the guard and uses nix tools. Snapshot rendering depends on the exact helm
+          version in `mise.toml` (nix pins it to match): if `helm version` differs from the
+          pin, do not commit regenerated snapshots; tell me. Alloy is knowingly newer than the
+          pin (the pinned darwin binary crashes), so `configs-validate-all` failing ONLY on
+          Alloy configs is expected locally and does not block committing snapshots; CI
+          validates Alloy with the pinned version.
         - `~/Projects/infrastructure`: `terraform` and `tofu` are on PATH from nix. Nix's
           terraform is newer than the 1.5.7 pin for TERRAFORM_FOSS stacks; fine for `fmt` and
           `validate`, but mention it if output looks version-dependent.

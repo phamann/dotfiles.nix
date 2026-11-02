@@ -6,6 +6,12 @@
 #   pandoc         core/Dockerfile                post-mortem export output
 #   golangci-lint  core/.buildkite/docker/Dockerfile.tools   lint findings
 #
+# Deliberately NOT pinned: grafana-alloy. manifests pins 1.14.2, but that
+# release's darwin binary segfaults at startup on macOS 27 (it links
+# go-m1cpu v0.1.7; fixed in v0.2.1). nixpkgs' newer alloy stays in the work
+# bucket, so manifests' alloy-profiles validation fails locally; CI is fine.
+# Revisit when manifests bumps its alloy pin.
+#
 # Not a module: the package buckets `callPackage` this file and pick entries.
 # aarch64-darwin only, because these sit in buckets only the Macs enable.
 #
