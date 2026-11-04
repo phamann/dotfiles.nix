@@ -30,8 +30,33 @@ in
       # (mise.toml + Dockerfile); stable is 0.14.x, unstable matches.
       unstable.typst
 
+      # core's CI image pins golangci-lint (.buildkite/docker/Dockerfile.tools)
+      # and builds it from source, because a golangci-lint binary can only
+      # typecheck modules up to the Go version it was compiled with. Upstream
+      # release binaries lag core's go.mod, so build the pinned version with
+      # nixpkgs' derivation, which uses the same Go as `go_1_27` in the dev
+      # bucket.
+      #
+      # To bump: copy `hash` and `vendorHash` from the nixpkgs commit that
+      # packaged that version (pkgs/by-name/go/golangci-lint/package.nix).
+      # Matching nixpkgs' vendorHash lets the module vendor output come from
+      # cache.nixos.org. A fresh vendor fetch fails on this Mac, because the
+      # depthfirst firewall intercepts proxy.golang.org and nix builders
+      # don't trust its CA.
+      (unstable.golangci-lint.overrideAttrs (
+        finalAttrs: _: {
+          version = "2.14.0";
+          src = fetchFromGitHub {
+            owner = "golangci";
+            repo = "golangci-lint";
+            tag = "v${finalAttrs.version}";
+            hash = "sha256-HATA7JKHwEouM+8jYZbQrkX7p4gut4IpyTvcBexu/4o=";
+          };
+          vendorHash = "sha256-ekP/zDhYMpMG+tYAyYHNfLOCt/JkxrXUw1jHUEfsM8k=";
+        }
+      ))
+
       # Pinned to the versions core's CI uses, not nixpkgs': see ../pinned.nix.
-      pinned.golangci-lint
       pinned.pandoc
       # hiPrio: overrides the shared cli bucket's nixpkgs yq-go on this host only.
       (lib.hiPrio pinned.yq)

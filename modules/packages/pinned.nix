@@ -5,7 +5,9 @@
 #   helm           manifests/mise.toml            snapshot rendering is diffed in CI
 #   yq             manifests/mise.toml, core/mise.toml   snapshot YAML formatting
 #   pandoc        core/Dockerfile                post-mortem export output
-#   golangci-lint  core/.buildkite/docker/Dockerfile.tools   lint findings
+#
+# golangci-lint is pinned in work/default.nix instead, built from source: a
+# release binary can only typecheck modules up to the Go it was built with.
 #
 # Deliberately NOT pinned: grafana-alloy. manifests pins 1.14.2, but that
 # release's darwin binary segfaults at startup on macOS 27 (it links
@@ -123,22 +125,6 @@ in
       description = "Universal document converter (upstream release binary)";
       homepage = "https://pandoc.org";
       license = lib.licenses.gpl2Plus;
-    };
-  };
-
-  # nixpkgs has 2.12.x (stable) / 2.15.x (unstable); core's CI image pins 2.13.0
-  # and lint findings change between releases.
-  golangci-lint = mkPinned rec {
-    pname = "golangci-lint";
-    version = "2.13.0";
-    url = "https://github.com/golangci/golangci-lint/releases/download/v${version}/golangci-lint-${version}-darwin-arm64.tar.gz";
-    hash = "sha256-curmcAl5eOYbeKdzolwnQ5411UCU/Zhs7l7usl1xRP0=";
-    install = ''install -Dm755 golangci-lint-${version}-darwin-arm64/golangci-lint "$out/bin/golangci-lint"'';
-    versionArgs = "version";
-    meta = {
-      description = "Fast linters runner for Go (upstream release binary)";
-      homepage = "https://golangci-lint.run";
-      license = lib.licenses.gpl3Only;
     };
   };
 }
