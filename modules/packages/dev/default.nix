@@ -107,6 +107,7 @@ in
       openssl
       pkg-config
       semgrep
+      shellcheck
       shfmt
       tree-sitter
       yamllint
