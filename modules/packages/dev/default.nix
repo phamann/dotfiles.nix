@@ -100,6 +100,15 @@ in
       graphviz
 
       # generic build tools / formatters / scanners
+      # bazelisk resolves each repo's .bazelversion and runs that Bazel
+      # release. nixpkgs ships only `bazelisk`; also expose it as `bazel`
+      # (as Homebrew and upstream recommend) instead of installing a pinned
+      # pkgs.bazel, which would ignore .bazelversion and collide on `bin/bazel`.
+      (symlinkJoin {
+        name = "bazelisk-as-bazel";
+        paths = [ bazelisk ];
+        postBuild = "ln -s $out/bin/bazelisk $out/bin/bazel";
+      })
       gcc
       gnumake
       hadolint
