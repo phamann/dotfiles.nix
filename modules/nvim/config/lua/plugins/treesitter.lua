@@ -21,7 +21,7 @@ return {
             "go", "gomod", "gowork", "hcl", "html", "http", "java",
             "javascript", "json", "jsonnet", "kdl", "lua", "make", "markdown",
             "markdown_inline", "python", "regex", "rego", "ruby", "rust",
-            "terraform", "toml", "vim", "yaml", "zig", "nix"
+            "starlark", "terraform", "toml", "vim", "yaml", "zig", "nix"
         }
         vim.api.nvim_create_autocmd("VimEnter", {
             once = true,
