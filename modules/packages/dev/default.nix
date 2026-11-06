@@ -109,6 +109,8 @@ in
         paths = [ bazelisk ];
         postBuild = "ln -s $out/bin/bazelisk $out/bin/bazel";
       })
+      # ibazel (watch-and-rebuild); nixpkgs names it after the upstream repo.
+      bazel-watcher
       gcc
       gnumake
       hadolint
