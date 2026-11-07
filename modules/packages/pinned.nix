@@ -16,7 +16,8 @@
 # Revisit when manifests bumps its alloy pin.
 #
 # Not a module: the package buckets `callPackage` this file and pick entries.
-# aarch64-darwin only, because these sit in buckets only the Macs enable.
+# aarch64-darwin only: consumers must guard with `isDarwin` when the bucket is
+# also enabled on Linux (k8s is, via headless-server).
 #
 # To bump an entry, set `version` to the repo's new pin and convert
 # upstream's published sha256 for the darwin-arm64 asset:

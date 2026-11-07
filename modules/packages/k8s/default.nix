@@ -7,6 +7,7 @@
 let
   inherit (lib) mkEnableOption mkIf;
   cfg = config.modules.packages.k8s;
+  inherit (pkgs.stdenv.hostPlatform) isDarwin;
   pinned = pkgs.callPackage ../pinned.nix { };
 in
 {
@@ -20,8 +21,10 @@ in
       kubeconform
       kubectl
       kubectx
-      # Pinned to manifests/mise.toml, not nixpkgs' kubernetes-helm: see ../pinned.nix.
-      pinned.helm
+      # On the Macs, pinned to manifests/mise.toml rather than nixpkgs'
+      # kubernetes-helm: see ../pinned.nix. The pin is a darwin-arm64 binary,
+      # so Linux hosts (yoda) keep nixpkgs' helm.
+      (if isDarwin then pinned.helm else kubernetes-helm)
       kustomize
       open-policy-agent
       sloth
