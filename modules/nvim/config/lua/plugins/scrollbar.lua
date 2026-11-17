@@ -1,5 +1,9 @@
 return {
     "petertriho/nvim-scrollbar",
+    -- v2 (a full rewrite) replaces v1 on main and rejects every v1 setup()
+    -- option. Stay on v1 until this config is ported; see
+    -- https://github.com/petertriho/nvim-scrollbar/issues/121
+    branch = "v1",
     event = "BufReadPost",
     config = function()
         local p = vim.g.stylix_palette
