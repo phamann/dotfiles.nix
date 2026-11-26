@@ -11,15 +11,9 @@ rex.bind("alt+t", "client.tab.new")
 rex.bind("alt+z", "pane.zoom")
 rex.bind("alt+x", "pane.zoom")
 
--- Without these, Alt+digit falls through to zsh as a repeat count.
--- Skip 3: Rex matches "alt" on either Option key regardless of the app's
--- "left sends alt" setting, and on the British layout right ⌥3 must stay
--- free to type `#`.
-for i = 1, 9 do
-  if i ~= 3 then
-    rex.bind("alt+" .. i, "client.tab.goto", { index = i })
-  end
-end
+-- No alt+digit tab bindings: Rex already ships cmd+1..9, and Rex matches
+-- "alt" on either Option key regardless of the "left sends alt" setting,
+-- so alt+3 would swallow right ⌥3, which types `#` on the British layout.
 
 -- Raycast owns Alt+arrow system-wide for window snapping.
 rex.bind("ctrl+alt+left", "pane.focus.left")
