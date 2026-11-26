@@ -12,11 +12,11 @@ rex.bind("alt+z", "pane.zoom")
 rex.bind("alt+x", "pane.zoom")
 
 -- Without these, Alt+digit falls through to zsh as a repeat count.
--- Skip 2 and 3: Rex matches "alt" on either Option key regardless of the
--- app's "left sends alt" setting, and on the British layout right ⌥2/⌥3
--- must stay free to type `€` and `#`.
+-- Skip 3: Rex matches "alt" on either Option key regardless of the app's
+-- "left sends alt" setting, and on the British layout right ⌥3 must stay
+-- free to type `#`.
 for i = 1, 9 do
-  if i ~= 2 and i ~= 3 then
+  if i ~= 3 then
     rex.bind("alt+" .. i, "client.tab.goto", { index = i })
   end
 end
